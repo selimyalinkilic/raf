@@ -22,6 +22,15 @@ async function buildMenus() {
   }
 }
 chrome.runtime.onInstalled.addListener(buildMenus);
+// After install/update, put the video button into tabs that are already open (no page reload needed)
+async function reinjectOverlays() {
+  const cs = chrome.runtime.getManifest().content_scripts?.[0];
+  if (!cs) return 0;
+  const tabs = await chrome.tabs.query({ url: cs.matches });
+  await Promise.all(tabs.map((tab) => chrome.scripting.executeScript({ target: { tabId: tab.id }, files: cs.js }).catch(() => {})));
+  return tabs.length;
+}
+chrome.runtime.onInstalled.addListener(() => { reinjectOverlays(); });
 chrome.runtime.onStartup.addListener(buildMenus);
 chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) buildMenus(); });
 

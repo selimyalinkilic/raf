@@ -2,10 +2,22 @@
 // Hover a video → a small Raf pill appears in its corner → pick a quality → the server downloads it,
 // the file lands in Downloads/Raf. Everything talks to the server through the background worker.
 (() => {
-  if (window.top !== window || window.__rafOverlay) return;
-  window.__rafOverlay = true;
-  const M = (k, ...s) => chrome.i18n.getMessage(k, s.map(String)) || k;
-  const send = (msg) => new Promise((res) => chrome.runtime.sendMessage(msg, (r) => res(r || { error: chrome.runtime.lastError?.message || "?" })));
+  if (window.top !== window) return;
+  // Re-injected after an update: retire the previous (orphaned) instance first — its teardown needs no chrome.* APIs
+  try { window.__rafOverlayTeardown?.(); } catch (e) {}
+  // After the extension is reloaded/updated, this script keeps running in already-open tabs but loses
+  // access to chrome.* ("Extension context invalidated"). Detect that and quietly remove ourselves.
+  const alive = () => { try { return !!chrome.runtime?.id; } catch (e) { return false; } };
+  const M = (k, ...s) => { try { return chrome.i18n.getMessage(k, s.map(String)) || k; } catch (e) { return k; } };
+  const send = (msg) => new Promise((res) => {
+    if (!alive()) { teardown(); return res({ error: "Raf was updated — reload this page" }); }
+    try { chrome.runtime.sendMessage(msg, (r) => res(r || { error: chrome.runtime.lastError?.message || "?" })); }
+    catch (e) { teardown(); res({ error: "Raf was updated — reload this page" }); }
+  });
+  const cleanups = [];
+  const on = (target, type, fn, opts) => { target.addEventListener(type, fn, opts); cleanups.push(() => target.removeEventListener(type, fn, opts)); };
+  function teardown() { cleanups.splice(0).forEach((f) => f()); hostEl?.remove(); if (window.__rafOverlayTeardown === teardown) window.__rafOverlayTeardown = null; }
+  window.__rafOverlayTeardown = teardown;
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const mb = (b) => (!b ? "" : b > 1073741824 ? (b / 1073741824).toFixed(1) + " GB" : Math.max(1, Math.round(b / 1048576)) + " MB");
   const svg = (d, s = 15) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
@@ -98,7 +110,8 @@
     return null;
   }
   let raf = 0;
-  document.addEventListener("mousemove", (e) => {
+  on(document, "mousemove", (e) => {
+    if (!alive()) return teardown();
     if (!enabled || raf) return;
     raf = requestAnimationFrame(() => {
       raf = 0;
@@ -107,10 +120,10 @@
       if (v) show(v); else if (current) hideSoon();
     });
   }, { passive: true, capture: true });
-  addEventListener("scroll", () => { if (current && pill.classList.contains("show")) place(current); if (menuOpen) closeMenu(); }, { passive: true, capture: true });
-  document.addEventListener("fullscreenchange", () => { mount(); if (current) place(current); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && menuOpen) closeMenu(); }, true);
-  document.addEventListener("click", (e) => { if (menuOpen && !e.composedPath().includes(hostEl)) closeMenu(); }, true);
+  on(window, "scroll", () => { if (current && pill.classList.contains("show")) place(current); if (menuOpen) closeMenu(); }, { passive: true, capture: true });
+  on(document, "fullscreenchange", () => { mount(); if (current) place(current); });
+  on(document, "keydown", (e) => { if (e.key === "Escape" && menuOpen) closeMenu(); }, true);
+  on(document, "click", (e) => { if (menuOpen && !e.composedPath().includes(hostEl)) closeMenu(); }, true);
 
   async function openMenu() {
     if (job) return;
@@ -152,10 +165,11 @@
 
   // ---------- follow the Settings toggle ----------
   async function sync() {
-    const { features = {} } = await chrome.storage.sync.get("features");
+    if (!alive()) return teardown();
+    const { features = {} } = await chrome.storage.sync.get("features").catch(() => ({}));
     enabled = features.videoOverlay ?? true;
     if (!enabled) { pill.classList.remove("show"); closeMenu(); }
   }
-  chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) sync(); });
+  try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) sync(); }); } catch (e) {}
   sync();
 })();
