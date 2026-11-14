@@ -26,7 +26,7 @@ let FEAT = {};
 async function applyFeatures() {
   FEAT = await rafFeatures();
   const showMain = FEAT.save || FEAT.video;
-  const tools = ["uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
+  const tools = ["picker", "testData", "uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
   $("saveform").hidden = !FEAT.save;
   $("shotrow").hidden = !FEAT.withShot;
   if (!FEAT.withShot) $("withShot").checked = false;
@@ -223,5 +223,30 @@ $("s-copy").onclick = async () => {
   const toolsTab = document.querySelector('.tabs [data-tab="tools"]');
   if (lastTab === "tools" && !toolsTab.hidden) toolsTab.click();
 })();
+
+// ---------- Locator picker ----------
+async function activeTab() { const [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); return tab; }
+$("pk-start").onclick = async () => {
+  try { await rafStartPicker((await activeTab()).id); window.close(); }
+  catch (e) { $("pk-start").insertAdjacentHTML("afterend", `<p class="hint err">${ic("alert", "err")} ${escHtml(t("cantRunHere"))}</p>`); }
+};
+
+// ---------- Test data (TR) ----------
+$("td-type").innerHTML = RAF_TESTDATA.ORDER.map((k) => `<option value="${k}">${escHtml(t("td_" + k))}</option>`).join("");
+function genTd() {
+  const k = $("td-type").value, n = +$("td-count").value;
+  $("td-out").value = Array.from({ length: n }, () => RAF_TESTDATA.GEN[k]()).join("\n");
+  $("td-out").rows = Math.min(n, 6);
+  chrome.storage.local.set({ tdType: k });
+}
+["td-type", "td-count"].forEach((id) => $(id).onchange = genTd);
+$("td-new").onclick = genTd;
+chrome.storage.local.get("tdType").then(({ tdType }) => { if (tdType && RAF_TESTDATA.GEN[tdType]) $("td-type").value = tdType; genTd(); });
+$("td-fill").onclick = async () => {
+  try {
+    const n = await rafFillForm((await activeTab()).id);
+    $("td-msg").innerHTML = n ? `${ic("check", "ok")} ${escHtml(t("tdFilled", n))}` : `${ic("alert")} ${escHtml(t("tdNone"))}`;
+  } catch (e) { $("td-msg").innerHTML = `${ic("alert", "err")} ${escHtml(t("cantRunHere"))}`; }
+};
 
 init();

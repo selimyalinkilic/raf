@@ -100,3 +100,53 @@ async function rafStartDownload(url, kind = "video") {
 async function rafCapture(windowId, format = "jpeg") {
   return chrome.tabs.captureVisibleTab(windowId, format === "png" ? { format: "png" } : { format: "jpeg", quality: 72 });
 }
+
+// ---------- Locator picker ----------
+async function rafStartPicker(tabId) {
+  const i18n = { title: t("pkTitle"), hint: t("pkHint"), again: t("pkAgain"), copy: t("copy"), copied: t("copied"),
+    unique: t("pkUnique"), matches: t("pkMatches"), none: t("pkNone"), recommended: t("pkRecommended") };
+  await chrome.scripting.executeScript({ target: { tabId }, func: (x) => { window.__RAF_PICKER_I18N = x; }, args: [i18n] });
+  await chrome.scripting.executeScript({ target: { tabId }, files: ["picker.js"] });
+}
+
+// ---------- Fill form with one consistent fake person ----------
+function rafFillPage() {
+  const TD = self.RAF_TESTDATA, G = TD.GEN;
+  const first = G.firstName(), last = G.lastName(), fold = (x) => TD.fold(x).replace(/[^a-z]/g, "");
+  const person = { firstName: first, lastName: last, fullName: `${first} ${last}`,
+    email: `${fold(first)}.${fold(last)}${Math.floor(Math.random() * 100)}@example.com`, username: `${fold(first)}.${fold(last)}` };
+  const value = (k) => person[k] ?? G[k]();
+  const visible = (el) => (el.checkVisibility ? el.checkVisibility() : el.getClientRects().length > 0);
+  const labelOf = (el) => { const l = el.id && document.querySelector(`label[for="${CSS.escape(el.id)}"]`); return (l || el.closest("label"))?.innerText || ""; };
+  const setVal = (el, v) => {
+    const proto = el instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : el instanceof HTMLSelectElement ? HTMLSelectElement.prototype : HTMLInputElement.prototype;
+    Object.getOwnPropertyDescriptor(proto, "value").set.call(el, v);
+    ["input", "change", "blur"].forEach((ev) => el.dispatchEvent(new Event(ev, { bubbles: true })));
+    el.style.outline = "2px solid #7fd0a8"; el.style.outlineOffset = "1px"; setTimeout(() => { el.style.outline = ""; el.style.outlineOffset = ""; }, 1800);
+  };
+  let filled = 0;
+  for (const el of document.querySelectorAll("input, textarea, select")) {
+    const type = (el.getAttribute("type") || el.localName).toLowerCase();
+    if (!visible(el) || el.disabled || el.readOnly || /^(hidden|submit|button|reset|image|file|checkbox|radio|range|color)$/.test(type)) continue;
+    if (el.value && el.value.trim()) continue;  // don't overwrite what's already there
+    if (el.localName === "select") { const opts = [...el.options].filter((o) => o.value && !o.disabled); if (opts.length) { setVal(el, opts[Math.floor(Math.random() * opts.length)].value); filled++; } continue; }
+    const desc = [el.name, el.id, el.placeholder, el.getAttribute("aria-label"), el.autocomplete, labelOf(el)].join(" ");
+    let k = TD.guess(desc, type);
+    if (!k && type === "date") k = "birthdate";
+    if (!k) continue;
+    let v = k === "birthdate" && type === "date" ? TD.birthIso() : String(value(k));
+    const max = el.maxLength > 0 ? el.maxLength : 0;
+    if (/^(phone|iban|card|tckn|vkn)$/.test(k) && (max && v.length > max || el.inputMode === "numeric" || type === "number")) {
+      v = v.replace(/\s/g, "");
+      if (k === "phone" && max && v.length > max) v = v.replace(/^\+90/, "").replace(/^0/, "");
+    }
+    if (max && v.length > max) v = v.slice(0, max);
+    setVal(el, v); filled++;
+  }
+  return filled;
+}
+async function rafFillForm(tabId) {
+  await chrome.scripting.executeScript({ target: { tabId }, files: ["testdata.js"] });
+  const [r] = await chrome.scripting.executeScript({ target: { tabId }, func: rafFillPage });
+  return r?.result || 0;
+}

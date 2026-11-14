@@ -22,6 +22,18 @@
     </div>
   </div>
   <div id="tools" class="pane" hidden>
+    <details class="tool" data-k="picker" open><summary><i data-i="crosshair"></i> <span data-t="pkToolTitle"></span></summary>
+      <button id="pk-start" class="btn main wide"><i data-i="crosshair"></i> <span data-t="pkButton"></span></button>
+      <p class="hint"><span data-t="pkToolHint"></span></p>
+    </details>
+    <details class="tool" data-k="testData"><summary><i data-i="user"></i> <span data-t="tdToolTitle"></span></summary>
+      <div class="opts"><select id="td-type"></select><select id="td-count"><option>1</option><option>5</option><option>10</option></select></div>
+      <textarea id="td-out" rows="1" readonly></textarea>
+      <div class="row"><button id="td-new" class="btn"><i data-i="refresh"></i> <span data-t="regen"></span></button><button class="btn main" data-copy="td-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
+      <button id="td-fill" class="btn wide fill"><i data-i="wand"></i> <span data-t="tdFill"></span></button>
+      <div id="td-msg" class="hint"></div>
+      <p class="hint"><span data-t="tdHint"></span></p>
+    </details>
     <details class="tool" open data-k="uuid"><summary><i data-i="key"></i> UUID v4</summary>
       <div class="opts">
         <select id="u-count"><option>1</option><option>5</option><option>10</option></select>
@@ -60,5 +72,5 @@
   </div>
   <div id="alloff" class="pane empty-all" hidden><span data-t="allOff"></span></div>
   <footer><a id="open" href="#"><i data-i="external"></i> <span data-t="openRaf"></span></a><a href="options.html" target="_blank"><i data-i="settings"></i> <span data-t="settings"></span></a></footer>
-  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="popup.js"></script>
+  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="testdata.js"></script><script src="popup.js"></script>
 </body></html>

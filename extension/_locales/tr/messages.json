@@ -322,5 +322,140 @@
  },
  "allOff": {
   "message": "Her şey kapalı. Ayarlar'dan özellik aç."
+ },
+ "gDev": {
+  "message": "Geliştirici"
+ },
+ "f_picker": {
+  "message": "Seçici kopyala"
+ },
+ "fd_picker": {
+  "message": "Elemana tıkla → Playwright locator, CSS, XPath (Alt+Shift+L)"
+ },
+ "f_testData": {
+  "message": "Test verisi (TR)"
+ },
+ "fd_testData": {
+  "message": "Geçerli TC, IBAN, VKN, kart, telefon… ve tek tıkla form doldurma"
+ },
+ "f_menuTestData": {
+  "message": "Sağ tıkla test verisi"
+ },
+ "fd_menuTestData": {
+  "message": "Alana sağ tıkla → “Test verisi ekle”"
+ },
+ "cmdPicker": {
+  "message": "Eleman seç ve seçicisini kopyala"
+ },
+ "pkTitle": {
+  "message": "Seçiciler"
+ },
+ "pkHint": {
+  "message": "Bir elemana tıkla · Esc ile kapat"
+ },
+ "pkAgain": {
+  "message": "Başka eleman"
+ },
+ "pkUnique": {
+  "message": "tekil"
+ },
+ "pkMatches": {
+  "message": "$1 eşleşme"
+ },
+ "pkNone": {
+  "message": "eşleşme yok"
+ },
+ "pkRecommended": {
+  "message": "önerilen"
+ },
+ "pkButton": {
+  "message": "Sayfada eleman seç"
+ },
+ "pkToolTitle": {
+  "message": "Seçici kopyala (Playwright)"
+ },
+ "pkToolHint": {
+  "message": "Üzerine gel, tıkla; seçiciler eşleşme sayısıyla listelenir. Kısayol: Alt+Shift+L"
+ },
+ "tdToolTitle": {
+  "message": "Test verisi (TR)"
+ },
+ "tdFill": {
+  "message": "Bu sayfadaki formu doldur"
+ },
+ "tdFilled": {
+  "message": "$1 alan tek bir sahte kişiyle dolduruldu"
+ },
+ "tdNone": {
+  "message": "Doldurulacak boş alan bulunamadı"
+ },
+ "tdHint": {
+  "message": "Rastgele ama algoritmaya göre geçerli — sadece test için"
+ },
+ "ctxTestData": {
+  "message": "Test verisi ekle"
+ },
+ "cantRunHere": {
+  "message": "Bu sayfada çalışamaz (chrome:// vb.)"
+ },
+ "td_fullName": {
+  "message": "Ad soyad"
+ },
+ "td_firstName": {
+  "message": "Ad"
+ },
+ "td_lastName": {
+  "message": "Soyad"
+ },
+ "td_email": {
+  "message": "E-posta"
+ },
+ "td_phone": {
+  "message": "Cep telefonu"
+ },
+ "td_tckn": {
+  "message": "TC kimlik no"
+ },
+ "td_vkn": {
+  "message": "Vergi no (VKN)"
+ },
+ "td_iban": {
+  "message": "IBAN (TR)"
+ },
+ "td_address": {
+  "message": "Adres"
+ },
+ "td_city": {
+  "message": "İl"
+ },
+ "td_district": {
+  "message": "İlçe"
+ },
+ "td_zip": {
+  "message": "Posta kodu"
+ },
+ "td_birthdate": {
+  "message": "Doğum tarihi"
+ },
+ "td_company": {
+  "message": "Şirket"
+ },
+ "td_plate": {
+  "message": "Plaka"
+ },
+ "td_card": {
+  "message": "Kart no (test)"
+ },
+ "td_cardExp": {
+  "message": "Son kullanma"
+ },
+ "td_cvv": {
+  "message": "CVV"
+ },
+ "td_username": {
+  "message": "Kullanıcı adı"
+ },
+ "td_password": {
+  "message": "Şifre"
  }
 }

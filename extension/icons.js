@@ -1,5 +1,8 @@
 // Lucide line icons (ISC) — same set as server/app/icons.py
 const RAF_ICONS = {
+ "crosshair": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M22 12h-4M6 12H2M12 6V2M12 22v-4\"/>",
+ "user": "<circle cx=\"12\" cy=\"8\" r=\"5\"/><path d=\"M20 21a8 8 0 0 0-16 0\"/>",
+ "wand": "<path d=\"m21.6 3.6-1.3-1.3a1.2 1.2 0 0 0-1.7 0L2.4 18.6a1.2 1.2 0 0 0 0 1.7l1.3 1.3a1.2 1.2 0 0 0 1.7 0L21.6 5.4a1.2 1.2 0 0 0 0-1.8\"/><path d=\"m14 7 3 3\"/><path d=\"M5 6v4M19 14v4M10 2v2M7 8H3M21 16h-4M11 3H9\"/>",
  "download": "<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/><path d=\"M12 15V3\"/>",
  "play": "<path d=\"M6 3.5v17a.8.8 0 0 0 1.2.7l13.6-8.5a.8.8 0 0 0 0-1.4L7.2 2.8A.8.8 0 0 0 6 3.5z\"/>",
  "x": "<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>",

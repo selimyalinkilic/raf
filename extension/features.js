@@ -11,6 +11,9 @@ const RAF_FEATURES = [
   { id: "b64",        group: "gTools", icon: "binary",   def: true },
   { id: "jwt",        group: "gTools", icon: "id",       def: true },
   { id: "shot",       group: "gTools", icon: "image",    def: true },
+  { id: "picker",     group: "gDev",   icon: "crosshair", def: true },  // Playwright locator picker + Alt+Shift+L
+  { id: "testData",   group: "gDev",   icon: "user",     def: true },  // TR test data generator + "Fill form"
+  { id: "menuTestData", group: "gDev", icon: "plus",     def: true },  // right-click "Insert test data ▸"
 ];
 
 async function rafFeatures() {

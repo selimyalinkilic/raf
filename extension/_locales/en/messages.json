@@ -322,5 +322,140 @@
  },
  "allOff": {
   "message": "Everything is turned off. Enable features in Settings."
+ },
+ "gDev": {
+  "message": "Developer"
+ },
+ "f_picker": {
+  "message": "Locator picker"
+ },
+ "fd_picker": {
+  "message": "Click an element → Playwright locators, CSS, XPath (Alt+Shift+L)"
+ },
+ "f_testData": {
+  "message": "Test data (TR)"
+ },
+ "fd_testData": {
+  "message": "Valid TCKN, IBAN, VKN, card, phone… and one-click form fill"
+ },
+ "f_menuTestData": {
+  "message": "Test data from right-click"
+ },
+ "fd_menuTestData": {
+  "message": "Right-click a field → “Insert test data”"
+ },
+ "cmdPicker": {
+  "message": "Pick an element and copy its locator"
+ },
+ "pkTitle": {
+  "message": "Locators"
+ },
+ "pkHint": {
+  "message": "Click an element · Esc to close"
+ },
+ "pkAgain": {
+  "message": "Pick another"
+ },
+ "pkUnique": {
+  "message": "unique"
+ },
+ "pkMatches": {
+  "message": "$1 matches"
+ },
+ "pkNone": {
+  "message": "no match"
+ },
+ "pkRecommended": {
+  "message": "best"
+ },
+ "pkButton": {
+  "message": "Pick an element on the page"
+ },
+ "pkToolTitle": {
+  "message": "Locator picker (Playwright)"
+ },
+ "pkToolHint": {
+  "message": "Hover to highlight, click to get locators with match counts. Shortcut: Alt+Shift+L"
+ },
+ "tdToolTitle": {
+  "message": "Test data (TR)"
+ },
+ "tdFill": {
+  "message": "Fill the form on this page"
+ },
+ "tdFilled": {
+  "message": "Filled $1 fields with one fake person"
+ },
+ "tdNone": {
+  "message": "No fillable empty fields found"
+ },
+ "tdHint": {
+  "message": "Random but checksum-valid — for testing only"
+ },
+ "ctxTestData": {
+  "message": "Insert test data"
+ },
+ "cantRunHere": {
+  "message": "Can't run on this page (chrome:// etc.)"
+ },
+ "td_fullName": {
+  "message": "Full name"
+ },
+ "td_firstName": {
+  "message": "First name"
+ },
+ "td_lastName": {
+  "message": "Last name"
+ },
+ "td_email": {
+  "message": "E-mail"
+ },
+ "td_phone": {
+  "message": "Mobile phone"
+ },
+ "td_tckn": {
+  "message": "TR ID number (TCKN)"
+ },
+ "td_vkn": {
+  "message": "Tax number (VKN)"
+ },
+ "td_iban": {
+  "message": "IBAN (TR)"
+ },
+ "td_address": {
+  "message": "Address"
+ },
+ "td_city": {
+  "message": "City"
+ },
+ "td_district": {
+  "message": "District"
+ },
+ "td_zip": {
+  "message": "Postal code"
+ },
+ "td_birthdate": {
+  "message": "Date of birth"
+ },
+ "td_company": {
+  "message": "Company"
+ },
+ "td_plate": {
+  "message": "Licence plate"
+ },
+ "td_card": {
+  "message": "Card number (test)"
+ },
+ "td_cardExp": {
+  "message": "Card expiry"
+ },
+ "td_cvv": {
+  "message": "CVV"
+ },
+ "td_username": {
+  "message": "Username"
+ },
+ "td_password": {
+  "message": "Password"
  }
 }

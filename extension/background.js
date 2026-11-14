@@ -1,4 +1,4 @@
-importScripts("config.js", "i18n.js", "common.js", "features.js");
+importScripts("config.js", "i18n.js", "common.js", "features.js", "testdata.js");
 
 // Right-click menus follow the feature toggles on the Settings page
 async function buildMenus() {
@@ -10,6 +10,10 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
   }
   if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
+  if (f.menuTestData) {
+    chrome.contextMenus.create({ id: "td", title: t("ctxTestData"), contexts: ["editable"] });
+    for (const k of RAF_TESTDATA.ORDER) chrome.contextMenus.create({ id: "td:" + k, parentId: "td", title: t("td_" + k), contexts: ["editable"] });
+  }
   if (f.menuVideo) {
     chrome.contextMenus.create({ id: "dl-video", title: t("ctxDlVideo"), contexts: ["page", "link", "video"] });
     chrome.contextMenus.create({ id: "dl-audio", title: t("ctxDlAudio"), contexts: ["page", "link", "video"] });
@@ -34,6 +38,7 @@ async function savePage(tab, extra = {}) {
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "uuid") return putUuid(tab, info.frameId);
+  if (info.menuItemId.startsWith("td:")) return putText(tab, info.frameId, RAF_TESTDATA.GEN[info.menuItemId.slice(3)]());
   if (info.menuItemId.startsWith("dl-")) {
     const target = info.linkUrl || (info.srcUrl && info.srcUrl.startsWith("http") && !info.srcUrl.startsWith("blob:") ? info.srcUrl : null) || tab.url;
     try {
@@ -59,13 +64,16 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 async function putUuid(tab, frameId) {
   const { uuidUpper = false, uuidHyphens = true } = await chrome.storage.sync.get(["uuidUpper", "uuidHyphens"]);
-  const id = rafUuid({ upper: uuidUpper, hyphens: uuidHyphens });
+  return putText(tab, frameId, rafUuid({ upper: uuidUpper, hyphens: uuidHyphens }));
+}
+
+async function putText(tab, frameId, id) {
   try {
     const [r] = await chrome.scripting.executeScript({
       target: { tabId: tab.id, ...(frameId ? { frameIds: [frameId] } : {}) }, func: rafInsertOrCopy, args: [id] });
     const how = r?.result;
     chrome.action.setBadgeBackgroundColor({ color: "#86b9ec", tabId: tab.id });
-    chrome.action.setBadgeText({ text: how === "inserted" ? "ID" : how === "copied" ? "⧉" : "!", tabId: tab.id });
+    chrome.action.setBadgeText({ text: how === "inserted" ? "✓" : how === "copied" ? "⧉" : "!", tabId: tab.id });
     setTimeout(() => chrome.action.setBadgeText({ text: "", tabId: tab.id }), 1500);
   } catch (e) {
     flash(tab.id, false, t("cantType"));
@@ -77,6 +85,7 @@ chrome.commands.onCommand.addListener(async (cmd) => {
   if (!tab) return;
   const f = await rafFeatures();
   if (cmd === "insert-uuid") return f.menuUuid ? putUuid(tab) : undefined;
+  if (cmd === "pick-locator") { if (f.picker) rafStartPicker(tab.id).catch(() => flash(tab.id, false, t("cantRunHere"))); return; }
   if (cmd !== "quick-save" || !f.menuSave) return;
   try {
     const r = await savePage(tab);
