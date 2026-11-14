@@ -158,9 +158,6 @@
  "settings": {
   "message": "Ayarlar"
  },
- "newVersion": {
-  "message": "Yeni sürüm var: <b>v$1</b> (sende v$2). <a href=\"$3\" target=\"_blank\">İndir</a> → klasörün üzerine çıkar → chrome://extensions'ta ↻ · <a href=\"$4\" target=\"_blank\">nasıl?</a>"
- },
  "missingSettings": {
   "message": "Ayarlar eksik: sunucu adresi / API anahtarı"
  },
@@ -556,5 +553,17 @@
  },
  "tgNotConfigured": {
   "message": "Raf sunucunda Telegram ayarlı değil (RAF_TELEGRAM_TOKEN)"
+ },
+ "nvTitle": {
+  "message": "Yeni sürüm: v$1"
+ },
+ "nvSteps": {
+  "message": "Sendeki v$1 · zip'i aynı klasöre çıkar, sonra chrome://extensions'ta ↻"
+ },
+ "nvHow": {
+  "message": "Nasıl?"
+ },
+ "nvDownload": {
+  "message": "İndir"
  }
 }

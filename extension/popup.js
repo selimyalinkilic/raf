@@ -7,7 +7,7 @@ const parseTags = (s) => s.split(/[,\s]+/).map((x) => x.replace(/^#/, "").trim()
 async function checkVersion() {
   const mine = chrome.runtime.getManifest().version;
   if (rafMissingPermissions().length) {
-    $("banner").innerHTML = ic("alert") + " " + t("reloadNeeded"); $("banner").hidden = false; return;
+    $("banner").innerHTML = `${ic("alert")}<div class="btxt"><small>${escHtml(t("reloadNeeded"))}</small></div>`; $("banner").hidden = false; return;
   }
   try {
     const { server } = await rafSettings();
@@ -15,7 +15,9 @@ async function checkVersion() {
     const newer = (a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number);
       for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
     if (r.version && newer(r.version, mine)) {
-      $("banner").innerHTML = `${ic("sparkle")} ` + t("newVersion", r.version, mine, r.download, r.help);
+      $("banner").innerHTML = `${ic("sparkle")}<div class="btxt"><b>${escHtml(t("nvTitle", r.version))}</b>
+        <small>${escHtml(t("nvSteps", mine))} <a href="${escHtml(r.help)}" target="_blank">${escHtml(t("nvHow"))}</a></small></div>
+        <a class="bbtn" href="${escHtml(r.download)}" target="_blank">${ic("download")} ${escHtml(t("nvDownload"))}</a>`;
       $("banner").hidden = false;
     }
   } catch (e) { /* server unreachable: stay quiet */ }

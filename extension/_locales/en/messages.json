@@ -158,9 +158,6 @@
  "settings": {
   "message": "Settings"
  },
- "newVersion": {
-  "message": "New version available: <b>v$1</b> (you have v$2). <a href=\"$3\" target=\"_blank\">Download</a> → unzip over the folder → ↻ in chrome://extensions · <a href=\"$4\" target=\"_blank\">how?</a>"
- },
  "missingSettings": {
   "message": "Missing settings: server URL / API token"
  },
@@ -556,5 +553,17 @@
  },
  "tgNotConfigured": {
   "message": "Telegram isn't set up on your Raf server (RAF_TELEGRAM_TOKEN)"
+ },
+ "nvTitle": {
+  "message": "New version: v$1"
+ },
+ "nvSteps": {
+  "message": "You have v$1 · unzip over the folder, then ↻ in chrome://extensions."
+ },
+ "nvHow": {
+  "message": "How?"
+ },
+ "nvDownload": {
+  "message": "Get"
  }
 }
