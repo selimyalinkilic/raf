@@ -1,4 +1,4 @@
-// Popup ve arka plan tarafından paylaşılan yardımcılar
+// Helpers shared by the popup and the background worker
 async function rafSettings() {
   const d = self.RAF_DEFAULTS || {};
   const s = await chrome.storage.sync.get(["server", "token"]);
@@ -7,7 +7,7 @@ async function rafSettings() {
 
 async function rafApi(path, opts = {}) {
   const { server, token } = await rafSettings();
-  if (!server || !token) throw new Error("Ayarlar eksik: sunucu adresi / anahtar");
+  if (!server || !token) throw new Error(t("missingSettings"));
   const res = await fetch(server + path, {
     ...opts,
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) },
@@ -16,7 +16,7 @@ async function rafApi(path, opts = {}) {
   return res.json();
 }
 
-// Sekmede çalışır: sayfadan başlık, açıklama, favicon, seçili metin ve okunabilir metni toplar
+// Runs in the tab: collects title, description, favicon, selection and readable text
 function rafExtractPage() {
   const meta = (sel) => document.querySelector(sel)?.getAttribute("content") || "";
   const icon = document.querySelector('link[rel~="icon"]')?.href || "";
@@ -36,7 +36,7 @@ async function rafExtract(tabId) {
     const [r] = await chrome.scripting.executeScript({ target: { tabId }, func: rafExtractPage });
     return r?.result || null;
   } catch (e) {
-    return null; // chrome:// gibi sayfalarda betik çalışmaz
+    return null; // scripts can't run on chrome:// and similar pages
   }
 }
 
@@ -47,7 +47,7 @@ function rafUuid({ upper = false, hyphens = true } = {}) {
   return upper ? u.toUpperCase() : u;
 }
 
-// Sekmede çalışır: odaktaki düzenlenebilir alana yaz; alan yoksa panoya kopyala
+// Runs in the tab: type into the focused editable field, otherwise copy to clipboard
 function rafInsertOrCopy(text) {
   const el = document.activeElement;
   const editable = el && (el.isContentEditable || (/^(INPUT|TEXTAREA)$/.test(el.tagName) && !el.readOnly && !el.disabled));
@@ -60,8 +60,8 @@ function rafInsertOrCopy(text) {
   return ok ? "copied" : "failed";
 }
 
-// ---------- Video indirme ----------
-// Sayfanın sitesine ait çerezleri (oturumun) Netscape biçimine çevir; sunucu sadece o indirmede kullanır, saklamaz.
+// ---------- Video download ----------
+// Export this site's cookies (your session) in Netscape format; the server uses them for this one download only and never stores them.
 async function rafCookiesFor(url) {
   try {
     const host = new URL(url).hostname.replace(/^www\./, "");
@@ -82,21 +82,21 @@ function rafMissingPermissions() {
   return miss;
 }
 
-const RAF_RELOAD_MSG = "Eklenti yeni izinleri henüz almadı: chrome://extensions sayfasında Raf kartındaki ↻ (yeniden yükle) düğmesine bas.";
+
 
 async function rafStartDownload(url, kind = "video") {
-  if (rafMissingPermissions().length) throw new Error(RAF_RELOAD_MSG);
+  if (rafMissingPermissions().length) throw new Error(t("reloadNeeded"));
   const cookies = await rafCookiesFor(url);
   const d = await rafApi("/api/downloads", { method: "POST", body: JSON.stringify({ url, kind, cookies }) });
   const { pending = [], delivered = [] } = await chrome.storage.local.get(["pending", "delivered"]);
-  // Sunucu aynı videoyu yeniden kullandıysa ve dosya zaten bilgisayara indirildiyse tekrar listeye ekleme
+  // If the server reused an existing job that was already delivered, don't queue it again
   if (!pending.includes(d.id) && !(d.reused && delivered.includes(d.id))) pending.push(d.id);
   await chrome.storage.local.set({ pending });
   chrome.alarms.create("raf-dl", { periodInMinutes: 0.5 });
   return d;
 }
 
-// ---------- Ekran görüntüsü ----------
+// ---------- Screenshot ----------
 async function rafCapture(windowId, format = "jpeg") {
   return chrome.tabs.captureVisibleTab(windowId, format === "png" ? { format: "png" } : { format: "jpeg", quality: 72 });
 }

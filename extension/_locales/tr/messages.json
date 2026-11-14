@@ -1,0 +1,230 @@
+{
+ "extName": {
+  "message": "Raf"
+ },
+ "extDesc": {
+  "message": "Açık sayfayı tek tıkla kendi sunucundaki rafa kaldır — video indirme ve geliştirici araçlarıyla."
+ },
+ "actionTitle": {
+  "message": "Rafa kaldır"
+ },
+ "cmdQuickSave": {
+  "message": "Açık sayfayı hemen rafa kaldır"
+ },
+ "cmdUuid": {
+  "message": "UUID üret: odaktaki alana yaz ya da kopyala"
+ },
+ "tabSave": {
+  "message": "Kaydet"
+ },
+ "tabTools": {
+  "message": "Araçlar"
+ },
+ "lblTitle": {
+  "message": "Başlık"
+ },
+ "lblTags": {
+  "message": "Etiketler"
+ },
+ "phTags": {
+  "message": "iş, okunacak, tarif"
+ },
+ "lblNote": {
+  "message": "Not"
+ },
+ "phNote": {
+  "message": "Neden kaydediyorsun?"
+ },
+ "withShot": {
+  "message": "Ekran görüntüsünü de ekle"
+ },
+ "btnSave": {
+  "message": "Rafa kaldır"
+ },
+ "btnUpdate": {
+  "message": "Güncelle"
+ },
+ "saved": {
+  "message": "Rafa kaldırıldı"
+ },
+ "updated": {
+  "message": "Güncellendi"
+ },
+ "alreadySaved": {
+  "message": "Zaten rafta"
+ },
+ "cantSave": {
+  "message": "Bu sayfa kaydedilemez."
+ },
+ "savedToday": {
+  "message": "Bugün kaydedilen: $1"
+ },
+ "dlTitle": {
+  "message": "Bu sayfadaki videoyu indir"
+ },
+ "btnVideo": {
+  "message": "Video"
+ },
+ "btnAudio": {
+  "message": "Ses (mp3)"
+ },
+ "queued": {
+  "message": "Sıraya alındı…"
+ },
+ "serverDownloading": {
+  "message": "Sunucu indiriyor… %$1"
+ },
+ "savingToComputer": {
+  "message": "$1 — bilgisayarına iniyor"
+ },
+ "upper": {
+  "message": "BÜYÜK"
+ },
+ "hyphens": {
+  "message": "tireli"
+ },
+ "regen": {
+  "message": "Yeniden üret"
+ },
+ "copy": {
+  "message": "Kopyala"
+ },
+ "copied": {
+  "message": "Kopyalandı"
+ },
+ "uuidHint": {
+  "message": "Sağ tık → <b>UUID ekle</b>"
+ },
+ "unitP": {
+  "message": "paragraf"
+ },
+ "unitS": {
+  "message": "cümle"
+ },
+ "unitW": {
+  "message": "kelime"
+ },
+ "phB64": {
+  "message": "Metni ya da Base64'ü buraya yapıştır"
+ },
+ "encode": {
+  "message": "Kodla →"
+ },
+ "decode": {
+  "message": "← Çöz"
+ },
+ "b64Error": {
+  "message": "Hata: geçerli bir Base64 değil"
+ },
+ "jwtTitle": {
+  "message": "JWT çözücü"
+ },
+ "phJwt": {
+  "message": "Token'ı yapıştır: eyJhbGciOi…"
+ },
+ "jwtHint": {
+  "message": "İmza doğrulanmaz; sadece içerik okunur. Token bilgisayarından çıkmaz."
+ },
+ "jwtParts": {
+  "message": "JWT üç parçadan oluşur (header.payload.signature)"
+ },
+ "jwtExpired": {
+  "message": "süresi doldu"
+ },
+ "jwtValid": {
+  "message": "geçerli"
+ },
+ "jwtInvalid": {
+  "message": "Çözülemedi: geçerli bir JWT değil"
+ },
+ "shotTitle": {
+  "message": "Ekran görüntüsü"
+ },
+ "savePng": {
+  "message": "PNG indir"
+ },
+ "copyClip": {
+  "message": "Panoya kopyala"
+ },
+ "shotSaved": {
+  "message": "İndirildi (İndirilenler/Raf)"
+ },
+ "shotCopied": {
+  "message": "Panoya kopyalandı (Ctrl+V)"
+ },
+ "openRaf": {
+  "message": "Rafı aç"
+ },
+ "settings": {
+  "message": "Ayarlar"
+ },
+ "newVersion": {
+  "message": "Yeni sürüm var: <b>v$1</b> (sende v$2). <a href=\"$3\" target=\"_blank\">İndir</a> → klasörün üzerine çıkar → chrome://extensions'ta ↻ · <a href=\"$4\" target=\"_blank\">nasıl?</a>"
+ },
+ "missingSettings": {
+  "message": "Ayarlar eksik: sunucu adresi / API anahtarı"
+ },
+ "reloadNeeded": {
+  "message": "Eklenti yeni izinleri henüz almadı: chrome://extensions sayfasında Raf kartındaki ↻ (yeniden yükle) düğmesine bas."
+ },
+ "ctxSavePage": {
+  "message": "Bu sayfayı rafa kaldır"
+ },
+ "ctxSaveLink": {
+  "message": "Linki rafa kaldır"
+ },
+ "ctxSaveSelection": {
+  "message": "Seçili metni not olarak kaydet"
+ },
+ "ctxInsertUuid": {
+  "message": "UUID ekle"
+ },
+ "ctxDlVideo": {
+  "message": "Videoyu indir"
+ },
+ "ctxDlAudio": {
+  "message": "Sadece sesi indir (mp3)"
+ },
+ "notifSaved": {
+  "message": "Rafa kaldırıldı"
+ },
+ "notifSaveFailed": {
+  "message": "Kaydedilemedi"
+ },
+ "dlQueuedNotif": {
+  "message": "İndirme sıraya alındı. Hazır olunca İndirilenler klasörüne iner."
+ },
+ "todayCount": {
+  "message": "Bugün: $1"
+ },
+ "cantType": {
+  "message": "Bu sayfaya yazılamıyor (chrome:// vb.). Popup'taki Araçlar sekmesini kullan."
+ },
+ "notifDownloaded": {
+  "message": "İndirildi ✓"
+ },
+ "notifDlFailed": {
+  "message": "İndirilemedi"
+ },
+ "optTitle": {
+  "message": "Raf · Ayarlar"
+ },
+ "optIntro": {
+  "message": "Sunucudan indirdiğin eklentide bu alanlar hazır gelir; değiştirmen gerekmez."
+ },
+ "lblServer": {
+  "message": "Sunucu adresi"
+ },
+ "lblToken": {
+  "message": "API anahtarı"
+ },
+ "saveTest": {
+  "message": "Kaydet ve dene"
+ },
+ "connected": {
+  "message": "Bağlantı tamam ✓ ($1 etiket)"
+ },
+ "cantConnect": {
+  "message": "Bağlanamadı: $1"
+ }
+}

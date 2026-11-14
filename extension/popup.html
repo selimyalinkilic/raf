@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
 <body>
   <header><img src="icons/icon.svg" alt=""><span>Raf</span><em id="status"></em></header>
   <div id="banner" class="banner" hidden></div>
-  <nav class="tabs"><button data-tab="main" class="on"><i data-i="bookmark"></i> Kaydet</button><button data-tab="tools"><i data-i="wrench"></i> Araçlar</button></nav>
+  <nav class="tabs"><button data-tab="main" class="on"><i data-i="bookmark"></i> <span data-t="tabSave"></span></button><button data-tab="tools"><i data-i="wrench"></i> <span data-t="tabTools"></span></button></nav>
   <div id="main" class="pane">
-    <label>Başlık<input id="title" maxlength="300"></label>
+    <label><span data-t="lblTitle"></span><input id="title" maxlength="300"></label>
     <div class="url" id="url"></div>
-    <label>Etiketler<input id="tags" placeholder="iş, okunacak, tarif"></label>
+    <label><span data-t="lblTags"></span><input id="tags" data-t-ph="phTags"></label>
     <div class="chips" id="suggest"></div>
-    <label>Not<textarea id="note" rows="3" placeholder="Neden kaydediyorsun?"></textarea></label>
-    <label class="chk shotchk"><input type="checkbox" id="withShot" checked> <i data-i="camera"></i> Ekran görüntüsünü de ekle</label>
-    <button id="save"><i data-i="plus"></i> Rafa kaldır</button>
+    <label><span data-t="lblNote"></span><textarea id="note" rows="3" data-t-ph="phNote"></textarea></label>
+    <label class="chk shotchk"><input type="checkbox" id="withShot" checked> <i data-i="camera"></i> <span data-t="withShot"></span></label>
+    <button id="save"><i data-i="plus"></i> <span data-t="btnSave"></span></button>
     <p id="msg"></p>
     <div class="dlbox">
-      <div class="tool-h"><i data-i="download"></i> Bu sayfadaki videoyu indir</div>
-      <div class="row"><button id="dl-video" class="btn"><i data-i="video"></i> Video</button><button id="dl-audio" class="btn"><i data-i="music"></i> Ses (mp3)</button></div>
+      <div class="tool-h"><i data-i="download"></i> <span data-t="dlTitle"></span></div>
+      <div class="row"><button id="dl-video" class="btn"><i data-i="video"></i> <span data-t="btnVideo"></span></button><button id="dl-audio" class="btn"><i data-i="music"></i> <span data-t="btnAudio"></span></button></div>
       <div id="dl-status" class="hint"></div>
     </div>
   </div>
@@ -23,39 +23,39 @@
     <details class="tool" open data-k="uuid"><summary><i data-i="key"></i> UUID v4</summary>
       <div class="opts">
         <select id="u-count"><option>1</option><option>5</option><option>10</option></select>
-        <label class="chk"><input type="checkbox" id="u-upper"> BÜYÜK</label>
-        <label class="chk"><input type="checkbox" id="u-hyph" checked> tireli</label>
+        <label class="chk"><input type="checkbox" id="u-upper"> <span data-t="upper"></span></label>
+        <label class="chk"><input type="checkbox" id="u-hyph" checked> <span data-t="hyphens"></span></label>
       </div>
       <textarea id="u-out" rows="1" readonly></textarea>
-      <div class="row"><button id="u-new" class="btn"><i data-i="refresh"></i> Yeniden üret</button><button id="u-copy" class="btn main" data-copy="u-out"><i data-i="copy"></i> Kopyala</button></div>
-      <p class="hint">Sağ tık → <b>UUID ekle</b> · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd></p>
+      <div class="row"><button id="u-new" class="btn"><i data-i="refresh"></i> <span data-t="regen"></span></button><button id="u-copy" class="btn main" data-copy="u-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
+      <p class="hint"><span data-t-html="uuidHint"></span> · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd></p>
     </details>
     <details class="tool" data-k="lorem"><summary><i data-i="text"></i> Lorem ipsum</summary>
       <div class="opts">
         <select id="l-count"><option>1</option><option selected>2</option><option>3</option><option>5</option></select>
-        <select id="l-unit"><option value="p">paragraf</option><option value="s">cümle</option><option value="w">kelime</option></select>
+        <select id="l-unit"><option value="p" data-t="unitP"></option><option value="s" data-t="unitS"></option><option value="w" data-t="unitW"></option></select>
       </div>
       <textarea id="l-out" rows="4" readonly></textarea>
-      <div class="row"><button id="l-new" class="btn"><i data-i="refresh"></i> Yeniden üret</button><button class="btn main" data-copy="l-out"><i data-i="copy"></i> Kopyala</button></div>
+      <div class="row"><button id="l-new" class="btn"><i data-i="refresh"></i> <span data-t="regen"></span></button><button class="btn main" data-copy="l-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
     </details>
     <details class="tool" data-k="b64"><summary><i data-i="binary"></i> Base64</summary>
-      <textarea id="b-in" rows="3" placeholder="Metni ya da Base64'ü buraya yapıştır"></textarea>
+      <textarea id="b-in" rows="3" data-t-ph="phB64"></textarea>
       <div class="opts"><label class="chk"><input type="checkbox" id="b-url"> URL-safe</label></div>
-      <div class="row"><button id="b-enc" class="btn">Kodla →</button><button id="b-dec" class="btn">← Çöz</button></div>
+      <div class="row"><button id="b-enc" class="btn"><span data-t="encode"></span></button><button id="b-dec" class="btn"><span data-t="decode"></span></button></div>
       <textarea id="b-out" rows="3" readonly></textarea>
-      <div class="row"><button class="btn main" data-copy="b-out"><i data-i="copy"></i> Kopyala</button></div>
+      <div class="row"><button class="btn main" data-copy="b-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
     </details>
-    <details class="tool" data-k="jwt"><summary><i data-i="id"></i> JWT çözücü</summary>
-      <textarea id="j-in" rows="3" placeholder="eyJhbGciOi... token'ı yapıştır"></textarea>
+    <details class="tool" data-k="jwt"><summary><i data-i="id"></i> <span data-t="jwtTitle"></span></summary>
+      <textarea id="j-in" rows="3" data-t-ph="phJwt"></textarea>
       <div id="j-meta" class="jmeta"></div>
       <pre id="j-out" class="code"></pre>
-      <p class="hint">İmza doğrulanmaz; sadece içerik okunur. Token bilgisayarından çıkmaz.</p>
+      <p class="hint"><span data-t="jwtHint"></span></p>
     </details>
-    <details class="tool" data-k="shot"><summary><i data-i="image"></i> Ekran görüntüsü</summary>
-      <div class="row"><button id="s-png" class="btn"><i data-i="download"></i> PNG indir</button><button id="s-copy" class="btn main"><i data-i="copy"></i> Panoya kopyala</button></div>
+    <details class="tool" data-k="shot"><summary><i data-i="image"></i> <span data-t="shotTitle"></span></summary>
+      <div class="row"><button id="s-png" class="btn"><i data-i="download"></i> <span data-t="savePng"></span></button><button id="s-copy" class="btn main"><i data-i="copy"></i> <span data-t="copyClip"></span></button></div>
       <div id="s-msg" class="hint"></div>
     </details>
   </div>
-  <footer><a id="open" href="#"><i data-i="external"></i> Rafı aç</a><a href="options.html" target="_blank"><i data-i="settings"></i> Ayarlar</a></footer>
-  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="popup.js"></script>
+  <footer><a id="open" href="#"><i data-i="external"></i> <span data-t="openRaf"></span></a><a href="options.html" target="_blank"><i data-i="settings"></i> <span data-t="settings"></span></a></footer>
+  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="popup.js"></script>
 </body></html>

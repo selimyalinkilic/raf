@@ -1,4 +1,4 @@
-// Lucide çizgi ikonları (ISC) — sunucudaki server/app/icons.py ile aynı set
+// Lucide line icons (ISC) — same set as server/app/icons.py
 const RAF_ICONS = {
  "download": "<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/><path d=\"M12 15V3\"/>",
  "play": "<path d=\"M6 3.5v17a.8.8 0 0 0 1.2.7l13.6-8.5a.8.8 0 0 0 0-1.4L7.2 2.8A.8.8 0 0 0 6 3.5z\"/>",
@@ -39,5 +39,5 @@ function ic(name, cls = "") {
   return `<svg class="i ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RAF_ICONS[name] || ""}</svg>`;
 }
 const escHtml = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-// HTML'deki <i data-i="ad"></i> yer tutucularını ikona çevir
+// Replace <i data-i="name"></i> placeholders in the HTML with icons
 document.querySelectorAll("i[data-i]").forEach((el) => el.outerHTML = ic(el.dataset.i, el.className));

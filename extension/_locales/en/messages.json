@@ -1,0 +1,230 @@
+{
+ "extName": {
+  "message": "Raf"
+ },
+ "extDesc": {
+  "message": "Save the current page to your own self-hosted shelf in one click — plus video downloads and handy dev tools."
+ },
+ "actionTitle": {
+  "message": "Save to Raf"
+ },
+ "cmdQuickSave": {
+  "message": "Save the current page instantly"
+ },
+ "cmdUuid": {
+  "message": "Generate a UUID: type it into the focused field or copy it"
+ },
+ "tabSave": {
+  "message": "Save"
+ },
+ "tabTools": {
+  "message": "Tools"
+ },
+ "lblTitle": {
+  "message": "Title"
+ },
+ "lblTags": {
+  "message": "Tags"
+ },
+ "phTags": {
+  "message": "work, read-later, recipe"
+ },
+ "lblNote": {
+  "message": "Note"
+ },
+ "phNote": {
+  "message": "Why are you saving this?"
+ },
+ "withShot": {
+  "message": "Include a screenshot"
+ },
+ "btnSave": {
+  "message": "Save to Raf"
+ },
+ "btnUpdate": {
+  "message": "Update"
+ },
+ "saved": {
+  "message": "Saved"
+ },
+ "updated": {
+  "message": "Updated"
+ },
+ "alreadySaved": {
+  "message": "Already saved"
+ },
+ "cantSave": {
+  "message": "This page can't be saved."
+ },
+ "savedToday": {
+  "message": "Saved today: $1"
+ },
+ "dlTitle": {
+  "message": "Download the video on this page"
+ },
+ "btnVideo": {
+  "message": "Video"
+ },
+ "btnAudio": {
+  "message": "Audio (mp3)"
+ },
+ "queued": {
+  "message": "Queued…"
+ },
+ "serverDownloading": {
+  "message": "Server is downloading… $1%"
+ },
+ "savingToComputer": {
+  "message": "$1 — saving to your computer"
+ },
+ "upper": {
+  "message": "UPPERCASE"
+ },
+ "hyphens": {
+  "message": "hyphens"
+ },
+ "regen": {
+  "message": "Regenerate"
+ },
+ "copy": {
+  "message": "Copy"
+ },
+ "copied": {
+  "message": "Copied"
+ },
+ "uuidHint": {
+  "message": "Right-click → <b>Insert UUID</b>"
+ },
+ "unitP": {
+  "message": "paragraphs"
+ },
+ "unitS": {
+  "message": "sentences"
+ },
+ "unitW": {
+  "message": "words"
+ },
+ "phB64": {
+  "message": "Paste text or Base64 here"
+ },
+ "encode": {
+  "message": "Encode →"
+ },
+ "decode": {
+  "message": "← Decode"
+ },
+ "b64Error": {
+  "message": "Error: not valid Base64"
+ },
+ "jwtTitle": {
+  "message": "JWT decoder"
+ },
+ "phJwt": {
+  "message": "Paste a token: eyJhbGciOi…"
+ },
+ "jwtHint": {
+  "message": "The signature is not verified — contents only. The token never leaves your computer."
+ },
+ "jwtParts": {
+  "message": "A JWT has three parts (header.payload.signature)"
+ },
+ "jwtExpired": {
+  "message": "expired"
+ },
+ "jwtValid": {
+  "message": "valid"
+ },
+ "jwtInvalid": {
+  "message": "Could not decode: not a valid JWT"
+ },
+ "shotTitle": {
+  "message": "Screenshot"
+ },
+ "savePng": {
+  "message": "Save PNG"
+ },
+ "copyClip": {
+  "message": "Copy to clipboard"
+ },
+ "shotSaved": {
+  "message": "Saved (Downloads/Raf)"
+ },
+ "shotCopied": {
+  "message": "Copied to clipboard (Ctrl+V)"
+ },
+ "openRaf": {
+  "message": "Open Raf"
+ },
+ "settings": {
+  "message": "Settings"
+ },
+ "newVersion": {
+  "message": "New version available: <b>v$1</b> (you have v$2). <a href=\"$3\" target=\"_blank\">Download</a> → unzip over the folder → ↻ in chrome://extensions · <a href=\"$4\" target=\"_blank\">how?</a>"
+ },
+ "missingSettings": {
+  "message": "Missing settings: server URL / API token"
+ },
+ "reloadNeeded": {
+  "message": "The extension hasn't picked up its new permissions yet: open chrome://extensions and press ↻ (reload) on the Raf card."
+ },
+ "ctxSavePage": {
+  "message": "Save this page to Raf"
+ },
+ "ctxSaveLink": {
+  "message": "Save link to Raf"
+ },
+ "ctxSaveSelection": {
+  "message": "Save selection as a note"
+ },
+ "ctxInsertUuid": {
+  "message": "Insert UUID"
+ },
+ "ctxDlVideo": {
+  "message": "Download video"
+ },
+ "ctxDlAudio": {
+  "message": "Download audio only (mp3)"
+ },
+ "notifSaved": {
+  "message": "Saved to Raf"
+ },
+ "notifSaveFailed": {
+  "message": "Could not save"
+ },
+ "dlQueuedNotif": {
+  "message": "Download queued. It will land in your Downloads folder when ready."
+ },
+ "todayCount": {
+  "message": "Today: $1"
+ },
+ "cantType": {
+  "message": "Can't type into this page (chrome:// etc.). Use the Tools tab in the popup."
+ },
+ "notifDownloaded": {
+  "message": "Downloaded ✓"
+ },
+ "notifDlFailed": {
+  "message": "Download failed"
+ },
+ "optTitle": {
+  "message": "Raf · Settings"
+ },
+ "optIntro": {
+  "message": "When you download the extension from your Raf server these fields come pre-filled — no changes needed."
+ },
+ "lblServer": {
+  "message": "Server URL"
+ },
+ "lblToken": {
+  "message": "API token"
+ },
+ "saveTest": {
+  "message": "Save & test"
+ },
+ "connected": {
+  "message": "Connected ✓ ($1 tags)"
+ },
+ "cantConnect": {
+  "message": "Could not connect: $1"
+ }
+}

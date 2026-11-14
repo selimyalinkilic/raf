@@ -1,13 +1,13 @@
-importScripts("config.js", "common.js");
+importScripts("config.js", "i18n.js", "common.js");
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({ id: "save-page", title: "Bu sayfayı rafa kaldır", contexts: ["page"] });
-    chrome.contextMenus.create({ id: "save-link", title: "Linki rafa kaldır", contexts: ["link"] });
-    chrome.contextMenus.create({ id: "save-selection", title: "Seçili metni not olarak rafa kaldır", contexts: ["selection"] });
-    chrome.contextMenus.create({ id: "uuid", title: "UUID ekle", contexts: ["editable"] });
-    chrome.contextMenus.create({ id: "dl-video", title: "Videoyu indir", contexts: ["page", "link", "video"] });
-    chrome.contextMenus.create({ id: "dl-audio", title: "Sadece sesi indir (mp3)", contexts: ["page", "link", "video"] });
+    chrome.contextMenus.create({ id: "save-page", title: t("ctxSavePage"), contexts: ["page"] });
+    chrome.contextMenus.create({ id: "save-link", title: t("ctxSaveLink"), contexts: ["link"] });
+    chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
+    chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
+    chrome.contextMenus.create({ id: "dl-video", title: t("ctxDlVideo"), contexts: ["page", "link", "video"] });
+    chrome.contextMenus.create({ id: "dl-audio", title: t("ctxDlAudio"), contexts: ["page", "link", "video"] });
   });
 });
 
@@ -15,7 +15,7 @@ function flash(tabId, ok, msg) {
   chrome.action.setBadgeBackgroundColor({ color: ok ? "#7fd0a8" : "#ee97b8", tabId });
   chrome.action.setBadgeText({ text: ok ? "✓" : "!", tabId });
   setTimeout(() => chrome.action.setBadgeText({ text: "", tabId }), 2500);
-  chrome.notifications.create({ type: "basic", iconUrl: "icons/128.png", title: ok ? "Rafa kaldırıldı" : "Kaydedilemedi", message: msg });
+  chrome.notifications.create({ type: "basic", iconUrl: "icons/128.png", title: ok ? t("notifSaved") : t("notifSaveFailed"), message: msg });
 }
 
 async function savePage(tab, extra = {}) {
@@ -30,7 +30,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const target = info.linkUrl || (info.srcUrl && info.srcUrl.startsWith("http") && !info.srcUrl.startsWith("blob:") ? info.srcUrl : null) || tab.url;
     try {
       await rafStartDownload(target, info.menuItemId === "dl-audio" ? "audio" : "video");
-      flash(tab.id, true, "İndirme sıraya alındı. Hazır olunca İndirilenler klasörüne iner.");
+      flash(tab.id, true, t("dlQueuedNotif"));
     } catch (e) { flash(tab.id, false, String(e.message || e)); }
     return;
   }
@@ -43,7 +43,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     } else {
       r = await savePage(tab);
     }
-    flash(tab.id, true, `${r.item.title || r.item.url}\nBugün: ${r.today}`);
+    flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));
   } catch (e) {
     flash(tab.id, false, String(e.message || e));
   }
@@ -60,7 +60,7 @@ async function putUuid(tab, frameId) {
     chrome.action.setBadgeText({ text: how === "inserted" ? "ID" : how === "copied" ? "⧉" : "!", tabId: tab.id });
     setTimeout(() => chrome.action.setBadgeText({ text: "", tabId: tab.id }), 1500);
   } catch (e) {
-    flash(tab.id, false, "Bu sayfaya yazılamıyor (chrome:// vb.). Popup'taki Araçlar sekmesini kullan.");
+    flash(tab.id, false, t("cantType"));
   }
 }
 
@@ -71,14 +71,14 @@ chrome.commands.onCommand.addListener(async (cmd) => {
   if (cmd !== "quick-save") return;
   try {
     const r = await savePage(tab);
-    flash(tab.id, true, `${r.item.title || r.item.url}\nBugün: ${r.today}`);
+    flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));
   } catch (e) {
     flash(tab.id, false, String(e.message || e));
   }
 });
 
-// ---------- İndirme takibi: bitenleri bilgisayara indir ----------
-// Aynı anda iki kontrol çalışmasın (popup + alarm aynı anda tetiklenince dosya iki kez iniyordu)
+// ---------- Download tracking: save finished jobs to this computer ----------
+// Never run two checks at once (popup + alarm firing together used to download a file twice)
 let checking = null;
 function checkDownloads() {
   if (!checking) checking = doCheck().finally(() => { checking = null; });
@@ -93,16 +93,16 @@ async function doCheck() {
     try { d = await rafApi("/api/downloads/" + id); } catch (e) { left.push(id); continue; }
     if (d.status === "done" || d.status === "error") ready.push(d); else left.push(id);
   }
-  // Önce listeden düş, SONRA indir: başka bir kontrol aynı işi tekrar göremez
+  // Remove from the list FIRST, then download: no other check can pick up the same job
   const done = new Set([...delivered, ...ready.map((d) => d.id)]);
   await chrome.storage.local.set({ pending: left, delivered: [...done].slice(-200) });
   for (const d of ready) {
     if (delivered.includes(d.id)) continue;
     if (d.status === "done") {
       chrome.downloads.download({ url: d.file_url, filename: "Raf/" + d.file.replace(/[\\/:*?"<>|]/g, "_"), conflictAction: "uniquify" });
-      chrome.notifications.create("dl-" + d.id, { type: "basic", iconUrl: "icons/128.png", title: "İndirildi ✓", message: d.title || d.file });
+      chrome.notifications.create("dl-" + d.id, { type: "basic", iconUrl: "icons/128.png", title: t("notifDownloaded"), message: d.title || d.file });
     } else {
-      chrome.notifications.create("dl-" + d.id, { type: "basic", iconUrl: "icons/128.png", title: "İndirilemedi", message: (d.error || "").slice(0, 200) });
+      chrome.notifications.create("dl-" + d.id, { type: "basic", iconUrl: "icons/128.png", title: t("notifDlFailed"), message: (d.error || "").slice(0, 200) });
     }
   }
   if (!left.length) chrome.alarms.clear("raf-dl");

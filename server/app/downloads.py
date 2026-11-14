@@ -109,7 +109,7 @@ def _run(d):
         if d["kind"] == "audio":
             path = os.path.splitext(path)[0] + ".mp3"
         if not os.path.exists(path):
-            raise RuntimeError("İndirilen dosya bulunamadı")
+            raise RuntimeError("Downloaded file not found")
         if d["kind"] == "video":
             db.dl_update(d["id"], progress=99)
             path = _ensure_ios(d["id"], path)
@@ -120,7 +120,7 @@ def _run(d):
         for marker in ("ERROR: ", "[0;31mERROR:[0m "):
             msg = msg.replace(marker, "")
         if "logged-in" in msg or "login" in msg.lower() or "empty media response" in msg:
-            msg = "Bu site giriş istiyor. Eklentiden indir (tarayıcı oturumun kullanılır) ya da önce sitede oturum aç. — " + msg
+            msg = "This site requires login — download it from the extension (it uses your browser session). " + msg
         db.dl_update(d["id"], status="error", error=msg[:500], finished_at=int(time.time()))
     finally:
         if cookiefile and os.path.exists(cookiefile):

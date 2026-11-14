@@ -1,13 +1,13 @@
 const $ = (id) => document.getElementById(id);
 let page = null;
 
-const parseTags = (s) => s.split(/[,\s]+/).map((t) => t.replace(/^#/, "").trim().toLowerCase()).filter(Boolean);
+const parseTags = (s) => s.split(/[,\s]+/).map((x) => x.replace(/^#/, "").trim().toLowerCase()).filter(Boolean);
 
-// Eklenti sürüm / izin kontrolü: eskiyse ya da yeniden yüklenmesi gerekiyorsa üstte uyarı göster
+// Version / permission check: show a banner if outdated or needs a reload
 async function checkVersion() {
   const mine = chrome.runtime.getManifest().version;
   if (rafMissingPermissions().length) {
-    $("banner").innerHTML = ic("alert") + " " + RAF_RELOAD_MSG; $("banner").hidden = false; return;
+    $("banner").innerHTML = ic("alert") + " " + t("reloadNeeded"); $("banner").hidden = false; return;
   }
   try {
     const { server } = await rafSettings();
@@ -15,17 +15,19 @@ async function checkVersion() {
     const newer = (a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number);
       for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
     if (r.version && newer(r.version, mine)) {
-      $("banner").innerHTML = `${ic("sparkle")} Yeni sürüm var: <b>v${r.version}</b> (sende v${mine}). <a href="${r.download}" target="_blank">İndir</a> → klasöre çıkar → chrome://extensions'ta ↻ · <a href="${r.help}" target="_blank">nasıl?</a>`;
+      $("banner").innerHTML = `${ic("sparkle")} ` + t("newVersion", r.version, mine, r.download, r.help);
       $("banner").hidden = false;
     }
-  } catch (e) { /* sunucuya ulaşılamazsa sessiz geç */ }
+  } catch (e) { /* server unreachable: stay quiet */ }
 }
 
 async function init() {
   checkVersion();
   const { server } = await rafSettings();
   $("open").onclick = (e) => { e.preventDefault(); chrome.tabs.create({ url: server || "options.html" }); };
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  // ?tab=<id> lets docs/screenshots open the popup as a page for a specific tab
+  const forced = +new URLSearchParams(location.search).get("tab");
+  const [tab] = forced ? [await chrome.tabs.get(forced)] : await chrome.tabs.query({ active: true, currentWindow: true });
   page = (await rafExtract(tab.id)) || { url: tab.url, title: tab.title, favicon: tab.favIconUrl };
   if (!page.favicon && tab.favIconUrl) page.favicon = tab.favIconUrl;
   page.windowId = tab.windowId;
@@ -34,16 +36,16 @@ async function init() {
   $("title").value = page.title || "";
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
-  if (!/^https?:/.test(page.url)) { ["save", "dl-video", "dl-audio"].forEach((id) => $(id).disabled = true); msg("Bu sayfa kaydedilemez.", true); return; }
+  if (!/^https?:/.test(page.url)) { ["save", "dl-video", "dl-audio"].forEach((id) => $(id).disabled = true); msg(t("cantSave"), true); return; }
   try {
     const [{ item }, { tags }] = await Promise.all([
       rafApi("/api/lookup?url=" + encodeURIComponent(page.url)),
       rafApi("/api/tags"),
     ]);
     if (item) {
-      $("status").textContent = "Zaten rafta";
+      $("status").textContent = t("alreadySaved");
       $("tags").value = item.tags.join(", ");
-      $("save").textContent = "Güncelle";
+      $("save").textContent = t("btnUpdate");
     }
     tags.slice(0, 10).forEach(({ tag }) => {
       const b = document.createElement("button");
@@ -63,15 +65,15 @@ async function save() {
   $("save").disabled = true;
   try {
     let screenshot = "";
-    if ($("withShot").checked) { try { screenshot = await rafCapture(page.windowId); } catch (e) { /* bazı sayfalarda izin yok */ } }
+    if ($("withShot").checked) { try { screenshot = await rafCapture(page.windowId); } catch (e) { /* not allowed on some pages */ } }
     chrome.storage.sync.set({ withShot: $("withShot").checked });
     const r = await rafApi("/api/items", {
       method: "POST",
       body: JSON.stringify({ url: page.url, title: $("title").value.trim(), description: page.description || "", favicon: page.favicon || "", text: page.text || "", note: $("note").value.trim(), tags: parseTags($("tags").value), screenshot }),
     });
-    $("save").innerHTML = ic("check") + (r.new ? " Rafa kaldırıldı" : " Güncellendi");
+    $("save").innerHTML = ic("check") + " " + t(r.new ? "saved" : "updated");
     $("save").classList.add("done");
-    msg(`Bugün ${r.today} sayfa kaydettin.`);
+    msg(t("savedToday", r.today));
     setTimeout(() => window.close(), 1200);
   } catch (e) {
     $("save").disabled = false;
@@ -81,18 +83,18 @@ async function save() {
 
 $("save").onclick = save;
 
-// ---------- Video indirme ----------
+// ---------- Video download ----------
 let dlTimer = null;
 async function startDl(kind) {
   ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = true);
   try {
     const d = await rafStartDownload(page.url, kind);
-    $("dl-status").innerHTML = ic("clock") + " Sıraya alındı…";
+    $("dl-status").innerHTML = ic("clock") + " " + t("queued");
     const tick = async () => {
       const x = await rafApi("/api/downloads/" + d.id).catch(() => null);
       if (!x) return;
-      if (x.status === "running") $("dl-status").innerHTML = `${ic("spinner", "spin")} Sunucu indiriyor… %${Math.round(x.progress)}`;
-      else if (x.status === "done") { $("dl-status").innerHTML = `${ic("check", "ok")} ${escHtml(x.title)} — bilgisayarına iniyor`; chrome.runtime.sendMessage("check-downloads"); clearInterval(dlTimer); }
+      if (x.status === "running") $("dl-status").innerHTML = `${ic("spinner", "spin")} ` + t("serverDownloading", Math.round(x.progress));
+      else if (x.status === "done") { $("dl-status").innerHTML = `${ic("check", "ok")} ` + t("savingToComputer", escHtml(x.title)); chrome.runtime.sendMessage("check-downloads"); clearInterval(dlTimer); }
       else if (x.status === "error") { $("dl-status").innerHTML = ic("alert", "err") + " " + escHtml(x.error.slice(0, 160)); clearInterval(dlTimer); ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = false); }
     };
     dlTimer = setInterval(tick, 1500); tick();
@@ -104,7 +106,7 @@ async function startDl(kind) {
 $("dl-video").onclick = () => startDl("video");
 $("dl-audio").onclick = () => startDl("audio");
 document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) save(); });
-// ---------- Sekmeler ----------
+// ---------- Tabs ----------
 document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => {
   document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("on", x === b));
   document.querySelectorAll(".pane").forEach((p) => p.hidden = p.id !== b.dataset.tab);
@@ -123,9 +125,9 @@ $("u-new").onclick = genUuids;
 ["u-count", "u-upper", "u-hyph"].forEach((id) => $(id).onchange = genUuids);
 document.querySelectorAll("[data-copy]").forEach((b) => b.onclick = async () => {
   await navigator.clipboard.writeText($(b.dataset.copy).value || $(b.dataset.copy).textContent);
-  const t = b.innerHTML; b.innerHTML = ic("check") + " Kopyalandı"; setTimeout(() => (b.innerHTML = t), 1200);
+  const prev = b.innerHTML; b.innerHTML = ic("check") + " " + t("copied"); setTimeout(() => (b.innerHTML = prev), 1200);
 });
-// Açık/kapalı araç bölümlerini hatırla
+// Remember which tool sections are open
 chrome.storage.local.get("openTools").then(({ openTools }) => {
   if (openTools) document.querySelectorAll("details.tool").forEach((d) => d.open = openTools.includes(d.dataset.k));
   document.querySelectorAll("details.tool").forEach((d) => d.ontoggle = () =>
@@ -147,41 +149,41 @@ function genLorem() {
 ["l-count", "l-unit"].forEach((id) => $(id).onchange = genLorem);
 $("l-new").onclick = genLorem; genLorem();
 
-// ---------- Base64 (UTF-8 güvenli) ----------
+// ---------- Base64 (UTF-8 safe) ----------
 const b64enc = (s, url) => { let r = btoa(String.fromCharCode(...new TextEncoder().encode(s))); return url ? r.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "") : r; };
 const b64dec = (s) => { s = s.trim().replace(/-/g, "+").replace(/_/g, "/").replace(/\s/g, ""); s += "=".repeat((4 - s.length % 4) % 4); return new TextDecoder().decode(Uint8Array.from(atob(s), (c) => c.charCodeAt(0))); };
 $("b-enc").onclick = () => { $("b-out").value = b64enc($("b-in").value, $("b-url").checked); };
-$("b-dec").onclick = () => { try { $("b-out").value = b64dec($("b-in").value); } catch (e) { $("b-out").value = "Hata: geçerli bir Base64 değil"; } };
+$("b-dec").onclick = () => { try { $("b-out").value = b64dec($("b-in").value); } catch (e) { $("b-out").value = t("b64Error"); } };
 
 // ---------- JWT ----------
-function fmtDate(sec) { return new Date(sec * 1000).toLocaleString("tr-TR"); }
+function fmtDate(sec) { return new Date(sec * 1000).toLocaleString(); }
 function decodeJwt() {
-  const t = $("j-in").value.trim().replace(/^Bearer\s+/i, "");
+  const tok = $("j-in").value.trim().replace(/^Bearer\s+/i, "");
   $("j-meta").innerHTML = ""; $("j-out").textContent = "";
-  if (!t) return;
-  const parts = t.split(".");
+  if (!tok) return;
+  const parts = tok.split(".");
   try {
-    if (parts.length < 2) throw new Error("JWT üç parçadan oluşmalı (header.payload.signature)");
+    if (parts.length < 2) throw new Error(t("jwtParts"));
     const header = JSON.parse(b64dec(parts[0])), payload = JSON.parse(b64dec(parts[1]));
     const now = Date.now() / 1000, chips = [];
     chips.push(`<span>alg: ${header.alg || "?"}</span>`);
-    if (payload.exp) chips.push(`<span class="${payload.exp < now ? "bad" : ""}">${payload.exp < now ? ic("x") + " süresi doldu" : ic("check") + " geçerli"} · exp ${fmtDate(payload.exp)}</span>`);
+    if (payload.exp) chips.push(`<span class="${payload.exp < now ? "bad" : ""}">${payload.exp < now ? ic("x") + " " + t("jwtExpired") : ic("check") + " " + t("jwtValid")} · exp ${fmtDate(payload.exp)}</span>`);
     if (payload.iat) chips.push(`<span>iat ${fmtDate(payload.iat)}</span>`);
     if (payload.nbf) chips.push(`<span class="${payload.nbf > now ? "bad" : ""}">nbf ${fmtDate(payload.nbf)}</span>`);
     $("j-meta").innerHTML = chips.join("");
     $("j-out").textContent = "// HEADER\n" + JSON.stringify(header, null, 2) + "\n\n// PAYLOAD\n" + JSON.stringify(payload, null, 2);
-  } catch (e) { $("j-meta").innerHTML = `<span class="bad">${ic("alert")} ${escHtml(e.message.includes("JSON") ? "Çözülemedi: geçerli bir JWT değil" : e.message)}</span>`; }
+  } catch (e) { $("j-meta").innerHTML = `<span class="bad">${ic("alert")} ${escHtml(e.message.includes("JSON") ? t("jwtInvalid") : e.message)}</span>`; }
 }
 $("j-in").oninput = decodeJwt;
 
-// ---------- Ekran görüntüsü aracı ----------
+// ---------- Screenshot tool ----------
 $("s-png").onclick = async () => {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = await rafCapture(tab.windowId, "png");
-    const name = "Raf/ekran-" + new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-") + ".png";
+    const name = "Raf/screenshot-" + new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-") + ".png";
     await chrome.downloads.download({ url, filename: name });
-    $("s-msg").innerHTML = ic("check", "ok") + " İndirildi (İndirilenler/Raf)";
+    $("s-msg").innerHTML = ic("check", "ok") + " " + t("shotSaved");
   } catch (e) { $("s-msg").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e); }
 };
 $("s-copy").onclick = async () => {
@@ -189,7 +191,7 @@ $("s-copy").onclick = async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const blob = await (await fetch(await rafCapture(tab.windowId, "png"))).blob();
     await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-    $("s-msg").innerHTML = ic("check", "ok") + " Panoya kopyalandı (Ctrl+V)";
+    $("s-msg").innerHTML = ic("check", "ok") + " " + t("shotCopied");
   } catch (e) { $("s-msg").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e); }
 };
 (async () => {
