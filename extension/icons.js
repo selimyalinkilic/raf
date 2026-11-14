@@ -1,5 +1,8 @@
 // Lucide line icons (ISC) — same set as server/app/icons.py
 const RAF_ICONS = {
+ "layers": "<path d=\"m12.8 2.2a2 2 0 0 0-1.6 0L2.6 6.1a1 1 0 0 0 0 1.8l8.6 3.9a2 2 0 0 0 1.6 0l8.6-3.9a1 1 0 0 0 0-1.8z\"/><path d=\"m2 12 9.2 4.2a2 2 0 0 0 1.6 0L22 12\"/><path d=\"m2 17 9.2 4.2a2 2 0 0 0 1.6 0L22 17\"/>",
+ "phone": "<rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"2\"/><path d=\"M12 18h.01\"/>",
+ "qr": "<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><path d=\"M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h3v3\"/>",
  "crosshair": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M22 12h-4M6 12H2M12 6V2M12 22v-4\"/>",
  "user": "<circle cx=\"12\" cy=\"8\" r=\"5\"/><path d=\"M20 21a8 8 0 0 0-16 0\"/>",
  "wand": "<path d=\"m21.6 3.6-1.3-1.3a1.2 1.2 0 0 0-1.7 0L2.4 18.6a1.2 1.2 0 0 0 0 1.7l1.3 1.3a1.2 1.2 0 0 0 1.7 0L21.6 5.4a1.2 1.2 0 0 0 0-1.8\"/><path d=\"m14 7 3 3\"/><path d=\"M5 6v4M19 14v4M10 2v2M7 8H3M21 16h-4M11 3H9\"/>",

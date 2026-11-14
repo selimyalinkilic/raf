@@ -98,6 +98,23 @@ def api_dl_create(body: DownloadIn):
     return dl_public(downloads.enqueue(body.url, body.kind, "extension", body.cookies, body.quality))
 
 
+class SendIn(BaseModel):
+    url: str
+    title: str = ""
+
+
+@app.post("/api/send-to-phone", dependencies=[Depends(auth)])
+def api_send_to_phone(body: SendIn):
+    """Send a link to the owner's Telegram (opens on the phone in one tap)."""
+    if not telegram.TOKEN or not telegram.OWNER:
+        raise HTTPException(400, "Telegram is not configured on the Raf server")
+    if not body.url.startswith(("http://", "https://")):
+        raise HTTPException(400, "Invalid link")
+    title = html.escape((body.title or body.url)[:200])
+    telegram.send(telegram.OWNER, f'📱 <a href="{html.escape(body.url, quote=True)}">{title}</a>\n<code>{html.escape(body.url[:300])}</code>')
+    return {"ok": True}
+
+
 class FormatsIn(BaseModel):
     url: str
     cookies: str = ""

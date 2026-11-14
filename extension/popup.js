@@ -25,12 +25,13 @@ async function checkVersion() {
 let FEAT = {};
 async function applyFeatures() {
   FEAT = await rafFeatures();
-  const showMain = FEAT.save || FEAT.video;
-  const tools = ["picker", "testData", "uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
+  const showMain = FEAT.save || FEAT.video || FEAT.sessions;
+  const tools = ["picker", "testData", "phone", "uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
   $("saveform").hidden = !FEAT.save;
   $("shotrow").hidden = !FEAT.withShot;
   if (!FEAT.withShot) $("withShot").checked = false;
   $("dlbox").hidden = !FEAT.video;
+  $("sessbox").hidden = !FEAT.sessions;
   $("dlbox").classList.toggle("solo", !FEAT.save);
   document.querySelectorAll("details.tool").forEach((d) => (d.hidden = !FEAT[d.dataset.k]));
   document.querySelector('.tabs [data-tab="main"]').hidden = !showMain;
@@ -58,6 +59,8 @@ async function init() {
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
   loadQualities();
+  loadSessions();
+  renderQr();
   if (!FEAT.save) return;
   if (!/^https?:/.test(page.url)) { ["save", "dl-video", "dl-audio"].forEach((id) => $(id).disabled = true); msg(t("cantSave"), true); return; }
   try {
@@ -261,6 +264,61 @@ $("td-fill").onclick = async () => {
     const n = await rafFillForm((await activeTab()).id);
     $("td-msg").innerHTML = n ? `${ic("check", "ok")} ${escHtml(t("tdFilled", n))}` : `${ic("alert")} ${escHtml(t("tdNone"))}`;
   } catch (e) { $("td-msg").innerHTML = `${ic("alert", "err")} ${escHtml(t("cantRunHere"))}`; }
+};
+
+// ---------- Sessions: save all tabs, reopen later ----------
+const SESSION_PREFIX = "oturum-";
+async function loadSessions() {
+  if (!FEAT.sessions) return;
+  const tabs = (await chrome.tabs.query({ currentWindow: true })).filter((x) => /^https?:/.test(x.url));
+  $("sess-label").textContent = t("saveAllTabs", tabs.length);
+  $("sess-save").disabled = !tabs.length;
+  try {
+    const { tags } = await rafApi("/api/tags");
+    const ss = tags.filter((x) => x.tag.startsWith(SESSION_PREFIX)).sort((a, b) => b.tag.localeCompare(a.tag)).slice(0, 4);
+    $("sess-list").innerHTML = ss.length ? `<div class="hint">${escHtml(t("sessionsTitle"))}</div>` + ss.map((x) => {
+      const d = x.tag.slice(SESSION_PREFIX.length).split("-");  // yyyy-mm-dd-hhmm
+      const when = d.length >= 4 ? new Date(+d[0], +d[1] - 1, +d[2], +d[3].slice(0, 2), +d[3].slice(2)).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : x.tag;
+      return `<div class="sess"><b>${escHtml(when)}</b><small>${escHtml(t("sessionTabs", x.n))}</small><button data-s="${escHtml(x.tag)}">${escHtml(t("openSession"))}</button></div>`;
+    }).join("") : "";
+    $("sess-list").querySelectorAll("[data-s]").forEach((b) => b.onclick = async () => {
+      const { items } = await rafApi("/api/items?limit=100&tag=" + encodeURIComponent(b.dataset.s));
+      if (items.length) chrome.windows.create({ url: items.reverse().map((x) => x.url) });
+    });
+  } catch (e) { /* server unreachable */ }
+}
+$("sess-save").onclick = async () => {
+  const tabs = (await chrome.tabs.query({ currentWindow: true })).filter((x) => /^https?:/.test(x.url));
+  const now = new Date(), p = (n) => String(n).padStart(2, "0");
+  const tag = `${SESSION_PREFIX}${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}-${p(now.getHours())}${p(now.getMinutes())}`;
+  $("sess-save").disabled = true;
+  let n = 0;
+  for (const x of tabs) {
+    $("sess-msg").innerHTML = `${ic("spinner", "spin")} ${escHtml(t("savingTabs", n, tabs.length))}`;
+    try { await rafApi("/api/items", { method: "POST", body: JSON.stringify({ url: x.url, title: x.title || x.url, favicon: x.favIconUrl || "", tags: ["oturum", tag] }) }); n++; } catch (e) {}
+  }
+  $("sess-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("savedTabs", n, tag))}`;
+  $("sess-save").disabled = false;
+  loadSessions();
+};
+
+// ---------- Send to phone: QR + Telegram ----------
+function renderQr() {
+  if (!FEAT.phone || !page || !/^https?:/.test(page.url)) return;
+  try {
+    const qr = qrcode(0, "M"); qr.addData(page.url); qr.make();
+    $("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+  } catch (e) { $("qr").textContent = "QR: " + e.message; }
+}
+$("ph-copy").onclick = async () => { await navigator.clipboard.writeText(page.url); $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("copied"))}`; };
+$("ph-tg").onclick = async () => {
+  try {
+    await rafApi("/api/send-to-phone", { method: "POST", body: JSON.stringify({ url: page.url, title: $("title").value || page.title }) });
+    $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("sentTelegram"))}`;
+  } catch (e) {
+    const m = String(e.message || e);
+    $("ph-msg").innerHTML = `${ic("alert", "err")} ${escHtml(/not configured/i.test(m) ? t("tgNotConfigured") : m)}`;
+  }
 };
 
 init();

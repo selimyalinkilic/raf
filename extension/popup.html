@@ -15,6 +15,11 @@
     <button id="save"><i data-i="plus"></i> <span data-t="btnSave"></span></button>
     <p id="msg"></p>
     </div>
+    <div class="sessbox" id="sessbox">
+      <button id="sess-save" class="btn wide"><i data-i="layers"></i> <span id="sess-label"></span></button>
+      <div id="sess-msg" class="hint"></div>
+      <div id="sess-list"></div>
+    </div>
     <div class="dlbox" id="dlbox">
       <div class="tool-h"><i data-i="download"></i> <span data-t="dlTitle"></span></div>
       <select id="dl-quality" class="qsel"><option value="0" data-t="qBest"></option></select>
@@ -26,6 +31,12 @@
     <details class="tool" data-k="picker" open><summary><i data-i="crosshair"></i> <span data-t="pkToolTitle"></span></summary>
       <button id="pk-start" class="btn main wide"><i data-i="crosshair"></i> <span data-t="pkButton"></span></button>
       <p class="hint"><span data-t="pkToolHint"></span></p>
+    </details>
+    <details class="tool" data-k="phone"><summary><i data-i="phone"></i> <span data-t="phoneTitle"></span></summary>
+      <div id="qr" class="qr"></div>
+      <p class="hint center"><span data-t="phoneHint"></span></p>
+      <div class="row"><button id="ph-tg" class="btn main"><i data-i="send"></i> <span data-t="sendTelegram"></span></button><button id="ph-copy" class="btn"><i data-i="link"></i> <span data-t="copyLink"></span></button></div>
+      <div id="ph-msg" class="hint"></div>
     </details>
     <details class="tool" data-k="testData"><summary><i data-i="user"></i> <span data-t="tdToolTitle"></span></summary>
       <div class="opts"><select id="td-type"></select><select id="td-count"><option>1</option><option>5</option><option>10</option></select></div>
@@ -73,5 +84,5 @@
   </div>
   <div id="alloff" class="pane empty-all" hidden><span data-t="allOff"></span></div>
   <footer><a id="open" href="#"><i data-i="external"></i> <span data-t="openRaf"></span></a><a href="options.html" target="_blank"><i data-i="settings"></i> <span data-t="settings"></span></a></footer>
-  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="testdata.js"></script><script src="popup.js"></script>
+  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="vendor/qrcode.js"></script><script src="vendor/qrcode_UTF8.js"></script><script src="testdata.js"></script><script src="popup.js"></script>
 </body></html>

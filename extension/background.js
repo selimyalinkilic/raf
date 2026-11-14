@@ -9,6 +9,7 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "save-link", title: t("ctxSaveLink"), contexts: ["link"] });
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
   }
+  if (f.phone) chrome.contextMenus.create({ id: "phone", title: t("ctxSendPhone"), contexts: ["page", "link"] });
   if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
   if (f.testData) chrome.contextMenus.create({ id: "fill", title: t("ctxFill"), contexts: ["page", "editable"] });
   if (f.menuTestData) {
@@ -40,6 +41,13 @@ async function savePage(tab, extra = {}) {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "uuid") return putUuid(tab, info.frameId);
   if (info.menuItemId === "fill") return fillAndReport(tab);
+  if (info.menuItemId === "phone") {
+    try {
+      await rafApi("/api/send-to-phone", { method: "POST", body: JSON.stringify({ url: info.linkUrl || tab.url, title: info.linkUrl ? info.selectionText || info.linkUrl : tab.title }) });
+      chrome.notifications.create({ type: "basic", iconUrl: "icons/128.png", title: t("notifSent"), message: info.linkUrl || tab.title || tab.url });
+    } catch (e) { flash(tab.id, false, String(e.message || e)); }
+    return;
+  }
   if (info.menuItemId.startsWith("td:")) return putText(tab, info.frameId, RAF_TESTDATA.GEN[info.menuItemId.slice(3)]());
   if (info.menuItemId.startsWith("dl-")) {
     const target = info.linkUrl || (info.srcUrl && info.srcUrl.startsWith("http") && !info.srcUrl.startsWith("blob:") ? info.srcUrl : null) || tab.url;

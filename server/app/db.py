@@ -207,7 +207,7 @@ def search(q="", tag="", since=None, limit=50, offset=0):
         where.append("created_at >= ?")
         args.append(int(since))
     sql = f"SELECT {LIST_COLS} FROM items" + (" WHERE " + " AND ".join(where) if where else "")
-    sql += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    sql += " ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?"
     return [_row(r) for r in _con.execute(sql, (*args, limit, offset))]
 
 

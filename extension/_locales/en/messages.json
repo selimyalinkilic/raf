@@ -499,5 +499,62 @@
  },
  "q4kNote": {
   "message": "4K/2K keep the original codec — best on a computer"
+ },
+ "f_sessions": {
+  "message": "Save all tabs"
+ },
+ "fd_sessions": {
+  "message": "Save every open tab as a session and reopen them later in one click"
+ },
+ "f_phone": {
+  "message": "Send to phone"
+ },
+ "fd_phone": {
+  "message": "QR code of the page + send the link to your Telegram"
+ },
+ "saveAllTabs": {
+  "message": "Save all $1 tabs as a session"
+ },
+ "savingTabs": {
+  "message": "Saving tabs… $1/$2"
+ },
+ "savedTabs": {
+  "message": "Saved $1 tabs as “$2”"
+ },
+ "sessionsTitle": {
+  "message": "Saved sessions"
+ },
+ "sessionTabs": {
+  "message": "$1 tabs"
+ },
+ "openSession": {
+  "message": "Open"
+ },
+ "noSessions": {
+  "message": "No saved sessions yet"
+ },
+ "phoneTitle": {
+  "message": "Send to phone"
+ },
+ "phoneHint": {
+  "message": "Scan with your phone camera — or send it to your Telegram"
+ },
+ "sendTelegram": {
+  "message": "Send to Telegram"
+ },
+ "sentTelegram": {
+  "message": "Sent — check Telegram"
+ },
+ "copyLink": {
+  "message": "Copy link"
+ },
+ "ctxSendPhone": {
+  "message": "Send to my phone (Telegram)"
+ },
+ "notifSent": {
+  "message": "Sent to your phone"
+ },
+ "tgNotConfigured": {
+  "message": "Telegram isn't set up on your Raf server (RAF_TELEGRAM_TOKEN)"
  }
 }

@@ -499,5 +499,62 @@
  },
  "q4kNote": {
   "message": "4K/2K orijinal biçimde kalır — bilgisayarda izlemek için"
+ },
+ "f_sessions": {
+  "message": "Tüm sekmeleri kaydet"
+ },
+ "fd_sessions": {
+  "message": "Açık sekmelerin hepsini oturum olarak kaydet, sonra tek tıkla geri aç"
+ },
+ "f_phone": {
+  "message": "Telefona gönder"
+ },
+ "fd_phone": {
+  "message": "Sayfanın QR kodu + linki Telegram'ına gönder"
+ },
+ "saveAllTabs": {
+  "message": "$1 sekmenin hepsini oturum olarak kaydet"
+ },
+ "savingTabs": {
+  "message": "Sekmeler kaydediliyor… $1/$2"
+ },
+ "savedTabs": {
+  "message": "$1 sekme “$2” olarak kaydedildi"
+ },
+ "sessionsTitle": {
+  "message": "Kayıtlı oturumlar"
+ },
+ "sessionTabs": {
+  "message": "$1 sekme"
+ },
+ "openSession": {
+  "message": "Aç"
+ },
+ "noSessions": {
+  "message": "Henüz kayıtlı oturum yok"
+ },
+ "phoneTitle": {
+  "message": "Telefona gönder"
+ },
+ "phoneHint": {
+  "message": "Telefonun kamerasıyla okut — ya da Telegram'ına gönder"
+ },
+ "sendTelegram": {
+  "message": "Telegram'a gönder"
+ },
+ "sentTelegram": {
+  "message": "Gönderildi — Telegram'a bak"
+ },
+ "copyLink": {
+  "message": "Linki kopyala"
+ },
+ "ctxSendPhone": {
+  "message": "Telefonuma gönder (Telegram)"
+ },
+ "notifSent": {
+  "message": "Telefonuna gönderildi"
+ },
+ "tgNotConfigured": {
+  "message": "Raf sunucunda Telegram ayarlı değil (RAF_TELEGRAM_TOKEN)"
  }
 }
