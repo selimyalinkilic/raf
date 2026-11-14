@@ -8,7 +8,11 @@
   // After the extension is reloaded/updated, this script keeps running in already-open tabs but loses
   // access to chrome.* ("Extension context invalidated"). Detect that and quietly remove ourselves.
   const alive = () => { try { return !!chrome.runtime?.id; } catch (e) { return false; } };
-  const M = (k, ...s) => { try { return chrome.i18n.getMessage(k, s.map(String)) || k; } catch (e) { return k; } };
+  let DICT = null;  // language picked in Settings (null = browser language)
+  const M = (k, ...s) => {
+    const m = DICT?.[k]?.message; if (m != null) return m.replace(/\$(\d)/g, (_, n) => (s[n - 1] ?? "") + "");
+    try { return chrome.i18n.getMessage(k, s.map(String)) || k; } catch (e) { return k; }
+  };
   const send = (msg) => new Promise((res) => {
     if (!alive()) { teardown(); return res({ error: "Raf was updated — reload this page" }); }
     try { chrome.runtime.sendMessage(msg, (r) => res(r || { error: chrome.runtime.lastError?.message || "?" })); }
@@ -166,10 +170,11 @@
   // ---------- follow the Settings toggle ----------
   async function sync() {
     if (!alive()) return teardown();
+    const d = await send({ raf: "dict" }); DICT = d && !d.error ? d.dict : null;
     const { features = {} } = await chrome.storage.sync.get("features").catch(() => ({}));
     enabled = features.videoOverlay ?? true;
     if (!enabled) { pill.classList.remove("show"); closeMenu(); }
   }
-  try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) sync(); }); } catch (e) {}
+  try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && (ch.features || ch.lang)) sync(); }); } catch (e) {}
   sync();
 })();

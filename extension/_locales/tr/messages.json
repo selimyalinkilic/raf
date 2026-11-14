@@ -565,5 +565,14 @@
  },
  "nvDownload": {
   "message": "İndir"
+ },
+ "optLanguage": {
+  "message": "Dil"
+ },
+ "optLanguageHint": {
+  "message": "“Otomatik”, tarayıcının dilini kullanır."
+ },
+ "langAuto": {
+  "message": "Otomatik"
  }
 }

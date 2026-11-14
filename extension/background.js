@@ -2,6 +2,7 @@ importScripts("config.js", "i18n.js", "common.js", "features.js", "testdata.js")
 
 // Right-click menus follow the feature toggles on the Settings page
 async function buildMenus() {
+  await rafI18nReady;
   const f = await rafFeatures();
   await chrome.contextMenus.removeAll();
   if (f.menuSave) {
@@ -32,7 +33,11 @@ async function reinjectOverlays() {
 }
 chrome.runtime.onInstalled.addListener(() => { reinjectOverlays(); });
 chrome.runtime.onStartup.addListener(buildMenus);
-chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) buildMenus(); });
+chrome.storage.onChanged.addListener(async (ch, area) => {
+  if (area !== "sync") return;
+  if (ch.lang) await rafLoadLang(ch.lang.newValue || "auto");
+  if (ch.features || ch.lang) buildMenus();
+});
 
 function flash(tabId, ok, msg) {
   chrome.action.setBadgeBackgroundColor({ color: ok ? "#7fd0a8" : "#ee97b8", tabId });
@@ -164,6 +169,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     download: () => rafStartDownload(m.url, m.kind, m.quality),
     status: () => rafApi("/api/downloads/" + m.id),
     deliver: () => checkDownloads(),
+    dict: async () => { await rafI18nReady; return { dict: RAF_DICT }; },
   }[m.raf];
   if (!run) return;
   run().then((r) => reply(r ?? {})).catch((e) => reply({ error: String(e.message || e) }));

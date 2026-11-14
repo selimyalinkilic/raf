@@ -565,5 +565,14 @@
  },
  "nvDownload": {
   "message": "Get"
+ },
+ "optLanguage": {
+  "message": "Language"
+ },
+ "optLanguageHint": {
+  "message": "“Automatic” follows your browser's language."
+ },
+ "langAuto": {
+  "message": "Automatic"
  }
 }

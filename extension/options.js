@@ -8,6 +8,16 @@ $("save").onclick = async () => {
   catch (e) { $("msg").textContent = t("cantConnect", e.message || e); $("msg").className = "err"; }
 };
 
+// ---------- Language ----------
+chrome.storage.sync.get("lang").then(({ lang = "auto" }) => {
+  const r = document.querySelector(`#langs input[value="${lang}"]`); if (r) r.checked = true;
+});
+document.querySelectorAll('#langs input').forEach((r) => r.onchange = async () => {
+  await rafLoadLang(r.value);                    // cache for the popup (sync, no flash)
+  await chrome.storage.sync.set({ lang: r.value });  // background + content scripts follow via onChanged
+  location.reload();
+});
+
 // ---------- Features ----------
 let flashTimer;
 function flash() { $("flash").textContent = t("optSavedFlash"); $("flash").classList.add("show"); clearTimeout(flashTimer); flashTimer = setTimeout(() => $("flash").classList.remove("show"), 1200); }

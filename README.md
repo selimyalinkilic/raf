@@ -26,12 +26,12 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at to **your own server
 - Tags with suggestions, notes, optional screenshot of the visible area
 - **Video & audio download** from YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo and [1000+ sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) — the file lands in your *Downloads/Raf* folder automatically. Sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored.
 - **Tools:** UUID v4 generator (also right-click → *Insert UUID* or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> into any field), Lorem ipsum, Base64 (UTF-8 safe), JWT decoder, screenshot to PNG / clipboard
-- English and Turkish UI — follows your browser language
+- English and Turkish UI — follows your browser language, or pick one in Settings
 - Tells you when a newer version is available on your server
 
 **Server & web app**
 - FastAPI + SQLite with full-text search that ignores Turkish diacritics (*bakim* finds *bakım*)
-- Web UI and installable **PWA** (add to the iPhone home screen)
+- Web UI and installable **PWA** (add to the iPhone home screen), in English and Turkish (TR/EN switch)
 - Download queue powered by yt-dlp + ffmpeg; videos are converted to H.264 when needed so they play and save on iPhone
 - Downloads page with search, filters (status, type, platform, source, date) and sorting
 
@@ -89,14 +89,14 @@ Raf, baktığın sayfayı tek tıkla **kendi sunucuna** kaydeder: başlık, etik
 - Önerili etiketler, not, isteğe bağlı ekran görüntüsü
 - **Video ve ses indirme:** YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo ve [1000'den fazla site](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md). Dosya otomatik olarak *İndirilenler/Raf* klasörüne iner. Giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz.
 - **Araçlar:** UUID v4 (sağ tık → *UUID ekle* veya <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> ile herhangi bir alana yazar), Lorem ipsum, Base64 (UTF-8 uyumlu), JWT çözücü, ekran görüntüsünü PNG/panoya alma
-- Türkçe ve İngilizce arayüz — tarayıcının diline göre açılır
+- Türkçe ve İngilizce arayüz — tarayıcının diline göre açılır ya da Ayarlar'dan seçilir
 - Sunucuda yeni sürüm varsa haber verir
 
 <p align="center"><img src="docs/screenshots/extension-tr.png" width="620" alt="Raf eklentisi"></p>
 
 **Sunucu ve web uygulaması**
 - FastAPI + SQLite; Türkçe karakter duyarsız tam metin arama (*bakim* yazınca *bakım* bulunur)
-- Web arayüzü ve telefona kurulabilen **PWA** (iPhone ana ekranına eklenebilir)
+- Web arayüzü ve telefona kurulabilen **PWA** (iPhone ana ekranına eklenebilir), Türkçe ve İngilizce (TR/EN düğmesi)
 - yt-dlp + ffmpeg ile indirme kuyruğu; videolar gerekirse H.264'e çevrilir, iPhone'da oynar ve Fotoğraflar'a kaydedilir
 - İndirilenler sayfasında arama, filtreler (durum, tür, platform, kaynak, tarih) ve sıralama
 

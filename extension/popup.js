@@ -197,7 +197,7 @@ $("b-enc").onclick = () => { $("b-out").value = b64enc($("b-in").value, $("b-url
 $("b-dec").onclick = () => { try { $("b-out").value = b64dec($("b-in").value); } catch (e) { $("b-out").value = t("b64Error"); } };
 
 // ---------- JWT ----------
-function fmtDate(sec) { return new Date(sec * 1000).toLocaleString(); }
+function fmtDate(sec) { return new Date(sec * 1000).toLocaleString(rafLocale()); }
 function decodeJwt() {
   const tok = $("j-in").value.trim().replace(/^Bearer\s+/i, "");
   $("j-meta").innerHTML = ""; $("j-out").textContent = "";
@@ -280,7 +280,7 @@ async function loadSessions() {
     const ss = tags.filter((x) => x.tag.startsWith(SESSION_PREFIX)).sort((a, b) => b.tag.localeCompare(a.tag)).slice(0, 4);
     $("sess-list").innerHTML = ss.length ? `<div class="hint">${escHtml(t("sessionsTitle"))}</div>` + ss.map((x) => {
       const d = x.tag.slice(SESSION_PREFIX.length).split("-");  // yyyy-mm-dd-hhmm
-      const when = d.length >= 4 ? new Date(+d[0], +d[1] - 1, +d[2], +d[3].slice(0, 2), +d[3].slice(2)).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : x.tag;
+      const when = d.length >= 4 ? new Date(+d[0], +d[1] - 1, +d[2], +d[3].slice(0, 2), +d[3].slice(2)).toLocaleString(rafLocale(), { dateStyle: "medium", timeStyle: "short" }) : x.tag;
       return `<div class="sess"><b>${escHtml(when)}</b><small>${escHtml(t("sessionTabs", x.n))}</small><button data-s="${escHtml(x.tag)}">${escHtml(t("openSession"))}</button></div>`;
     }).join("") : "";
     $("sess-list").querySelectorAll("[data-s]").forEach((b) => b.onclick = async () => {
