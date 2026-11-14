@@ -336,7 +336,7 @@
   "message": "Test data (TR)"
  },
  "fd_testData": {
-  "message": "Valid TCKN, IBAN, VKN, card, phone… and one-click form fill"
+  "message": "Valid TCKN, IBAN, VKN, card, phone… — fill any form with Alt+Shift+F"
  },
  "f_menuTestData": {
   "message": "Test data from right-click"
@@ -381,7 +381,7 @@
   "message": "Test data (TR)"
  },
  "tdFill": {
-  "message": "Fill the form on this page"
+  "message": "Fill the form on this page (Alt+Shift+F)"
  },
  "tdFilled": {
   "message": "Filled $1 fields with one fake person"
@@ -457,5 +457,11 @@
  },
  "td_password": {
   "message": "Password"
+ },
+ "ctxFill": {
+  "message": "Fill the form with random data"
+ },
+ "cmdFill": {
+  "message": "Fill the form on this page with random test data"
  }
 }

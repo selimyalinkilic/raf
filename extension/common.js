@@ -110,7 +110,7 @@ async function rafStartPicker(tabId) {
 }
 
 // ---------- Fill form with one consistent fake person ----------
-function rafFillPage() {
+function rafFillPage(overwrite = false) {
   const TD = self.RAF_TESTDATA, G = TD.GEN;
   const first = G.firstName(), last = G.lastName(), fold = (x) => TD.fold(x).replace(/[^a-z]/g, "");
   const person = { firstName: first, lastName: last, fullName: `${first} ${last}`,
@@ -125,11 +125,29 @@ function rafFillPage() {
     el.style.outline = "2px solid #7fd0a8"; el.style.outlineOffset = "1px"; setTimeout(() => { el.style.outline = ""; el.style.outlineOffset = ""; }, 1800);
   };
   let filled = 0;
+  // Second run on the same page = start over with a new person (overwrite what the previous run filled)
+  if (!overwrite && document.documentElement.dataset.rafFilled) overwrite = true;
+  const check = (el, on) => { if (el.checked !== on) { el.click(); if (el.checked !== on) { el.checked = on; el.dispatchEvent(new Event("change", { bubbles: true })); } } };
+  const radioGroups = new Set();
   for (const el of document.querySelectorAll("input, textarea, select")) {
     const type = (el.getAttribute("type") || el.localName).toLowerCase();
-    if (!visible(el) || el.disabled || el.readOnly || /^(hidden|submit|button|reset|image|file|checkbox|radio|range|color)$/.test(type)) continue;
-    if (el.value && el.value.trim()) continue;  // don't overwrite what's already there
-    if (el.localName === "select") { const opts = [...el.options].filter((o) => o.value && !o.disabled); if (opts.length) { setVal(el, opts[Math.floor(Math.random() * opts.length)].value); filled++; } continue; }
+    if (!visible(el) || el.disabled || el.readOnly) continue;
+    if (type === "checkbox") {
+      if (el.required) { check(el, true); filled++; }          // e.g. "I accept the terms"
+      else if (!el.checked || overwrite) { check(el, Math.random() < 0.5); filled++; }
+      continue;
+    }
+    if (type === "radio") {
+      const key = (el.form ? "f" : "d") + ":" + el.name;
+      if (!el.name || radioGroups.has(key)) continue;
+      radioGroups.add(key);
+      const group = [...document.querySelectorAll(`input[type=radio][name="${CSS.escape(el.name)}"]`)].filter((r) => r.form === el.form && !r.disabled && visible(r));
+      if (group.length && (overwrite || !group.some((r) => r.checked))) { check(group[Math.floor(Math.random() * group.length)], true); filled++; }
+      continue;
+    }
+    if (/^(hidden|submit|button|reset|image|file|range|color)$/.test(type)) continue;
+    if (el.value && el.value.trim() && !(overwrite && el.dataset.rafFilled)) continue;  // never touch values the user typed
+    if (el.localName === "select") { const opts = [...el.options].filter((o) => o.value && !o.disabled); if (opts.length) { setVal(el, opts[Math.floor(Math.random() * opts.length)].value); el.dataset.rafFilled = "1"; filled++; } continue; }
     const desc = [el.name, el.id, el.placeholder, el.getAttribute("aria-label"), el.autocomplete, labelOf(el)].join(" ");
     let k = TD.guess(desc, type);
     if (!k && type === "date") k = "birthdate";
@@ -141,8 +159,9 @@ function rafFillPage() {
       if (k === "phone" && max && v.length > max) v = v.replace(/^\+90/, "").replace(/^0/, "");
     }
     if (max && v.length > max) v = v.slice(0, max);
-    setVal(el, v); filled++;
+    setVal(el, v); el.dataset.rafFilled = "1"; filled++;
   }
+  if (filled) document.documentElement.dataset.rafFilled = "1";
   return filled;
 }
 async function rafFillForm(tabId) {

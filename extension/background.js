@@ -10,6 +10,7 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
   }
   if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
+  if (f.testData) chrome.contextMenus.create({ id: "fill", title: t("ctxFill"), contexts: ["page", "editable"] });
   if (f.menuTestData) {
     chrome.contextMenus.create({ id: "td", title: t("ctxTestData"), contexts: ["editable"] });
     for (const k of RAF_TESTDATA.ORDER) chrome.contextMenus.create({ id: "td:" + k, parentId: "td", title: t("td_" + k), contexts: ["editable"] });
@@ -38,6 +39,7 @@ async function savePage(tab, extra = {}) {
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "uuid") return putUuid(tab, info.frameId);
+  if (info.menuItemId === "fill") return fillAndReport(tab);
   if (info.menuItemId.startsWith("td:")) return putText(tab, info.frameId, RAF_TESTDATA.GEN[info.menuItemId.slice(3)]());
   if (info.menuItemId.startsWith("dl-")) {
     const target = info.linkUrl || (info.srcUrl && info.srcUrl.startsWith("http") && !info.srcUrl.startsWith("blob:") ? info.srcUrl : null) || tab.url;
@@ -80,11 +82,21 @@ async function putText(tab, frameId, id) {
   }
 }
 
+async function fillAndReport(tab) {
+  try {
+    const n = await rafFillForm(tab.id);
+    chrome.action.setBadgeBackgroundColor({ color: n ? "#7fd0a8" : "#ffd6bf", tabId: tab.id });
+    chrome.action.setBadgeText({ text: n ? String(n) : "0", tabId: tab.id });
+    setTimeout(() => chrome.action.setBadgeText({ text: "", tabId: tab.id }), 2000);
+  } catch (e) { flash(tab.id, false, t("cantRunHere")); }
+}
+
 chrome.commands.onCommand.addListener(async (cmd) => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab) return;
   const f = await rafFeatures();
   if (cmd === "insert-uuid") return f.menuUuid ? putUuid(tab) : undefined;
+  if (cmd === "fill-form") { if (f.testData) fillAndReport(tab); return; }
   if (cmd === "pick-locator") { if (f.picker) rafStartPicker(tab.id).catch(() => flash(tab.id, false, t("cantRunHere"))); return; }
   if (cmd !== "quick-save" || !f.menuSave) return;
   try {

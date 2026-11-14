@@ -336,7 +336,7 @@
   "message": "Test verisi (TR)"
  },
  "fd_testData": {
-  "message": "Geçerli TC, IBAN, VKN, kart, telefon… ve tek tıkla form doldurma"
+  "message": "Geçerli TC, IBAN, VKN, kart, telefon… — her formu Alt+Shift+F ile doldur"
  },
  "f_menuTestData": {
   "message": "Sağ tıkla test verisi"
@@ -381,7 +381,7 @@
   "message": "Test verisi (TR)"
  },
  "tdFill": {
-  "message": "Bu sayfadaki formu doldur"
+  "message": "Bu sayfadaki formu doldur (Alt+Shift+F)"
  },
  "tdFilled": {
   "message": "$1 alan tek bir sahte kişiyle dolduruldu"
@@ -457,5 +457,11 @@
  },
  "td_password": {
   "message": "Şifre"
+ },
+ "ctxFill": {
+  "message": "Formu rastgele doldur"
+ },
+ "cmdFill": {
+  "message": "Sayfadaki formu rastgele test verisiyle doldur"
  }
 }
