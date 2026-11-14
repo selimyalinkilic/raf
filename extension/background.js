@@ -138,4 +138,17 @@ async function doCheck() {
   if (!left.length) chrome.alarms.clear("raf-dl");
 }
 chrome.alarms.onAlarm.addListener((a) => { if (a.name === "raf-dl") checkDownloads(); });
-chrome.runtime.onMessage.addListener((m) => { if (m === "check-downloads") checkDownloads(); });
+chrome.runtime.onMessage.addListener((m, sender, reply) => {
+  if (m === "check-downloads") { checkDownloads(); return; }
+  if (!m || !m.raf) return;
+  // Requests from the in-page video button (content script can't call the server directly)
+  const run = {
+    formats: () => rafFormats(m.url),
+    download: () => rafStartDownload(m.url, m.kind, m.quality),
+    status: () => rafApi("/api/downloads/" + m.id),
+    deliver: () => checkDownloads(),
+  }[m.raf];
+  if (!run) return;
+  run().then((r) => reply(r ?? {})).catch((e) => reply({ error: String(e.message || e) }));
+  return true;  // async reply
+});

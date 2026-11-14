@@ -57,6 +57,7 @@ async function init() {
   $("title").value = page.title || "";
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
+  loadQualities();
   if (!FEAT.save) return;
   if (!/^https?:/.test(page.url)) { ["save", "dl-video", "dl-audio"].forEach((id) => $(id).disabled = true); msg(t("cantSave"), true); return; }
   try {
@@ -110,7 +111,7 @@ let dlTimer = null;
 async function startDl(kind) {
   ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = true);
   try {
-    const d = await rafStartDownload(page.url, kind);
+    const d = await rafStartDownload(page.url, kind, kind === "video" ? +$("dl-quality").value : 0);
     $("dl-status").innerHTML = ic("clock") + " " + t("queued");
     const tick = async () => {
       const x = await rafApi("/api/downloads/" + d.id).catch(() => null);
@@ -124,6 +125,19 @@ async function startDl(kind) {
     $("dl-status").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e);
     ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = false);
   }
+}
+// Fill the quality list for this page (asks the server; silently keeps "Best" if it can't)
+async function loadQualities() {
+  if (!FEAT.video || !page || !/^https?:/.test(page.url)) return;
+  const sel = $("dl-quality"); sel.disabled = true;
+  sel.options[0].textContent = t("qBest") + " · " + t("qLoading");
+  try {
+    const f = await rafFormats(page.url);
+    const mb = (b) => (!b ? "" : b > 1073741824 ? ` · ${(b / 1073741824).toFixed(1)} GB` : ` · ${Math.max(1, Math.round(b / 1048576))} MB`);
+    sel.innerHTML = `<option value="0">${escHtml(t("qBest"))}</option>` + f.options.filter((o) => o.kind === "video" && o.quality)
+      .map((o) => `<option value="${o.quality}"${o.quality > 1080 ? ` title="${escHtml(t("q4kNote"))}"` : ""}>${escHtml(o.label)}${mb(o.size)}</option>`).join("");
+  } catch (e) { sel.options[0].textContent = t("qBest"); }
+  sel.disabled = false;
 }
 $("dl-video").onclick = () => startDl("video");
 $("dl-audio").onclick = () => startDl("audio");

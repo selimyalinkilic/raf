@@ -83,6 +83,7 @@ class DownloadIn(BaseModel):
     url: str
     kind: str = "video"  # video | audio
     cookies: str = ""    # eklentinin gönderdiği, o siteye ait çerezler (Netscape biçimi; saklanmaz)
+    quality: int = 0     # max video height (e.g. 2160, 1080, 720); 0 = default
 
 
 def dl_public(d):
@@ -94,7 +95,23 @@ def dl_public(d):
 def api_dl_create(body: DownloadIn):
     if not body.url.startswith(("http://", "https://")):
         raise HTTPException(400, "Invalid link")
-    return dl_public(downloads.enqueue(body.url, body.kind, "extension", body.cookies))
+    return dl_public(downloads.enqueue(body.url, body.kind, "extension", body.cookies, body.quality))
+
+
+class FormatsIn(BaseModel):
+    url: str
+    cookies: str = ""
+
+
+@app.post("/api/formats", dependencies=[Depends(auth)])
+def api_formats(body: FormatsIn):
+    if not body.url.startswith(("http://", "https://")):
+        raise HTTPException(400, "Invalid link")
+    try:
+        return downloads.formats(body.url, body.cookies)
+    except Exception as e:
+        msg = str(e).replace("ERROR: ", "")
+        raise HTTPException(422, msg[:300])
 
 
 @app.get("/api/downloads", dependencies=[Depends(auth)])

@@ -79,6 +79,10 @@ _con = connect()
 _con.executescript(SCHEMA)
 # Geriye uyumlu şema güncellemeleri
 _cols = {r[1] for r in _con.execute("PRAGMA table_info(items)")}
+_dcols = {r[1] for r in _con.execute("PRAGMA table_info(downloads)")}
+if "quality" not in _dcols:
+    _con.execute("ALTER TABLE downloads ADD COLUMN quality INTEGER NOT NULL DEFAULT 0")  # 0 = default (1080p cap)
+    _con.commit()
 if "screenshot" not in _cols:
     _con.execute("ALTER TABLE items ADD COLUMN screenshot TEXT NOT NULL DEFAULT ''")
     _con.commit()
@@ -105,18 +109,18 @@ def set_screenshot(item_id, name):
 
 
 # ---------- indirmeler ----------
-def dl_create(url, kind="video", source="extension"):
+def dl_create(url, kind="video", source="extension", quality=0):
     with _lock:
-        cur = _con.execute("INSERT INTO downloads(url, kind, source, created_at) VALUES (?,?,?,?)",
-                           (url, kind, source, int(time.time())))
+        cur = _con.execute("INSERT INTO downloads(url, kind, source, quality, created_at) VALUES (?,?,?,?,?)",
+                           (url, kind, source, int(quality or 0), int(time.time())))
         _con.commit()
     return dl_get(cur.lastrowid)
 
 
-def dl_find_recent(url, kind, within=600):
-    r = _con.execute("""SELECT * FROM downloads WHERE url=? AND kind=? AND
+def dl_find_recent(url, kind, quality=0, within=600):
+    r = _con.execute("""SELECT * FROM downloads WHERE url=? AND kind=? AND quality=? AND
         (status IN ('queued','running') OR (status='done' AND created_at >= ?)) ORDER BY id DESC LIMIT 1""",
-                     (url, kind, int(time.time()) - within)).fetchone()
+                     (url, kind, int(quality or 0), int(time.time()) - within)).fetchone()
     return dict(r) if r else None
 
 

@@ -463,5 +463,41 @@
  },
  "cmdFill": {
   "message": "Fill the form on this page with random test data"
+ },
+ "ovTitle": {
+  "message": "Download with Raf"
+ },
+ "ovLoading": {
+  "message": "Checking available qualities…"
+ },
+ "ovAudio": {
+  "message": "Audio only (mp3)"
+ },
+ "ovPcOnly": {
+  "message": "PC"
+ },
+ "ovQueued": {
+  "message": "Queued…"
+ },
+ "ovDone": {
+  "message": "Saved to Downloads"
+ },
+ "ovFailed": {
+  "message": "Failed — hover for details"
+ },
+ "f_videoOverlay": {
+  "message": "Button on videos"
+ },
+ "fd_videoOverlay": {
+  "message": "Hover a video on YouTube, X, Instagram, TikTok… → “Raf” → pick a quality"
+ },
+ "qBest": {
+  "message": "Best (≤1080p)"
+ },
+ "qLoading": {
+  "message": "loading qualities…"
+ },
+ "q4kNote": {
+  "message": "4K/2K keep the original codec — best on a computer"
  }
 }

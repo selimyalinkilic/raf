@@ -86,3 +86,5 @@ footer a{display:inline-flex;align-items:center;gap:4px}
 #td-type{flex:1;min-width:0}
 details.tool summary .i{flex:none}
 .hint.err{color:#c0392b}
+
+.qsel{width:100%;margin:0 0 8px;font:800 12px Nunito,sans-serif;color:var(--ink);padding:6px 8px;border-radius:10px;border:2.5px solid var(--sky);background:#fff}

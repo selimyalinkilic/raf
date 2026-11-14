@@ -16,20 +16,21 @@ _cookies = {}  # indirme id → Netscape çerez metni (sadece bellekte, iş biti
 on_finished = []  # (download_dict) -> None ; telegram bildirimi buraya kaydolur
 
 
-def enqueue(url, kind="video", source="extension", cookies=""):
+def enqueue(url, kind="video", source="extension", cookies="", quality=0):
     kind = kind if kind in ("video", "audio") else "video"
-    same = db.dl_find_recent(url, kind)
+    quality = int(quality or 0) if kind == "video" else 0
+    same = db.dl_find_recent(url, kind, quality)
     if same and (same["status"] != "done" or path_of(same)):
         same["reused"] = True   # çift tıklama / tekrar isteme: aynı işi döndür, yeniden indirme
         return same
-    d = db.dl_create(url, kind, source)
+    d = db.dl_create(url, kind, source, quality)
     if cookies.strip():
         _cookies[d["id"]] = cookies
     _wake.set()
     return d
 
 
-def _opts(dl_id, kind, cookiefile=None):
+def _opts(dl_id, kind, cookiefile=None, quality=0):
     last = {"t": 0}
 
     def hook(h):
@@ -56,7 +57,7 @@ def _opts(dl_id, kind, cookiefile=None):
         o["format"] = "bestaudio/best"
         o["postprocessors"] = [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "192"}]
     else:
-        h = MAX_HEIGHT
+        h = int(quality) or MAX_HEIGHT
         # iPhone uyumu için önce H.264 (avc1); yoksa en iyisi alınır, sonra gerekirse dönüştürülür
         o["format"] = (f"bv*[height<={h}][vcodec^=avc1]+ba[ext=m4a]/b[height<={h}][vcodec^=avc1]/"
                        f"bv*[height<={h}][ext=mp4]+ba[ext=m4a]/b[height<={h}][ext=mp4]/"
@@ -78,6 +79,11 @@ def _ensure_ios(dl_id, path):
     codec = _codec(path)
     if not codec or codec in ("h264", "hevc"):
         return path
+    import subprocess as _sp
+    h = _sp.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=height", "-of", "csv=p=0", path],
+                capture_output=True, text=True, timeout=60).stdout.strip()
+    if h.isdigit() and int(h) > 1080:
+        return path  # 2K/4K: keep VP9/AV1 (re-encoding would take hours on this CPU)
     tmp = os.path.splitext(path)[0] + ".h264.mp4"
     r = subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", path, "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
                         "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", "-threads", "2", tmp],
@@ -101,7 +107,7 @@ def _run(d):
         with os.fdopen(fd, "w") as f:
             f.write(_cookies.pop(d["id"]))
     try:
-        with yt_dlp.YoutubeDL(_opts(d["id"], d["kind"], cookiefile)) as ydl:
+        with yt_dlp.YoutubeDL(_opts(d["id"], d["kind"], cookiefile, d.get("quality") or 0)) as ydl:
             info = ydl.extract_info(d["url"], download=True)
             if info.get("_type") == "playlist" and info.get("entries"):
                 info = info["entries"][0]
@@ -152,3 +158,79 @@ def start():
 def path_of(d):
     p = os.path.join(VIDEO_DIR, d["file"])
     return p if d.get("file") and os.path.isfile(p) else None
+
+
+# ---------- available qualities (for the in-page menu) ----------
+_fmt_cache = {}
+
+
+def _label(h):
+    return "4K" if h >= 2160 else "2K" if h >= 1440 else f"{h}p"
+
+
+def formats(url, cookies=""):
+    """Return title + the video heights available for this URL with an estimated size for each."""
+    import tempfile
+    import yt_dlp
+    key = url
+    hit = _fmt_cache.get(key)
+    if hit and time.time() - hit[0] < 600:
+        return hit[1]
+    cookiefile = None
+    if cookies.strip():
+        fd, cookiefile = tempfile.mkstemp(prefix="raf-ck-", suffix=".txt")
+        with os.fdopen(fd, "w") as f:
+            f.write(cookies)
+    try:
+        o = {"quiet": True, "no_warnings": True, "noplaylist": True, "skip_download": True, "socket_timeout": 20}
+        if cookiefile:
+            o["cookiefile"] = cookiefile
+        elif os.path.exists(COOKIES):
+            o["cookiefile"] = COOKIES
+        with yt_dlp.YoutubeDL(o) as ydl:
+            info = ydl.extract_info(url, download=False)
+        if info.get("_type") == "playlist" and info.get("entries"):
+            info = next((e for e in info["entries"] if e), info)
+    finally:
+        if cookiefile and os.path.exists(cookiefile):
+            os.remove(cookiefile)
+    fmts = info.get("formats") or []
+    dur = info.get("duration") or 0
+
+    def size(f):
+        return f.get("filesize") or f.get("filesize_approx") or (int((f.get("tbr") or 0) * dur * 125) if dur else 0)
+
+    audios = [f for f in fmts if f.get("acodec") not in (None, "none") and f.get("vcodec") in (None, "none")]
+    best_audio = max(audios, key=lambda f: (f.get("ext") == "m4a", f.get("abr") or 0), default=None)
+    a_size = size(best_audio) if best_audio else 0
+    by_h = {}
+    for f in fmts:
+        h = f.get("height")
+        if not h or f.get("vcodec") in (None, "none"):
+            continue
+        h = {2160: 2160, 1440: 1440}.get(h, h)
+        cur = by_h.get(h)
+        # prefer H.264 (plays everywhere), then the biggest stream at that height
+        score = ((f.get("vcodec") or "").startswith("avc1"), size(f))
+        if not cur or score > cur[0]:
+            by_h[h] = (score, f)
+    opts = []
+    for h in sorted(by_h, reverse=True):
+        f = by_h[h][1]
+        vs = size(f)
+        muxed = f.get("acodec") not in (None, "none")
+        opts.append({"kind": "video", "quality": h, "label": _label(h), "size": vs + (0 if muxed else a_size),
+                     "codec": (f.get("vcodec") or "").split(".")[0]})
+    # one entry per label (e.g. several 1080p variants), max 6
+    seen, uniq = set(), []
+    for o_ in opts:
+        if o_["label"] not in seen:
+            seen.add(o_["label"]); uniq.append(o_)
+    uniq = uniq[:6]
+    if not uniq:  # site gives a single muxed file without height info
+        uniq = [{"kind": "video", "quality": 0, "label": "Video", "size": 0, "codec": ""}]
+    uniq.append({"kind": "audio", "quality": 0, "label": "MP3", "size": a_size, "codec": "mp3"})
+    res = {"title": info.get("title") or "", "duration": dur, "thumbnail": info.get("thumbnail") or "",
+           "extractor": info.get("extractor_key") or "", "options": uniq}
+    _fmt_cache[key] = (time.time(), res)
+    return res

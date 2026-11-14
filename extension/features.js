@@ -4,6 +4,7 @@ const RAF_FEATURES = [
   { id: "withShot",   group: "gSave",  icon: "camera",   def: true },  // "Include a screenshot" option
   { id: "menuSave",   group: "gSave",  icon: "plus",     def: true },  // right-click: save page / link / selection
   { id: "video",      group: "gVideo", icon: "video",    def: true },  // popup download box
+  { id: "videoOverlay", group: "gVideo", icon: "download", def: true },  // "Raf" button on top of videos (video sites)
   { id: "menuVideo",  group: "gVideo", icon: "download", def: true },  // right-click: download video / audio
   { id: "uuid",       group: "gTools", icon: "key",      def: true },
   { id: "menuUuid",   group: "gTools", icon: "plus",     def: true },  // right-click "Insert UUID" + Alt+Shift+U

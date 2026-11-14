@@ -12,7 +12,11 @@ async function rafApi(path, opts = {}) {
     ...opts,
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) },
   });
-  if (!res.ok) throw new Error((await res.text().catch(() => "")) || "HTTP " + res.status);
+  if (!res.ok) {
+    const txt = await res.text().catch(() => "");
+    let detail = txt; try { detail = JSON.parse(txt).detail || txt; } catch (e) {}
+    throw new Error(String(detail || "HTTP " + res.status));
+  }
   return res.json();
 }
 
@@ -84,10 +88,15 @@ function rafMissingPermissions() {
 
 
 
-async function rafStartDownload(url, kind = "video") {
+async function rafFormats(url) {
+  const cookies = await rafCookiesFor(url);
+  return rafApi("/api/formats", { method: "POST", body: JSON.stringify({ url, cookies }) });
+}
+
+async function rafStartDownload(url, kind = "video", quality = 0) {
   if (rafMissingPermissions().length) throw new Error(t("reloadNeeded"));
   const cookies = await rafCookiesFor(url);
-  const d = await rafApi("/api/downloads", { method: "POST", body: JSON.stringify({ url, kind, cookies }) });
+  const d = await rafApi("/api/downloads", { method: "POST", body: JSON.stringify({ url, kind, cookies, quality }) });
   const { pending = [], delivered = [] } = await chrome.storage.local.get(["pending", "delivered"]);
   // If the server reused an existing job that was already delivered, don't queue it again
   if (!pending.includes(d.id) && !(d.reused && delivered.includes(d.id))) pending.push(d.id);

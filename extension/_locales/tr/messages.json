@@ -463,5 +463,41 @@
  },
  "cmdFill": {
   "message": "Sayfadaki formu rastgele test verisiyle doldur"
+ },
+ "ovTitle": {
+  "message": "Raf ile indir"
+ },
+ "ovLoading": {
+  "message": "Kaliteler alınıyor…"
+ },
+ "ovAudio": {
+  "message": "Sadece ses (mp3)"
+ },
+ "ovPcOnly": {
+  "message": "PC"
+ },
+ "ovQueued": {
+  "message": "Sırada…"
+ },
+ "ovDone": {
+  "message": "İndirilenler'e kaydedildi"
+ },
+ "ovFailed": {
+  "message": "Olmadı — ayrıntı için üzerine gel"
+ },
+ "f_videoOverlay": {
+  "message": "Videonun üstünde düğme"
+ },
+ "fd_videoOverlay": {
+  "message": "YouTube, X, Instagram, TikTok… videosunun üstüne gel → “Raf” → kalite seç"
+ },
+ "qBest": {
+  "message": "En iyi (≤1080p)"
+ },
+ "qLoading": {
+  "message": "kaliteler alınıyor…"
+ },
+ "q4kNote": {
+  "message": "4K/2K orijinal biçimde kalır — bilgisayarda izlemek için"
  }
 }
