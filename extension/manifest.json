@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "Raf",
+  "version": "0.3.2",
+  "description": "Açık sayfayı tek tıkla kendi sunucundaki rafa kaldır.",
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Rafa kaldır",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "clipboardWrite",
+    "contextMenus",
+    "cookies",
+    "downloads",
+    "notifications",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.ts.net/*",
+    "*://*.youtube.com/*",
+    "*://*.instagram.com/*",
+    "*://*.x.com/*",
+    "*://*.twitter.com/*",
+    "*://*.tiktok.com/*",
+    "*://*.facebook.com/*",
+    "*://*.vimeo.com/*",
+    "*://*.reddit.com/*",
+    "*://*.twitch.tv/*",
+    "*://*.dailymotion.com/*",
+    "*://*.linkedin.com/*",
+    "*://*.pinterest.com/*",
+    "*://*.threads.net/*",
+    "*://*.threads.com/*",
+    "*://*.bsky.app/*"
+  ],
+  "commands": {
+    "quick-save": {
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      },
+      "description": "Açık sayfayı hemen rafa kaldır"
+    },
+    "insert-uuid": {
+      "suggested_key": {
+        "default": "Alt+Shift+U"
+      },
+      "description": "UUID üret: odaktaki alana yaz ya da kopyala"
+    }
+  }
+}

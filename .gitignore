@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+*.env
+data/
+*.db
+*.db-*
+cookies.txt
+node_modules/
+.DS_Store

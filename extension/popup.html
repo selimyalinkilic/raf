@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <header><img src="icons/icon.svg" alt=""><span>Raf</span><em id="status"></em></header>
+  <div id="banner" class="banner" hidden></div>
+  <nav class="tabs"><button data-tab="main" class="on">Kaydet</button><button data-tab="tools">Araçlar</button></nav>
+  <div id="main" class="pane">
+    <label>Başlık<input id="title" maxlength="300"></label>
+    <div class="url" id="url"></div>
+    <label>Etiketler<input id="tags" placeholder="iş, okunacak, tarif"></label>
+    <div class="chips" id="suggest"></div>
+    <label>Not<textarea id="note" rows="3" placeholder="Neden kaydediyorsun?"></textarea></label>
+    <label class="chk shotchk"><input type="checkbox" id="withShot" checked> 📸 Ekran görüntüsünü de ekle</label>
+    <button id="save">Rafa kaldır</button>
+    <p id="msg"></p>
+    <div class="dlbox">
+      <div class="tool-h">⬇️ Bu sayfadaki videoyu indir</div>
+      <div class="row"><button id="dl-video" class="btn">🎬 Video (mp4)</button><button id="dl-audio" class="btn">🎵 Ses (mp3)</button></div>
+      <div id="dl-status" class="hint"></div>
+    </div>
+  </div>
+  <div id="tools" class="pane" hidden>
+    <details class="tool" open data-k="uuid"><summary>🔑 UUID v4</summary>
+      <div class="opts">
+        <select id="u-count"><option>1</option><option>5</option><option>10</option></select>
+        <label class="chk"><input type="checkbox" id="u-upper"> BÜYÜK</label>
+        <label class="chk"><input type="checkbox" id="u-hyph" checked> tireli</label>
+      </div>
+      <textarea id="u-out" rows="1" readonly></textarea>
+      <div class="row"><button id="u-new" class="btn">Yeniden üret</button><button id="u-copy" class="btn main" data-copy="u-out">Kopyala</button></div>
+      <p class="hint">Sağ tık → <b>UUID ekle</b> · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd></p>
+    </details>
+    <details class="tool" data-k="lorem"><summary>📝 Lorem ipsum</summary>
+      <div class="opts">
+        <select id="l-count"><option>1</option><option selected>2</option><option>3</option><option>5</option></select>
+        <select id="l-unit"><option value="p">paragraf</option><option value="s">cümle</option><option value="w">kelime</option></select>
+      </div>
+      <textarea id="l-out" rows="4" readonly></textarea>
+      <div class="row"><button id="l-new" class="btn">Yeniden üret</button><button class="btn main" data-copy="l-out">Kopyala</button></div>
+    </details>
+    <details class="tool" data-k="b64"><summary>🔤 Base64</summary>
+      <textarea id="b-in" rows="3" placeholder="Metni ya da Base64'ü buraya yapıştır"></textarea>
+      <div class="opts"><label class="chk"><input type="checkbox" id="b-url"> URL-safe</label></div>
+      <div class="row"><button id="b-enc" class="btn">Kodla →</button><button id="b-dec" class="btn">← Çöz</button></div>
+      <textarea id="b-out" rows="3" readonly></textarea>
+      <div class="row"><button class="btn main" data-copy="b-out">Kopyala</button></div>
+    </details>
+    <details class="tool" data-k="jwt"><summary>🪪 JWT çözücü</summary>
+      <textarea id="j-in" rows="3" placeholder="eyJhbGciOi... token'ı yapıştır"></textarea>
+      <div id="j-meta" class="jmeta"></div>
+      <pre id="j-out" class="code"></pre>
+      <p class="hint">İmza doğrulanmaz; sadece içerik okunur. Token bilgisayarından çıkmaz.</p>
+    </details>
+    <details class="tool" data-k="shot"><summary>📸 Ekran görüntüsü</summary>
+      <div class="row"><button id="s-png" class="btn">Görünür alanı indir (PNG)</button><button id="s-copy" class="btn main">Panoya kopyala</button></div>
+      <div id="s-msg" class="hint"></div>
+    </details>
+  </div>
+  <footer><a id="open" href="#">Rafı aç ↗</a><a href="options.html" target="_blank">Ayarlar</a></footer>
+  <script src="config.js"></script><script src="common.js"></script><script src="popup.js"></script>
+</body></html>
