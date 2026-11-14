@@ -94,15 +94,47 @@
 
   function mount() { const parent = document.fullscreenElement || document.documentElement; if (hostEl.parentNode !== parent) parent.appendChild(hostEl); }
   function idle() { pill.className = "pill show"; pill.innerHTML = `${I.dl}<span>Raf</span>`; pill.title = M("ovTitle"); }
-  function place(video) {
+  // A video is usable only while it's still in the page and at least partly on screen
+  // (Instagram/X remove off-screen videos while you scroll → their rect becomes 0,0).
+  function onScreen(video) {
+    if (!video || !video.isConnected) return null;
     const r = video.getBoundingClientRect();
-    pill.style.left = Math.max(6, r.left + 10) + "px"; pill.style.top = Math.max(6, r.top + 10) + "px";
+    if (r.width < 160 || r.height < 90) return null;
+    const top = Math.max(r.top, 0), bottom = Math.min(r.bottom, innerHeight);
+    if (bottom - top < 48 || r.right < 40 || r.left > innerWidth - 40) return null;
+    return { left: r.left, top };  // pin to the visible part of the video
   }
+  function place(video) {
+    const v = onScreen(video);
+    if (!v) return false;
+    pill.style.left = Math.max(6, v.left + 10) + "px"; pill.style.top = Math.max(6, v.top + 10) + "px";
+    return true;
+  }
+  function hideNow() { clearTimeout(hideTimer); pill.classList.remove("show"); current = null; if (menuOpen) { menu.classList.remove("show"); menuOpen = false; } }
   function show(video) {
     if (!enabled) return;
-    current = video; mount(); place(video);
+    current = video; mount();
+    if (!place(video)) return hideNow();
     if (!job) idle(); else pill.classList.add("show");
     clearTimeout(hideTimer);
+    follow();
+  }
+  // While the pill is visible, re-check every frame: follow the video, switch to the video now under the
+  // cursor (wheel scrolling moves content without a mousemove), or hide when the video is gone.
+  let following = false, lastX = -1, lastY = -1;
+  function follow() {
+    if (following) return; following = true;
+    const tick = () => {
+      if (!pill.classList.contains("show") || !alive()) { following = false; return; }
+      if (!place(current)) {
+        const v = lastX >= 0 ? videoAt(lastX, lastY) : null;
+        if (v && v !== current) { current = v; place(v); if (menuOpen) closeMenu(); }
+        else if (!job) { hideNow(); following = false; return; }
+        else pill.classList.remove("show");  // download keeps running; pill comes back on the next hover
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
   function hideSoon() { clearTimeout(hideTimer); hideTimer = setTimeout(() => { if (!menuOpen && !job) { pill.classList.remove("show"); current = null; } }, 1600); }
   function closeMenu() { menu.classList.remove("show"); menuOpen = false; hideSoon(); }
@@ -119,12 +151,17 @@
     if (!enabled || raf) return;
     raf = requestAnimationFrame(() => {
       raf = 0;
+      lastX = e.clientX; lastY = e.clientY;
       if (e.composedPath().includes(hostEl)) { clearTimeout(hideTimer); return; }
       const v = videoAt(e.clientX, e.clientY);
       if (v) show(v); else if (current) hideSoon();
     });
   }, { passive: true, capture: true });
-  on(window, "scroll", () => { if (current && pill.classList.contains("show")) place(current); if (menuOpen) closeMenu(); }, { passive: true, capture: true });
+  on(window, "scroll", () => {
+    if (menuOpen) closeMenu();
+    // the frame loop handles following/hiding; on scroll also pick up a new video under a resting cursor
+    if (enabled && lastX >= 0 && !pill.classList.contains("show")) { const v = videoAt(lastX, lastY); if (v) show(v); }
+  }, { passive: true, capture: true });
   on(document, "fullscreenchange", () => { mount(); if (current) place(current); });
   on(document, "keydown", (e) => { if (e.key === "Escape" && menuOpen) closeMenu(); }, true);
   on(document, "click", (e) => { if (menuOpen && !e.composedPath().includes(hostEl)) closeMenu(); }, true);
@@ -155,7 +192,7 @@
       const x = await send({ raf: "status", id: job });
       if (x.error) return;
       if (x.status === "running") pill.innerHTML = `${I.spin}<span>${Math.round(x.progress)}%</span>`;
-      else if (x.status === "done") { clearInterval(timer); job = null; pill.className = "pill show ok"; pill.innerHTML = `${I.check}<span>${esc(M("ovDone"))}</span>`; send({ raf: "deliver" }); setTimeout(() => { idle(); hideSoon(); }, 3500); }
+      else if (x.status === "done") { clearInterval(timer); job = null; pill.className = "pill show ok"; pill.innerHTML = `${I.check}<span>${esc(M("ovDone"))}</span>`; send({ raf: "deliver" }); if (onScreen(current)) { place(current); follow(); } setTimeout(() => { idle(); hideSoon(); }, 3500); }
       else if (x.status === "error") { clearInterval(timer); job = null; fail(x.error); }
     };
     const timer = setInterval(tick, 1500); tick();
