@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap');
 :root{--ink:#3d3a5c;--muted:#8b86a8;--lav:#d9ccff;--lav-d:#ab97ec;--mint:#bdf0d6;--mint-d:#7fd0a8;--peach:#ffd6bf;--peach-d:#f2a47c;--sky:#c6e3ff;--sky-d:#86b9ec}
 *{box-sizing:border-box}
 body{width:340px;margin:0;font:700 13px/1.35 Nunito,"Segoe UI",system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#fffaf4,#fbf6ff 60%,#f4fbff)}
@@ -56,3 +57,21 @@ details.tool[open] summary{margin-bottom:8px}
 
 .banner{margin:10px 14px 0;padding:8px 10px;border-radius:12px;background:#fff0b3;box-shadow:0 3px 0 #e8cc6a;border:2px solid #fff;font-size:12px}
 .banner a{color:var(--ink);font-weight:800}
+
+/* ikonlar */
+.i{width:15px;height:15px;vertical-align:-3px;flex:none}
+.i.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.i.ok{color:#3c9a6e}.i.err{color:#c0392b}
+.tabs button,.btn,#save{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+details.tool summary{display:flex;align-items:center;gap:6px}
+details.tool summary::after{margin-left:auto}
+details.tool summary .i{color:var(--sky-d);width:17px;height:17px}
+.dlbox .tool-h,.shotchk{display:flex;align-items:center;gap:6px}
+.dlbox .tool-h .i{color:var(--peach-d)}
+.shotchk .i{color:var(--lav-d)}
+footer a{display:inline-flex;align-items:center;gap:4px}
+#dl-status,#s-msg,.banner{display:flex;gap:6px;align-items:flex-start}
+#dl-status .i,#s-msg .i{margin-top:1px}
+.jmeta span{display:inline-flex;align-items:center;gap:4px}
+.jmeta .i{width:12px;height:12px}
+.banner[hidden],#dl-status:empty,#s-msg:empty{display:none!important}

@@ -7,7 +7,7 @@ const parseTags = (s) => s.split(/[,\s]+/).map((t) => t.replace(/^#/, "").trim()
 async function checkVersion() {
   const mine = chrome.runtime.getManifest().version;
   if (rafMissingPermissions().length) {
-    $("banner").innerHTML = "⚠️ " + RAF_RELOAD_MSG; $("banner").hidden = false; return;
+    $("banner").innerHTML = ic("alert") + " " + RAF_RELOAD_MSG; $("banner").hidden = false; return;
   }
   try {
     const { server } = await rafSettings();
@@ -15,7 +15,7 @@ async function checkVersion() {
     const newer = (a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number);
       for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
     if (r.version && newer(r.version, mine)) {
-      $("banner").innerHTML = `✨ Yeni sürüm var: <b>v${r.version}</b> (sende v${mine}). <a href="${r.download}" target="_blank">İndir</a> → klasöre çıkar → chrome://extensions'ta ↻ · <a href="${r.help}" target="_blank">nasıl?</a>`;
+      $("banner").innerHTML = `${ic("sparkle")} Yeni sürüm var: <b>v${r.version}</b> (sende v${mine}). <a href="${r.download}" target="_blank">İndir</a> → klasöre çıkar → chrome://extensions'ta ↻ · <a href="${r.help}" target="_blank">nasıl?</a>`;
       $("banner").hidden = false;
     }
   } catch (e) { /* sunucuya ulaşılamazsa sessiz geç */ }
@@ -69,7 +69,7 @@ async function save() {
       method: "POST",
       body: JSON.stringify({ url: page.url, title: $("title").value.trim(), description: page.description || "", favicon: page.favicon || "", text: page.text || "", note: $("note").value.trim(), tags: parseTags($("tags").value), screenshot }),
     });
-    $("save").textContent = r.new ? "Rafa kaldırıldı ✓" : "Güncellendi ✓";
+    $("save").innerHTML = ic("check") + (r.new ? " Rafa kaldırıldı" : " Güncellendi");
     $("save").classList.add("done");
     msg(`Bugün ${r.today} sayfa kaydettin.`);
     setTimeout(() => window.close(), 1200);
@@ -87,17 +87,17 @@ async function startDl(kind) {
   ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = true);
   try {
     const d = await rafStartDownload(page.url, kind);
-    $("dl-status").textContent = "⏳ Sıraya alındı…";
+    $("dl-status").innerHTML = ic("clock") + " Sıraya alındı…";
     const tick = async () => {
       const x = await rafApi("/api/downloads/" + d.id).catch(() => null);
       if (!x) return;
-      if (x.status === "running") $("dl-status").textContent = `⬇️ Sunucu indiriyor… %${Math.round(x.progress)}`;
-      else if (x.status === "done") { $("dl-status").textContent = `✅ ${x.title} — bilgisayarına iniyor`; chrome.runtime.sendMessage("check-downloads"); clearInterval(dlTimer); }
-      else if (x.status === "error") { $("dl-status").textContent = "⚠️ " + x.error.slice(0, 160); clearInterval(dlTimer); ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = false); }
+      if (x.status === "running") $("dl-status").innerHTML = `${ic("spinner", "spin")} Sunucu indiriyor… %${Math.round(x.progress)}`;
+      else if (x.status === "done") { $("dl-status").innerHTML = `${ic("check", "ok")} ${escHtml(x.title)} — bilgisayarına iniyor`; chrome.runtime.sendMessage("check-downloads"); clearInterval(dlTimer); }
+      else if (x.status === "error") { $("dl-status").innerHTML = ic("alert", "err") + " " + escHtml(x.error.slice(0, 160)); clearInterval(dlTimer); ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = false); }
     };
     dlTimer = setInterval(tick, 1500); tick();
   } catch (e) {
-    $("dl-status").textContent = "⚠️ " + (e.message || e);
+    $("dl-status").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e);
     ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = false);
   }
 }
@@ -123,7 +123,7 @@ $("u-new").onclick = genUuids;
 ["u-count", "u-upper", "u-hyph"].forEach((id) => $(id).onchange = genUuids);
 document.querySelectorAll("[data-copy]").forEach((b) => b.onclick = async () => {
   await navigator.clipboard.writeText($(b.dataset.copy).value || $(b.dataset.copy).textContent);
-  const t = b.textContent; b.textContent = "Kopyalandı ✓"; setTimeout(() => (b.textContent = t), 1200);
+  const t = b.innerHTML; b.innerHTML = ic("check") + " Kopyalandı"; setTimeout(() => (b.innerHTML = t), 1200);
 });
 // Açık/kapalı araç bölümlerini hatırla
 chrome.storage.local.get("openTools").then(({ openTools }) => {
@@ -151,7 +151,7 @@ $("l-new").onclick = genLorem; genLorem();
 const b64enc = (s, url) => { let r = btoa(String.fromCharCode(...new TextEncoder().encode(s))); return url ? r.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "") : r; };
 const b64dec = (s) => { s = s.trim().replace(/-/g, "+").replace(/_/g, "/").replace(/\s/g, ""); s += "=".repeat((4 - s.length % 4) % 4); return new TextDecoder().decode(Uint8Array.from(atob(s), (c) => c.charCodeAt(0))); };
 $("b-enc").onclick = () => { $("b-out").value = b64enc($("b-in").value, $("b-url").checked); };
-$("b-dec").onclick = () => { try { $("b-out").value = b64dec($("b-in").value); } catch (e) { $("b-out").value = "⚠️ Geçerli bir Base64 değil"; } };
+$("b-dec").onclick = () => { try { $("b-out").value = b64dec($("b-in").value); } catch (e) { $("b-out").value = "Hata: geçerli bir Base64 değil"; } };
 
 // ---------- JWT ----------
 function fmtDate(sec) { return new Date(sec * 1000).toLocaleString("tr-TR"); }
@@ -165,12 +165,12 @@ function decodeJwt() {
     const header = JSON.parse(b64dec(parts[0])), payload = JSON.parse(b64dec(parts[1]));
     const now = Date.now() / 1000, chips = [];
     chips.push(`<span>alg: ${header.alg || "?"}</span>`);
-    if (payload.exp) chips.push(`<span class="${payload.exp < now ? "bad" : ""}">${payload.exp < now ? "⛔ süresi doldu" : "✓ geçerli"} · exp ${fmtDate(payload.exp)}</span>`);
+    if (payload.exp) chips.push(`<span class="${payload.exp < now ? "bad" : ""}">${payload.exp < now ? ic("x") + " süresi doldu" : ic("check") + " geçerli"} · exp ${fmtDate(payload.exp)}</span>`);
     if (payload.iat) chips.push(`<span>iat ${fmtDate(payload.iat)}</span>`);
     if (payload.nbf) chips.push(`<span class="${payload.nbf > now ? "bad" : ""}">nbf ${fmtDate(payload.nbf)}</span>`);
     $("j-meta").innerHTML = chips.join("");
     $("j-out").textContent = "// HEADER\n" + JSON.stringify(header, null, 2) + "\n\n// PAYLOAD\n" + JSON.stringify(payload, null, 2);
-  } catch (e) { $("j-meta").innerHTML = `<span class="bad">⚠️ ${e.message.includes("JSON") ? "Çözülemedi: geçerli bir JWT değil" : e.message}</span>`; }
+  } catch (e) { $("j-meta").innerHTML = `<span class="bad">${ic("alert")} ${escHtml(e.message.includes("JSON") ? "Çözülemedi: geçerli bir JWT değil" : e.message)}</span>`; }
 }
 $("j-in").oninput = decodeJwt;
 
@@ -181,16 +181,16 @@ $("s-png").onclick = async () => {
     const url = await rafCapture(tab.windowId, "png");
     const name = "Raf/ekran-" + new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-") + ".png";
     await chrome.downloads.download({ url, filename: name });
-    $("s-msg").textContent = "İndirildi ✓ (İndirilenler/Raf)";
-  } catch (e) { $("s-msg").textContent = "⚠️ " + (e.message || e); }
+    $("s-msg").innerHTML = ic("check", "ok") + " İndirildi (İndirilenler/Raf)";
+  } catch (e) { $("s-msg").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e); }
 };
 $("s-copy").onclick = async () => {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const blob = await (await fetch(await rafCapture(tab.windowId, "png"))).blob();
     await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-    $("s-msg").textContent = "Panoya kopyalandı ✓ (Ctrl+V ile yapıştır)";
-  } catch (e) { $("s-msg").textContent = "⚠️ " + (e.message || e); }
+    $("s-msg").innerHTML = ic("check", "ok") + " Panoya kopyalandı (Ctrl+V)";
+  } catch (e) { $("s-msg").innerHTML = ic("alert", "err") + " " + escHtml(e.message || e); }
 };
 (async () => {
   const s = await chrome.storage.sync.get(["uuidUpper", "uuidHyphens"]);
