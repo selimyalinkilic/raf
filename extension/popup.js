@@ -21,8 +21,29 @@ async function checkVersion() {
   } catch (e) { /* server unreachable: stay quiet */ }
 }
 
+// ---------- Feature toggles (Settings page) ----------
+let FEAT = {};
+async function applyFeatures() {
+  FEAT = await rafFeatures();
+  const showMain = FEAT.save || FEAT.video;
+  const tools = ["uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
+  $("saveform").hidden = !FEAT.save;
+  $("shotrow").hidden = !FEAT.withShot;
+  if (!FEAT.withShot) $("withShot").checked = false;
+  $("dlbox").hidden = !FEAT.video;
+  $("dlbox").classList.toggle("solo", !FEAT.save);
+  document.querySelectorAll("details.tool").forEach((d) => (d.hidden = !FEAT[d.dataset.k]));
+  document.querySelector('.tabs [data-tab="main"]').hidden = !showMain;
+  document.querySelector('.tabs [data-tab="tools"]').hidden = !tools.length;
+  document.querySelector(".tabs").hidden = !(showMain && tools.length);
+  if (!showMain && tools.length) document.querySelector('.tabs [data-tab="tools"]').click();
+  if (!showMain && !tools.length) { document.querySelectorAll(".pane").forEach((p) => (p.hidden = true)); $("alloff").hidden = false; }
+  return showMain;
+}
+
 async function init() {
   checkVersion();
+  if (!(await applyFeatures())) return;
   const { server } = await rafSettings();
   $("open").onclick = (e) => { e.preventDefault(); chrome.tabs.create({ url: server || "options.html" }); };
   // ?tab=<id> lets docs/screenshots open the popup as a page for a specific tab
@@ -32,10 +53,11 @@ async function init() {
   if (!page.favicon && tab.favIconUrl) page.favicon = tab.favIconUrl;
   page.windowId = tab.windowId;
   const { withShot } = await chrome.storage.sync.get("withShot");
-  $("withShot").checked = withShot !== false;
+  $("withShot").checked = FEAT.withShot && withShot !== false;
   $("title").value = page.title || "";
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
+  if (!FEAT.save) return;
   if (!/^https?:/.test(page.url)) { ["save", "dl-video", "dl-audio"].forEach((id) => $(id).disabled = true); msg(t("cantSave"), true); return; }
   try {
     const [{ item }, { tags }] = await Promise.all([
@@ -66,7 +88,7 @@ async function save() {
   try {
     let screenshot = "";
     if ($("withShot").checked) { try { screenshot = await rafCapture(page.windowId); } catch (e) { /* not allowed on some pages */ } }
-    chrome.storage.sync.set({ withShot: $("withShot").checked });
+    if (FEAT.withShot) chrome.storage.sync.set({ withShot: $("withShot").checked });
     const r = await rafApi("/api/items", {
       method: "POST",
       body: JSON.stringify({ url: page.url, title: $("title").value.trim(), description: page.description || "", favicon: page.favicon || "", text: page.text || "", note: $("note").value.trim(), tags: parseTags($("tags").value), screenshot }),
@@ -198,7 +220,8 @@ $("s-copy").onclick = async () => {
   const s = await chrome.storage.sync.get(["uuidUpper", "uuidHyphens"]);
   $("u-upper").checked = !!s.uuidUpper; $("u-hyph").checked = s.uuidHyphens !== false;
   const { lastTab } = await chrome.storage.local.get("lastTab");
-  if (lastTab === "tools") document.querySelector('.tabs [data-tab="tools"]').click();
+  const toolsTab = document.querySelector('.tabs [data-tab="tools"]');
+  if (lastTab === "tools" && !toolsTab.hidden) toolsTab.click();
 })();
 
 init();

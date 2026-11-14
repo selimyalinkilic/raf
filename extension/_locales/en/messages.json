@@ -226,5 +226,101 @@
  },
  "cantConnect": {
   "message": "Could not connect: $1"
+ },
+ "optConnection": {
+  "message": "Connection"
+ },
+ "optFeatures": {
+  "message": "Features"
+ },
+ "optFeaturesIntro": {
+  "message": "Turn off what you don't use — the popup and right-click menu only show what's enabled. Changes are saved instantly."
+ },
+ "optSavedFlash": {
+  "message": "Saved ✓"
+ },
+ "optAllOn": {
+  "message": "Turn all on"
+ },
+ "optAllOff": {
+  "message": "Turn all off"
+ },
+ "gSave": {
+  "message": "Saving"
+ },
+ "gVideo": {
+  "message": "Video"
+ },
+ "gTools": {
+  "message": "Tools"
+ },
+ "f_save": {
+  "message": "Save pages"
+ },
+ "fd_save": {
+  "message": "The Save tab in the popup"
+ },
+ "f_withShot": {
+  "message": "Screenshot option"
+ },
+ "fd_withShot": {
+  "message": "“Include a screenshot” when saving"
+ },
+ "f_menuSave": {
+  "message": "Save from right-click"
+ },
+ "fd_menuSave": {
+  "message": "Save page / link / selection from the context menu + Alt+Shift+S"
+ },
+ "f_video": {
+  "message": "Video download"
+ },
+ "fd_video": {
+  "message": "Video / audio buttons in the popup"
+ },
+ "f_menuVideo": {
+  "message": "Download from right-click"
+ },
+ "fd_menuVideo": {
+  "message": "“Download video / audio” in the context menu"
+ },
+ "f_uuid": {
+  "message": "UUID generator"
+ },
+ "fd_uuid": {
+  "message": "UUID v4 in the Tools tab"
+ },
+ "f_menuUuid": {
+  "message": "Insert UUID anywhere"
+ },
+ "fd_menuUuid": {
+  "message": "Right-click “Insert UUID” + Alt+Shift+U"
+ },
+ "f_lorem": {
+  "message": "Lorem ipsum"
+ },
+ "fd_lorem": {
+  "message": "Placeholder text generator"
+ },
+ "f_b64": {
+  "message": "Base64"
+ },
+ "fd_b64": {
+  "message": "Encode / decode (UTF-8 safe)"
+ },
+ "f_jwt": {
+  "message": "JWT decoder"
+ },
+ "fd_jwt": {
+  "message": "Read a token's header and payload"
+ },
+ "f_shot": {
+  "message": "Screenshot tool"
+ },
+ "fd_shot": {
+  "message": "Save the visible area as PNG or copy it"
+ },
+ "allOff": {
+  "message": "Everything is turned off. Enable features in Settings."
  }
 }

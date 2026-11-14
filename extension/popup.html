@@ -5,15 +5,17 @@
   <div id="banner" class="banner" hidden></div>
   <nav class="tabs"><button data-tab="main" class="on"><i data-i="bookmark"></i> <span data-t="tabSave"></span></button><button data-tab="tools"><i data-i="wrench"></i> <span data-t="tabTools"></span></button></nav>
   <div id="main" class="pane">
+    <div id="saveform">
     <label><span data-t="lblTitle"></span><input id="title" maxlength="300"></label>
     <div class="url" id="url"></div>
     <label><span data-t="lblTags"></span><input id="tags" data-t-ph="phTags"></label>
     <div class="chips" id="suggest"></div>
     <label><span data-t="lblNote"></span><textarea id="note" rows="3" data-t-ph="phNote"></textarea></label>
-    <label class="chk shotchk"><input type="checkbox" id="withShot" checked> <i data-i="camera"></i> <span data-t="withShot"></span></label>
+    <label class="chk shotchk" id="shotrow"><input type="checkbox" id="withShot" checked> <i data-i="camera"></i> <span data-t="withShot"></span></label>
     <button id="save"><i data-i="plus"></i> <span data-t="btnSave"></span></button>
     <p id="msg"></p>
-    <div class="dlbox">
+    </div>
+    <div class="dlbox" id="dlbox">
       <div class="tool-h"><i data-i="download"></i> <span data-t="dlTitle"></span></div>
       <div class="row"><button id="dl-video" class="btn"><i data-i="video"></i> <span data-t="btnVideo"></span></button><button id="dl-audio" class="btn"><i data-i="music"></i> <span data-t="btnAudio"></span></button></div>
       <div id="dl-status" class="hint"></div>
@@ -56,6 +58,7 @@
       <div id="s-msg" class="hint"></div>
     </details>
   </div>
+  <div id="alloff" class="pane empty-all" hidden><span data-t="allOff"></span></div>
   <footer><a id="open" href="#"><i data-i="external"></i> <span data-t="openRaf"></span></a><a href="options.html" target="_blank"><i data-i="settings"></i> <span data-t="settings"></span></a></footer>
-  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="popup.js"></script>
+  <script src="config.js"></script><script src="common.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="popup.js"></script>
 </body></html>

@@ -1,15 +1,23 @@
-importScripts("config.js", "i18n.js", "common.js");
+importScripts("config.js", "i18n.js", "common.js", "features.js");
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.removeAll(() => {
+// Right-click menus follow the feature toggles on the Settings page
+async function buildMenus() {
+  const f = await rafFeatures();
+  await chrome.contextMenus.removeAll();
+  if (f.menuSave) {
     chrome.contextMenus.create({ id: "save-page", title: t("ctxSavePage"), contexts: ["page"] });
     chrome.contextMenus.create({ id: "save-link", title: t("ctxSaveLink"), contexts: ["link"] });
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
-    chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
+  }
+  if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
+  if (f.menuVideo) {
     chrome.contextMenus.create({ id: "dl-video", title: t("ctxDlVideo"), contexts: ["page", "link", "video"] });
     chrome.contextMenus.create({ id: "dl-audio", title: t("ctxDlAudio"), contexts: ["page", "link", "video"] });
-  });
-});
+  }
+}
+chrome.runtime.onInstalled.addListener(buildMenus);
+chrome.runtime.onStartup.addListener(buildMenus);
+chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && ch.features) buildMenus(); });
 
 function flash(tabId, ok, msg) {
   chrome.action.setBadgeBackgroundColor({ color: ok ? "#7fd0a8" : "#ee97b8", tabId });
@@ -67,8 +75,9 @@ async function putUuid(tab, frameId) {
 chrome.commands.onCommand.addListener(async (cmd) => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab) return;
-  if (cmd === "insert-uuid") return putUuid(tab);
-  if (cmd !== "quick-save") return;
+  const f = await rafFeatures();
+  if (cmd === "insert-uuid") return f.menuUuid ? putUuid(tab) : undefined;
+  if (cmd !== "quick-save" || !f.menuSave) return;
   try {
     const r = await savePage(tab);
     flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));

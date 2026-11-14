@@ -1,15 +1,23 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Raf</title><link rel="stylesheet" href="popup.css">
-<style>body{width:auto;max-width:520px;margin:30px auto;padding:0 16px}#main{background:#fff;border-radius:18px;box-shadow:0 5px 0 var(--lav-d)}</style></head>
-<body>
-  <header><img src="icons/icon.svg" alt=""><span data-t="optTitle" data-t-title="optTitle"></span></header>
-  <div id="main">
-    <p><span data-t="optIntro"></span></p>
-    <label><span data-t="lblServer"></span><input id="server" placeholder="https://raf-server.tail….ts.net:8454"></label>
-    <label><span data-t="lblToken"></span><input id="token" type="password"></label>
-    <button id="save"><span data-t="saveTest"></span></button>
-    <p id="msg"></p>
-  </div>
+<html lang="en"><head><meta charset="utf-8"><title>Raf</title><link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="options.css"></head>
+<body class="options">
+  <header><img src="icons/icon.svg" alt=""><span data-t="optTitle" data-t-title="optTitle"></span><em id="flash"></em></header>
+  <main>
+    <section class="card">
+      <h2><i data-i="link"></i> <span data-t="optConnection"></span></h2>
+      <p class="hint"><span data-t="optIntro"></span></p>
+      <label><span data-t="lblServer"></span><input id="server" placeholder="https://raf.example.com"></label>
+      <label><span data-t="lblToken"></span><input id="token" type="password"></label>
+      <button id="save" class="btn"><i data-i="check"></i> <span data-t="saveTest"></span></button>
+      <p id="msg"></p>
+    </section>
+    <section class="card">
+      <div class="h2row"><h2><i data-i="settings"></i> <span data-t="optFeatures"></span></h2>
+        <span class="bulk"><button id="all-on" class="mini" data-t="optAllOn"></button><button id="all-off" class="mini" data-t="optAllOff"></button></span></div>
+      <p class="hint"><span data-t="optFeaturesIntro"></span></p>
+      <div id="features"></div>
+    </section>
+  </main>
   <script src="config.js"></script><script src="i18n.js"></script><script src="common.js"></script>
-  <script src="options.js"></script>
+  <script src="features.js"></script><script src="icons.js"></script><script src="options.js"></script>
 </body></html>

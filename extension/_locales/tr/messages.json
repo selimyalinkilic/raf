@@ -226,5 +226,101 @@
  },
  "cantConnect": {
   "message": "Bağlanamadı: $1"
+ },
+ "optConnection": {
+  "message": "Bağlantı"
+ },
+ "optFeatures": {
+  "message": "Özellikler"
+ },
+ "optFeaturesIntro": {
+  "message": "Kullanmadıklarını kapat — popup ve sağ tık menüsünde sadece açık olanlar görünür. Değişiklikler anında kaydedilir."
+ },
+ "optSavedFlash": {
+  "message": "Kaydedildi ✓"
+ },
+ "optAllOn": {
+  "message": "Hepsini aç"
+ },
+ "optAllOff": {
+  "message": "Hepsini kapat"
+ },
+ "gSave": {
+  "message": "Kaydetme"
+ },
+ "gVideo": {
+  "message": "Video"
+ },
+ "gTools": {
+  "message": "Araçlar"
+ },
+ "f_save": {
+  "message": "Sayfa kaydetme"
+ },
+ "fd_save": {
+  "message": "Popup'taki Kaydet sekmesi"
+ },
+ "f_withShot": {
+  "message": "Ekran görüntüsü seçeneği"
+ },
+ "fd_withShot": {
+  "message": "Kaydederken “Ekran görüntüsünü de ekle”"
+ },
+ "f_menuSave": {
+  "message": "Sağ tıkla kaydetme"
+ },
+ "fd_menuSave": {
+  "message": "Sağ tık menüsünden sayfa / link / seçim kaydetme + Alt+Shift+S"
+ },
+ "f_video": {
+  "message": "Video indirme"
+ },
+ "fd_video": {
+  "message": "Popup'taki video / ses düğmeleri"
+ },
+ "f_menuVideo": {
+  "message": "Sağ tıkla indirme"
+ },
+ "fd_menuVideo": {
+  "message": "Sağ tık menüsünde “Videoyu / sesi indir”"
+ },
+ "f_uuid": {
+  "message": "UUID üretici"
+ },
+ "fd_uuid": {
+  "message": "Araçlar sekmesinde UUID v4"
+ },
+ "f_menuUuid": {
+  "message": "Her yere UUID ekleme"
+ },
+ "fd_menuUuid": {
+  "message": "Sağ tık “UUID ekle” + Alt+Shift+U"
+ },
+ "f_lorem": {
+  "message": "Lorem ipsum"
+ },
+ "fd_lorem": {
+  "message": "Örnek metin üretici"
+ },
+ "f_b64": {
+  "message": "Base64"
+ },
+ "fd_b64": {
+  "message": "Kodla / çöz (UTF-8 uyumlu)"
+ },
+ "f_jwt": {
+  "message": "JWT çözücü"
+ },
+ "fd_jwt": {
+  "message": "Token'ın header ve payload'ını oku"
+ },
+ "f_shot": {
+  "message": "Ekran görüntüsü aracı"
+ },
+ "fd_shot": {
+  "message": "Görünür alanı PNG indir ya da kopyala"
+ },
+ "allOff": {
+  "message": "Her şey kapalı. Ayarlar'dan özellik aç."
  }
 }

@@ -75,3 +75,7 @@ footer a{display:inline-flex;align-items:center;gap:4px}
 .jmeta span{display:inline-flex;align-items:center;gap:4px}
 .jmeta .i{width:12px;height:12px}
 .banner[hidden],#dl-status:empty,#s-msg:empty{display:none!important}
+
+[hidden]{display:none!important}
+.dlbox.solo{margin-top:0;padding-top:0;border-top:0}
+.empty-all{padding:28px 18px;text-align:center;color:var(--muted);font-weight:800}
