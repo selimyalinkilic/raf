@@ -52,7 +52,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 <table>
   <tr>
     <td align="center" width="50%"><img src="docs/store/screenshot-1-save.png" alt="Save a page"><br><sub>Save any page in one click</sub></td>
-    <td align="center" width="50%"><img src="docs/store/screenshot-4-picker.png" alt="Locator picker"><br><sub>Playwright locator picker</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-2-search.png" alt="Search your shelf"><br><sub>Find anything on your shelf</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/web-shelf.png" alt="Web app"><br><sub>With a server: web app with full-text search</sub></td>
@@ -71,15 +71,16 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
   - a **Raf button on top of videos** with quality selection (up to 4K)
   - files land in *Downloads/Raf* automatically
   - sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored
+- **Image download:** hover a photo on Instagram, X, Pinterest… and the Raf button saves it in the largest size the page offers; on any other site right-click → *Save image to Raf*. No server needed.
+- **Short link:** turn the current page (or any link) into a short is.gd link, copied to the clipboard. The link is only sent when you press the button.
 - **Telegram & phone:** a QR code to open the page on your phone, or send it to your own Telegram bot with a note and tags. Saved pages can be sent from your shelf too.
 - **Email:** open a ready draft (title, link, tags, note) in your mail app, Gmail or Outlook, then just press Send. Set a default recipient in Settings.
 - **9 themes**, each with its own look, not just colours: Pastel (default) and Minimal in light & dark, Graphite (pencil sketch on grid paper), Cyberpunk, Ocean (frosted glass), Forest, Sunset, Paper and Pop. The toolbar icon takes on the theme’s colours too.
 - **To your phone with zero setup:** turn on *Also add to Chrome bookmarks* and saved pages land in Bookmarks › Raf, which Chrome sync brings to your phone.
 - **For developers & testers:**
-  - **Locator picker:** click an element and get a Playwright locator (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test data (TR):** names, emails, phone numbers, addresses, valid national ID / tax numbers / IBANs
   - **Fill form:** fill a whole form with one fake person, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Fields you've already typed in are never overwritten.
-  - UUID v4 (right-click → *Insert UUID* or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>), Lorem ipsum, Base64 (UTF-8 safe), JWT decoder, screenshot to PNG / clipboard
+  - UUID v4 (right-click → *Insert UUID* or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>), Base64 (UTF-8 safe), JWT decoder, screenshot to PNG / clipboard
 - **Settings:** turn every feature, menu entry and tool on or off. UI in English or Turkish.
 - Tells you when a newer version is available on your server.
 

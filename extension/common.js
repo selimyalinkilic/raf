@@ -203,14 +203,6 @@ async function rafCapture(windowId, format = "jpeg") {
   return chrome.tabs.captureVisibleTab(windowId, format === "png" ? { format: "png" } : { format: "jpeg", quality: 72 });
 }
 
-// ---------- Locator picker ----------
-async function rafStartPicker(tabId) {
-  const i18n = { title: t("pkTitle"), hint: t("pkHint"), again: t("pkAgain"), copy: t("copy"), copied: t("copied"),
-    unique: t("pkUnique"), matches: t("pkMatches"), none: t("pkNone"), recommended: t("pkRecommended") };
-  await chrome.scripting.executeScript({ target: { tabId }, func: (x) => { window.__RAF_PICKER_I18N = x; }, args: [i18n] });
-  await chrome.scripting.executeScript({ target: { tabId }, files: ["picker.js"] });
-}
-
 // ---------- Fill form with one consistent fake person ----------
 function rafFillPage(overwrite = false) {
   const TD = self.RAF_TESTDATA, G = TD.GEN;
@@ -325,6 +317,33 @@ async function rafFindVideoInPage(target, src) {
   const direct = cands.find((u) => /^https?:\/\//.test(u || "") && !/\.(m3u8|mpd)(\?|$)/i.test(u));
   if (direct) return { url: direct, name: clean(document.title) };
   return { error: "streamed" };
+}
+
+// ---------- Images: straight to Downloads/Raf (works with or without a server) ----------
+// page: the post / page the image belongs to → used for a readable file name
+async function rafSaveImage(url, page = "") {
+  if (!/^(https?|data):/.test(url || "")) throw new Error(t("imgCant"));
+  const clean = (s) => String(s || "").replace(/[\\/:*?"<>|#\n\r\t]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 60);
+  let name = "image";
+  try {
+    const p = new URL(page || url), site = p.hostname.replace(/^(www|m)\./, "").split(".").slice(-2, -1)[0] || "image";
+    const ig = page.match(/instagram\.com\/(?:[^/?#]+\/)?(?:p|reels?|tv)\/([A-Za-z0-9_-]+)/);
+    const tw = page.match(/\/status\/(\d+)/), pin = page.match(/pinterest\.[^/]+\/pin\/(\d+)/);
+    const id = ig?.[1] || tw?.[1] || pin?.[1];
+    if (id) name = `${site}-${id}`;
+    else if (url.startsWith("data:")) name = `${site}-image`;
+    else { const last = clean(decodeURIComponent(new URL(url).pathname.split("/").pop() || "").replace(/\.[a-z0-9]{2,5}$/i, "")); name = last && last.length > 2 ? `${site}-${last}` : `${site}-image`; }
+  } catch (e) {}
+  let ext = "jpg";
+  const mime = url.match(/^data:image\/([a-z0-9+]+)/i);
+  if (mime) ext = mime[1].replace("jpeg", "jpg").replace("svg+xml", "svg");
+  else {
+    const u = new URL(url), m = u.pathname.match(/\.(jpe?g|png|webp|gif|avif|svg|bmp)$/i), f = u.searchParams.get("format");
+    if (m) ext = m[1].toLowerCase().replace("jpeg", "jpg"); else if (/^(jpe?g|png|webp|gif)$/i.test(f || "")) ext = f.toLowerCase().replace("jpeg", "jpg");
+  }
+  const filename = `Raf/${name}.${ext}`;
+  await chrome.downloads.download({ url, filename, conflictAction: "uniquify" });
+  return { filename };
 }
 
 // Find the video on this tab and save it to Downloads/Raf. Returns { filename } or throws.

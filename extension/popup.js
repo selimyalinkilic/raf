@@ -47,7 +47,7 @@ let FEAT = {};
 async function applyFeatures() {
   FEAT = await rafFeatures();
   const showMain = FEAT.save || FEAT.video || FEAT.sessions;
-  const tools = ["picker", "testData", "phone", "uuid", "lorem", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
+  const tools = ["testData", "phone", "short", "uuid", "b64", "jwt", "shot"].filter((k) => FEAT[k]);
   $("saveform").hidden = !FEAT.save;
   $("shotrow").hidden = !FEAT.withShot;
   if (!FEAT.withShot) $("withShot").checked = false;
@@ -219,20 +219,34 @@ chrome.storage.local.get("openTools").then(({ openTools }) => {
     chrome.storage.local.set({ openTools: [...document.querySelectorAll("details.tool[open]")].map((x) => x.dataset.k) }));
 });
 
-// ---------- Lorem ipsum ----------
-const LOREM = "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum".split(" ");
-const rnd = (n) => Math.floor(Math.random() * n);
-const words = (n) => Array.from({ length: n }, () => LOREM[rnd(LOREM.length)]);
-const sentence = () => { const w = words(8 + rnd(10)); w[0] = w[0][0].toUpperCase() + w[0].slice(1); return w.join(" ") + "."; };
-const paragraph = (first) => { const s = Array.from({ length: 4 + rnd(3) }, sentence); if (first) s[0] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."; return s.join(" "); };
-function genLorem() {
-  const n = +$("l-count").value, u = $("l-unit").value;
-  $("l-out").value = u === "p" ? Array.from({ length: n }, (_, i) => paragraph(i === 0)).join("\n\n")
-    : u === "s" ? Array.from({ length: n }, sentence).join(" ")
-    : (() => { const w = words(n); w[0] = w[0][0].toUpperCase() + w[0].slice(1); return w.join(" "); })();
+// ---------- Short link: is.gd, TinyURL if is.gd refuses ----------
+const SHORT_HOSTS = ["https://is.gd/*", "https://tinyurl.com/*"];
+async function rafShorten(url) {
+  try {
+    const j = await (await fetch("https://is.gd/create.php?format=json&url=" + encodeURIComponent(url))).json();
+    if (j.shorturl) return j.shorturl;
+  } catch (e) {}
+  const r = await fetch("https://tinyurl.com/api-create.php?url=" + encodeURIComponent(url));
+  const s = (await r.text()).trim();
+  if (r.ok && /^https:\/\/tinyurl\.com\//.test(s)) return s;
+  throw new Error(t("shortErr"));
 }
-["l-count", "l-unit"].forEach((id) => $(id).onchange = genLorem);
-$("l-new").onclick = genLorem; genLorem();
+activeTab().then((tab) => { if (/^https?:/.test(tab?.url || "")) $("sh-in").value = tab.url; });
+$("sh-go").onclick = async () => {
+  const url = $("sh-in").value.trim();
+  $("sh-msg").textContent = ""; $("sh-res").hidden = true;
+  if (!/^https?:\/\/[^\s]+\.[^\s]+$/.test(url)) { $("sh-msg").innerHTML = ic("alert", "err") + " " + escHtml(t("shortBadUrl")); return; }
+  // asked once, right on the click (permission prompts need the user's gesture)
+  if (!(await chrome.permissions.request({ origins: SHORT_HOSTS }))) { $("sh-msg").innerHTML = ic("alert", "err") + " " + escHtml(t("shortNoPerm")); return; }
+  $("sh-go").disabled = true;
+  try {
+    const short = await rafShorten(url);
+    $("sh-out").value = short; $("sh-res").hidden = false;
+    await navigator.clipboard.writeText(short).catch(() => {});
+    $("sh-msg").innerHTML = ic("check", "ok") + " " + escHtml(t("shortDone"));
+  } catch (e) { $("sh-msg").innerHTML = ic("alert", "err") + " " + escHtml(e.message || t("shortErr")); }
+  $("sh-go").disabled = false;
+};
 
 // ---------- Base64 (UTF-8 safe) ----------
 const b64enc = (s, url) => { let r = btoa(String.fromCharCode(...new TextEncoder().encode(s))); return url ? r.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "") : r; };
@@ -287,12 +301,11 @@ $("s-copy").onclick = async () => {
   if (lastTab === "tools" && !toolsTab.hidden) toolsTab.click();
 })();
 
-// ---------- Locator picker ----------
-async function activeTab() { const [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); return tab; }
-$("pk-start").onclick = async () => {
-  try { await rafStartPicker((await activeTab()).id); window.close(); }
-  catch (e) { $("pk-start").insertAdjacentHTML("afterend", `<p class="hint err">${ic("alert", "err")} ${escHtml(t("cantRunHere"))}</p>`); }
-};
+async function activeTab() {
+  const forced = +new URLSearchParams(location.search).get("tab");  // popup opened as a page (docs / tests)
+  if (forced) return chrome.tabs.get(forced).catch(() => null);
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); return tab;
+}
 
 // ---------- Test data (TR) ----------
 $("td-type").innerHTML = RAF_TESTDATA.ORDER.map((k) => `<option value="${k}">${escHtml(t("td_" + k))}</option>`).join("");

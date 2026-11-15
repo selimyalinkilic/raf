@@ -17,6 +17,7 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "td", title: t("ctxTestData"), contexts: ["editable"] });
     for (const k of RAF_TESTDATA.ORDER) chrome.contextMenus.create({ id: "td:" + k, parentId: "td", title: t("td_" + k), contexts: ["editable"] });
   }
+  if (f.menuImage) chrome.contextMenus.create({ id: "img", title: t("ctxDlImage"), contexts: ["image"] });
   if (f.menuVideo) {
     chrome.contextMenus.create({ id: "dl-video", title: t("ctxDlVideo"), contexts: ["page", "link", "video"] });
     // audio-only needs ffmpeg on a Raf server
@@ -59,6 +60,11 @@ async function savePage(tab, extra = {}) {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "uuid") return putUuid(tab, info.frameId);
   if (info.menuItemId === "fill") return fillAndReport(tab);
+  if (info.menuItemId === "img") {
+    try { const r = await rafSaveImage(info.srcUrl, info.linkUrl || info.pageUrl || tab.url); flash(tab.id, true, t("localSaved", r.filename)); }
+    catch (e) { flash(tab.id, false, String(e.message || e)); }
+    return;
+  }
   if (info.menuItemId === "phone") {
     try {
       await rafSendToTelegram({ url: info.linkUrl || tab.url, title: info.linkUrl ? info.selectionText || info.linkUrl : tab.title });
@@ -129,7 +135,6 @@ chrome.commands.onCommand.addListener(async (cmd) => {
   const f = await rafFeatures();
   if (cmd === "insert-uuid") return f.menuUuid ? putUuid(tab) : undefined;
   if (cmd === "fill-form") { if (f.testData) fillAndReport(tab); return; }
-  if (cmd === "pick-locator") { if (f.picker) rafStartPicker(tab.id).catch(() => flash(tab.id, false, t("cantRunHere"))); return; }
   if (cmd !== "quick-save" || !f.menuSave) return;
   try {
     const r = await savePage(tab);
@@ -193,6 +198,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     dict: async () => { await rafI18nReady; return { dict: RAF_DICT }; },
     features: async () => ({ ...(await rafFeatures()), local: await rafIsLocal() }),
     local: () => rafLocalVideo(sender.tab.id, m.url, m.src || ""),
+    image: () => rafSaveImage(m.url, m.page || sender.tab?.url || ""),
   }[m.raf];
   if (!run) return;
   run().then((r) => reply(r ?? {})).catch((e) => reply({ error: String(e.message || e) }));

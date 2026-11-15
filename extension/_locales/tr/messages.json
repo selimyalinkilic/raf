@@ -95,15 +95,6 @@
  "uuidHint": {
   "message": "Sağ tık → <b>UUID ekle</b>"
  },
- "unitP": {
-  "message": "paragraf"
- },
- "unitS": {
-  "message": "cümle"
- },
- "unitW": {
-  "message": "kelime"
- },
  "phB64": {
   "message": "Metni ya da Base64'ü buraya yapıştır"
  },
@@ -243,7 +234,7 @@
   "message": "Kaydetme"
  },
  "gVideo": {
-  "message": "Video"
+  "message": "Video ve görsel"
  },
  "gTools": {
   "message": "Araçlar"
@@ -290,12 +281,6 @@
  "fd_menuUuid": {
   "message": "Sağ tık “UUID ekle” + Alt+Shift+U"
  },
- "f_lorem": {
-  "message": "Lorem ipsum"
- },
- "fd_lorem": {
-  "message": "Örnek metin üretici"
- },
  "f_b64": {
   "message": "Base64"
  },
@@ -320,12 +305,6 @@
  "gDev": {
   "message": "Geliştirici"
  },
- "f_picker": {
-  "message": "Seçici kopyala"
- },
- "fd_picker": {
-  "message": "Elemana tıkla → Playwright locator, CSS, XPath (Alt+Shift+L)"
- },
  "f_testData": {
   "message": "Test verisi (TR)"
  },
@@ -337,39 +316,6 @@
  },
  "fd_menuTestData": {
   "message": "Alana sağ tıkla → “Test verisi ekle”"
- },
- "cmdPicker": {
-  "message": "Eleman seç ve seçicisini kopyala"
- },
- "pkTitle": {
-  "message": "Seçiciler"
- },
- "pkHint": {
-  "message": "Bir elemana tıkla · Esc ile kapat"
- },
- "pkAgain": {
-  "message": "Başka eleman"
- },
- "pkUnique": {
-  "message": "tekil"
- },
- "pkMatches": {
-  "message": "$1 eşleşme"
- },
- "pkNone": {
-  "message": "eşleşme yok"
- },
- "pkRecommended": {
-  "message": "önerilen"
- },
- "pkButton": {
-  "message": "Sayfada eleman seç"
- },
- "pkToolTitle": {
-  "message": "Seçici kopyala (Playwright)"
- },
- "pkToolHint": {
-  "message": "Üzerine gel, tıkla; seçiciler eşleşme sayısıyla listelenir. Kısayol: Alt+Shift+L"
  },
  "tdToolTitle": {
   "message": "Test verisi (TR)"
@@ -931,5 +877,56 @@
  },
  "skind_neon": {
   "message": "80'ler gün batımı, palmiyeler, neon"
+ },
+ "f_short": {
+  "message": "Kısa link"
+ },
+ "fd_short": {
+  "message": "Açık sayfayı (ya da herhangi bir linki) kısa bir is.gd linkine çevirir"
+ },
+ "shortTitle": {
+  "message": "Kısa link"
+ },
+ "phShort": {
+  "message": "https://…"
+ },
+ "shortBtn": {
+  "message": "Kısalt ve kopyala"
+ },
+ "shortDone": {
+  "message": "Panoya kopyalandı"
+ },
+ "shortErr": {
+  "message": "Bu link kısaltılamadı — biraz sonra tekrar dene"
+ },
+ "shortBadUrl": {
+  "message": "Tam bir web adresi gir (https://…)"
+ },
+ "shortNoPerm": {
+  "message": "Link kısaltmak için Raf’ın is.gd’ye erişim izni gerekiyor"
+ },
+ "shortHint": {
+  "message": "Link is.gd’ye gönderilir (is.gd reddederse TinyURL). Kısa linkler herkese açıktır; linki bilen açabilir."
+ },
+ "f_imageOverlay": {
+  "message": "Görselin üstünde düğme"
+ },
+ "fd_imageOverlay": {
+  "message": "Instagram, X, Pinterest… fotoğrafının üstüne gel → “Raf” en büyük boyutuyla kaydeder"
+ },
+ "f_menuImage": {
+  "message": "Sağ tıkla görsel kaydetme"
+ },
+ "fd_menuImage": {
+  "message": "Her görselin sağ tık menüsünde “Görseli Raf’a kaydet”"
+ },
+ "ctxDlImage": {
+  "message": "Görseli Raf’a kaydet"
+ },
+ "ovImgTitle": {
+  "message": "Bu görseli Raf ile kaydet"
+ },
+ "imgCant": {
+  "message": "Bu görsel kaydedilemiyor (normal bir görsel dosyası değil)"
  }
 }

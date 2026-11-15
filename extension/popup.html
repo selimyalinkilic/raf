@@ -30,10 +30,6 @@
     </div>
   </div>
   <div id="tools" class="pane" hidden>
-    <details class="tool" data-k="picker" open><summary><i data-i="crosshair"></i> <span data-t="pkToolTitle"></span></summary>
-      <button id="pk-start" class="btn main wide"><i data-i="crosshair"></i> <span data-t="pkButton"></span></button>
-      <p class="hint"><span data-t="pkToolHint"></span></p>
-    </details>
     <details class="tool" data-k="phone"><summary><i data-i="phone"></i> <span data-t="phoneTitle"></span></summary>
       <div id="qr" class="qr"></div>
       <p class="hint center"><span data-t="qrHint"></span></p>
@@ -44,6 +40,13 @@
       <div class="row"><button id="ph-tg" class="btn main"><i data-i="send"></i> <span data-t="sendTelegram"></span></button><button id="ph-copy" class="btn"><i data-i="link"></i> <span data-t="copyLink"></span></button></div>
       <button id="ph-mail" class="btn wide mailbtn"><i data-i="mail"></i> <span data-t="sendMail"></span></button>
       <div id="ph-msg" class="hint"></div>
+    </details>
+    <details class="tool" data-k="short"><summary><i data-i="link"></i> <span data-t="shortTitle"></span></summary>
+      <input id="sh-in" data-t-ph="phShort" spellcheck="false">
+      <button id="sh-go" class="btn main wide"><i data-i="link"></i> <span data-t="shortBtn"></span></button>
+      <div class="row" id="sh-res" hidden><input id="sh-out" readonly><button class="btn" data-copy="sh-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
+      <div id="sh-msg" class="hint"></div>
+      <p class="hint"><span data-t="shortHint"></span></p>
     </details>
     <details class="tool" data-k="testData"><summary><i data-i="user"></i> <span data-t="tdToolTitle"></span></summary>
       <div class="opts"><select id="td-type"></select><select id="td-count"><option>1</option><option>5</option><option>10</option></select></div>
@@ -62,14 +65,6 @@
       <textarea id="u-out" rows="1" readonly></textarea>
       <div class="row"><button id="u-new" class="btn"><i data-i="refresh"></i> <span data-t="regen"></span></button><button id="u-copy" class="btn main" data-copy="u-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
       <p class="hint"><span data-t-html="uuidHint"></span> · <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd></p>
-    </details>
-    <details class="tool" data-k="lorem"><summary><i data-i="text"></i> Lorem ipsum</summary>
-      <div class="opts">
-        <select id="l-count"><option>1</option><option selected>2</option><option>3</option><option>5</option></select>
-        <select id="l-unit"><option value="p" data-t="unitP"></option><option value="s" data-t="unitS"></option><option value="w" data-t="unitW"></option></select>
-      </div>
-      <textarea id="l-out" rows="4" readonly></textarea>
-      <div class="row"><button id="l-new" class="btn"><i data-i="refresh"></i> <span data-t="regen"></span></button><button class="btn main" data-copy="l-out"><i data-i="copy"></i> <span data-t="copy"></span></button></div>
     </details>
     <details class="tool" data-k="b64"><summary><i data-i="binary"></i> Base64</summary>
       <textarea id="b-in" rows="3" data-t-ph="phB64"></textarea>

@@ -8,14 +8,15 @@ const RAF_FEATURES = [
   { id: "video",      group: "gVideo", icon: "video",    def: true },  // popup download box
   { id: "videoOverlay", group: "gVideo", icon: "download", def: true },  // "Raf" button on top of videos (video sites)
   { id: "menuVideo",  group: "gVideo", icon: "download", def: true },  // right-click: download video / audio
+  { id: "imageOverlay", group: "gVideo", icon: "image",  def: true },  // "Raf" button on big images (Instagram, X, Pinterest…)
+  { id: "menuImage",  group: "gVideo", icon: "image",    def: true },  // right-click an image: save it to Downloads/Raf
+  { id: "short",      group: "gTools", icon: "link",     def: true },  // short link via is.gd / TinyURL
   { id: "uuid",       group: "gTools", icon: "key",      def: true },
   { id: "menuUuid",   group: "gTools", icon: "plus",     def: true },  // right-click "Insert UUID" + Alt+Shift+U
-  { id: "lorem",      group: "gTools", icon: "text",     def: true },
   { id: "b64",        group: "gTools", icon: "binary",   def: true },
   { id: "jwt",        group: "gTools", icon: "id",       def: true },
   { id: "shot",       group: "gTools", icon: "image",    def: true },
   { id: "phone",      group: "gTools", icon: "phone",    def: true },  // QR code + send to Telegram
-  { id: "picker",     group: "gDev",   icon: "crosshair", def: true },  // Playwright locator picker + Alt+Shift+L
   { id: "testData",   group: "gDev",   icon: "user",     def: true },  // TR test data generator + "Fill form"
   { id: "menuTestData", group: "gDev", icon: "plus",     def: true },  // right-click "Insert test data ▸"
 ];

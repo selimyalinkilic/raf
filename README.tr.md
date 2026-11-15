@@ -52,7 +52,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 <table>
   <tr>
     <td align="center" width="50%"><img src="docs/store/screenshot-1-save.png" alt="Sayfa kaydetme"><br><sub>Her sayfayı tek tıkla kaydet</sub></td>
-    <td align="center" width="50%"><img src="docs/store/screenshot-4-picker.png" alt="Locator seçici"><br><sub>Playwright locator seçici</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-2-search.png" alt="Rafında ara"><br><sub>Rafındaki her şeyi bul</sub></td>
   </tr>
   <tr>
     <td align="center"><img src="docs/screenshots/web-shelf.png" alt="Web uygulaması"><br><sub>Sunucuyla: tam metin aramalı web uygulaması</sub></td>
@@ -71,15 +71,16 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
   - videoların üstünde **Raf butonu** ve kalite seçimi (4K'ya kadar)
   - dosyalar otomatik olarak *İndirilenler/Raf* klasörüne iner
   - giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz
+- **Görsel indirme:** Instagram, X, Pinterest… fotoğrafının üstüne gel, Raf düğmesi sayfadaki en büyük boyutu kaydeder; diğer sitelerde sağ tık → *Görseli Raf'a kaydet*. Sunucu gerekmez.
+- **Kısa link:** açık sayfayı (ya da herhangi bir linki) kısa bir is.gd linkine çevirir, panoya kopyalar. Link sadece düğmeye bastığında gönderilir.
 - **Telegram ve telefon:** sayfayı telefonda açmak için QR kod ya da not ve etiketle kendi Telegram botuna gönderme. Kayıtlı sayfaları raftan da gönderebilirsin.
 - **E-posta:** başlık, link, etiket ve notla hazır bir taslağı posta uygulamanda, Gmail'de ya da Outlook'ta aç, sadece Gönder'e bas. Varsayılan alıcıyı Ayarlar'dan seçebilirsin.
 - **9 tema**, her biri sadece renkte değil görünümde de farklı: Pastel (varsayılan) ve Minimal açık & koyu, Grafit (kareli kâğıtta kurşun kalem), Cyberpunk, Okyanus (buzlu cam), Orman, Gün batımı, Kâğıt ve Pop. Araç çubuğundaki ikon da temanın renklerini alır.
 - **Kurulumsuz telefona:** *Chrome yer imlerine de ekle*'yi aç, kaydettiklerin Yer imleri › Raf klasörüne düşer; Chrome senkronu telefonuna getirir.
 - **Geliştiriciler ve test uzmanları için:**
-  - **Locator seçici:** bir öğeye tıkla, Playwright locator'ını al (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test verisi (TR):** ad, e-posta, telefon, adres; doğrulamadan geçen TCKN / VKN / IBAN
   - **Formu doldur:** tüm formu tek bir sahte kişiyle doldur, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Senin yazdığın alanlara dokunmaz.
-  - UUID v4 (sağ tık → *UUID ekle* veya <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>), Lorem ipsum, Base64 (UTF-8 uyumlu), JWT çözücü, ekran görüntüsünü PNG/panoya alma
+  - UUID v4 (sağ tık → *UUID ekle* veya <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd>), Base64 (UTF-8 uyumlu), JWT çözücü, ekran görüntüsünü PNG/panoya alma
 - **Ayarlar:** her özelliği, menü öğesini ve aracı tek tek açıp kapat. Arayüz Türkçe veya İngilizce.
 - Sunucuda yeni sürüm varsa haber verir.
 
