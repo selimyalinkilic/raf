@@ -67,6 +67,8 @@ def on_download_finished(d):
 
 def queue_download(chat, url, kind):
     d = downloads.enqueue(url, kind, "telegram")
+    if d["status"] == "error":  # refused up front (e.g. Netflix) — on_download_finished already explained why
+        return d
     send(chat, f"⏳ Sıraya alındı ({'🎵 ses' if kind == 'audio' else '🎬 video'}). Hazır olunca gönderirim.")
     return d
 

@@ -6,7 +6,7 @@ import threading
 import time
 import traceback
 
-from . import db
+from . import db, policy
 
 VIDEO_DIR = os.environ.get("RAF_VIDEO_DIR", "/videos")
 COOKIES = os.environ.get("RAF_COOKIES", "/data/cookies.txt")
@@ -19,6 +19,17 @@ on_finished = []  # (download_dict) -> None ; telegram bildirimi buraya kaydolur
 def enqueue(url, kind="video", source="extension", cookies="", quality=0):
     kind = kind if kind in ("video", "audio") else "video"
     quality = int(quality or 0) if kind == "video" else 0
+    svc = policy.blocked(url)
+    if svc:  # recorded as a failed job so every client (extension, web, Telegram) shows the reason
+        d = db.dl_create(url, kind, source, quality)
+        db.dl_update(d["id"], status="error", error=policy.blocked_message(svc), finished_at=int(time.time()))
+        d = db.dl_get(d["id"])
+        for cb in on_finished:
+            try:
+                cb(d)
+            except Exception:
+                traceback.print_exc()
+        return d
     same = db.dl_find_recent(url, kind, quality)
     if same and (same["status"] != "done" or path_of(same)):
         same["reused"] = True   # çift tıklama / tekrar isteme: aynı işi döndür, yeniden indirme
@@ -41,6 +52,7 @@ def _opts(dl_id, kind, cookiefile=None, quality=0):
             db.dl_update(dl_id, progress=round(min(pct, 99), 1))
 
     o = {
+        "match_filter": policy.live_filter,
         "outtmpl": os.path.join(VIDEO_DIR, "%(title).90B [%(id)s].%(ext)s"),
         "windowsfilenames": True,          # Windows'ta sorunsuz açılsın
         "noplaylist": True,                # liste linkinde sadece o video
@@ -111,6 +123,8 @@ def _run(d):
             info = ydl.extract_info(d["url"], download=True)
             if info.get("_type") == "playlist" and info.get("entries"):
                 info = info["entries"][0]
+            if policy.live_filter(info):
+                raise RuntimeError(policy.LIVE_MESSAGE)
             path = (info.get("requested_downloads") or [{}])[0].get("filepath") or ydl.prepare_filename(info)
         if d["kind"] == "audio":
             path = os.path.splitext(path)[0] + ".mp3"
@@ -172,6 +186,9 @@ def formats(url, cookies=""):
     """Return title + the video heights available for this URL with an estimated size for each."""
     import tempfile
     import yt_dlp
+    svc = policy.blocked(url)
+    if svc:
+        raise RuntimeError(policy.blocked_message(svc))
     key = url
     hit = _fmt_cache.get(key)
     if hit and time.time() - hit[0] < 600:
@@ -194,6 +211,8 @@ def formats(url, cookies=""):
     finally:
         if cookiefile and os.path.exists(cookiefile):
             os.remove(cookiefile)
+    if policy.live_filter(info):
+        raise RuntimeError(policy.LIVE_MESSAGE)
     fmts = info.get("formats") or []
     dur = info.get("duration") or 0
 
