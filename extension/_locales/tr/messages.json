@@ -925,5 +925,11 @@
  },
  "tgHubLimit": {
   "message": "Günlük Telegram sınırına ulaşıldı, yarın tekrar dene."
+ },
+ "skin_neon": {
+  "message": "Neon Sahil"
+ },
+ "skind_neon": {
+  "message": "80'ler gün batımı, palmiyeler, neon"
  }
 }

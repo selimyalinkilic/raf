@@ -4,7 +4,7 @@
 // - listen (while Chrome is open): links sent to the bot are saved to the shelf; /son /bugun /ara answer from it
 const RAF_TG_API = "https://api.telegram.org";
 // Shared Raf bot (worker/ in this repo): one tap to connect, no @BotFather. Empty = only "your own bot" is offered.
-const RAF_HUB = "";
+const RAF_HUB = "https://raf-hub.selimyalinkilic.me";
 
 async function rafTgGet() { const { tg = {} } = await chrome.storage.local.get("tg"); return tg; }
 async function rafTgSet(patch) { const tg = { ...(await rafTgGet()), ...patch }; await chrome.storage.local.set({ tg }); return tg; }

@@ -26,7 +26,7 @@ Raf is a browser extension for saving web pages and a set of developer / testing
 | `contextMenus` | The right-click entries (save page / link / selection, insert UUID or test data). |
 | `downloads` | Save a screenshot as a PNG, and, with a server, save finished video downloads to your Downloads folder. |
 | `clipboardWrite` | The Copy buttons (UUID, test data, locators, screenshot). |
-| `alarms`, `notifications` | Check on a running video download, check your own Telegram bot for new messages every 30 seconds (only if you set it up), and tell you when a save or download finished. |
+| `alarms`, `notifications` | Check on a running video download, check Telegram for new messages every 30–60 seconds (only if you connected it), and tell you when a save or download finished. |
 | Video sites (Instagram, X, TikTok, Vimeo, Reddit…) | Show the small download button on videos. Without a server, Raf saves the video file the page is already playing straight to your Downloads folder. With your own server, the server downloads it. |
 | `cookies` (optional, asked when you connect a server) | Some sites only serve a video to logged-in users. When **you** start a download from such a site, Raf sends that site's cookies to **your own server** for that one download. They're held in memory and deleted when the job ends. |
 | Your server's address (optional) | Talk to the Raf server you entered. |
@@ -34,7 +34,10 @@ Raf is a browser extension for saving web pages and a set of developer / testing
 
 ## Telegram (optional)
 
-If you connect your own bot (made with @BotFather), Raf sends the pages you choose (title, address, your tags and note) to your Telegram chat, and saves links you send to the bot. The messages go straight between your browser and Telegram's servers. Telegram's [privacy policy](https://telegram.org/privacy) applies to them. The bot token is stored only on that computer (not synced). Messages from anyone else who writes to your bot are ignored.
+**Raf's bot (Connect Telegram).** Raf's own bot, [@rafshelf_bot](https://t.me/rafshelf_bot), runs on a small Cloudflare Worker (source in [`worker/`](../worker/)). It stores: your Telegram chat ID and first name, a hash of a random key your browser holds, and the messages you send to the bot until your browser picks them up (deleted right then, at the latest after 14 days). Pages you send to Telegram pass through it to Telegram and are not stored. Disconnecting in Settings deletes your entry. Telegram's and Cloudflare's privacy policies apply to the messages in transit.
+
+**Your own bot.** 
+If you connect your own bot instead (made with @BotFather), Raf sends the pages you choose (title, address, your tags and note) to your Telegram chat, and saves links you send to the bot. The messages go straight between your browser and Telegram's servers. Telegram's [privacy policy](https://telegram.org/privacy) applies to them. The bot token is stored only on that computer (not synced). Messages from anyone else who writes to your bot are ignored.
 
 ## Video downloads
 
@@ -53,7 +56,7 @@ Raf, web sayfalarını kaydetmek için bir tarayıcı eklentisi ve geliştirici/
 - **Yerel mod (varsayılan):** Kaydettiğin sayfalar (adres, başlık, açıklama, etiket ve notun, sayfanın okunabilir metni, isteğe bağlı ekran görüntüsü) **yalnızca tarayıcında** (IndexedDB) tutulur. Sen dışa aktarmadıkça bilgisayarından çıkmaz.
 - **Kendi Raf sunucun (isteğe bağlı):** Ayarlar'a bir sunucu adresi ve anahtar girersen kayıtlar **yalnızca o sunucuya** gider. O sunucuyu sen çalıştırırsın, Raf'ın geliştiricisi dahil kimse bu verileri almaz.
 - **Ayarlar** (dil, tema, açık özellikler, varsa sunucu adresi/anahtarı) Chrome'un eklenti deposunda tutulur. Chrome Sync açıksa kendi cihazların arasında eşitlenebilir.
-- **Telegram (isteğe bağlı):** Kendi botunu bağlarsan, seçtiğin sayfalar (başlık, adres, etiket ve notun) Telegram sohbetine gönderilir, bota attığın linkler kaydedilir. Mesajlar doğrudan tarayıcınla Telegram arasında gider. Bot token'ı yalnızca o bilgisayarda saklanır, eşitlenmez. Senden başkasının bota yazdıkları yok sayılır.
+- **Telegram (isteğe bağlı):** "Telegram'a bağlan" ile Raf'ın botunu ([@rafshelf_bot](https://t.me/rafshelf_bot), Cloudflare Worker, kaynak kodu [`worker/`](../worker/)) kullanırsan: sohbet kimliğin ve adın, tarayıcındaki rastgele anahtarın özeti ve bota attığın mesajlar tarayıcın alana kadar (en geç 14 gün) saklanır; gönderdiğin sayfalar saklanmadan Telegram'a iletilir; bağlantıyı kesince kaydın silinir. Kendi botunu bağlarsan, seçtiğin sayfalar (başlık, adres, etiket ve notun) Telegram sohbetine gönderilir, bota attığın linkler kaydedilir. Mesajlar doğrudan tarayıcınla Telegram arasında gider. Bot token'ı yalnızca o bilgisayarda saklanır, eşitlenmez. Senden başkasının bota yazdıkları yok sayılır.
 - **Yok:** analitik, izleme, reklam, hesap, veri satışı ya da paylaşımı, uzaktan kod. Raf'ın kendine ait sunucusu yoktur, hiçbir veri toplamaz.
 - **Çerezler (isteğe bağlı):** Yalnızca sunucu bağlıyken ve girişli bir siteden video indirmeyi **sen** başlattığında, o sitenin çerezleri o tek indirme için **kendi sunucuna** gönderilir. Bellekte tutulur, iş bitince silinir.
 - **Video indirme:** Sunucu olmadan Raf, sayfanın zaten oynattığı video dosyasını doğrudan siteden bilgisayarına kaydeder, araya kimse girmez. Kendi Raf sunucun varsa indirmeyi sunucu yapar. Ücretli/DRM'li servisler (Netflix, Disney+, Prime Video, Spotify vb.) ve canlı yayınlar reddedilir. Mağaza sürümü YouTube'dan indirmez. Telif haklarına ve sitelerin kurallarına uymak kullanıcının sorumluluğundadır.

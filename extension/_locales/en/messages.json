@@ -925,5 +925,11 @@
  },
  "tgHubLimit": {
   "message": "Daily Telegram limit reached, try again tomorrow."
+ },
+ "skin_neon": {
+  "message": "Neon Beach"
+ },
+ "skind_neon": {
+  "message": "80s sunset, palm trees, neon"
  }
 }

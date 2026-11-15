@@ -91,6 +91,7 @@ const SKIN_PREVIEW = {
   pastel:    { bg: "linear-gradient(160deg,#fffaf4,#fbf6ff 60%,#f4fbff)", card: "#fff", ink: "#3d3a5c", a: "#d9ccff", ad: "#ab97ec", b: "#bdf0d6", bd: "#7fd0a8", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },
   minimal:   { bg: "#f6f8fa", card: "#fff", ink: "#1f2328", a: "#e8edf4", ad: "#4a6fa5", b: "#dcf2e4", bd: "#2f9e5b", r: 5, font: "system-ui,sans-serif", shadow: "" },
   cyberpunk: { bg: "linear-gradient(160deg,#07060f,#0d0a1c 60%,#050d1a)", card: "#12101f", ink: "#e8f7ff", a: "#2a0f3d", ad: "#ff2bd6", b: "#05302d", bd: "#00f5d4", r: 1, font: "ui-monospace,monospace", glow: true },
+  neon:      { bg: "linear-gradient(180deg,#14042a,#3b0d52 50%,#8a1f63 80%,#ff6a3d)", card: "rgba(22,6,40,.85)", ink: "#fff0fb", a: "#3a1250", ad: "#ff3fa4", b: "#ff7a3d", bd: "#2de2e6", r: 2, font: "Fredoka,sans-serif", glow: true },
   ocean:     { bg: "linear-gradient(160deg,#08121f,#0b1a2e 60%,#071a24)", card: "#10233a", ink: "#e3f2ff", a: "#12385a", ad: "#3fc1ff", b: "#0d3b3a", bd: "#2ee6c5", r: 10, font: "Nunito,sans-serif", shadow: "0 3px 0" },
   forest:    { bg: "linear-gradient(160deg,#f7f4ea,#f2f1e4 60%,#eef3e6)", card: "#fffdf6", ink: "#2f3b2c", a: "#dfe8d0", ad: "#6f8f4e", b: "#d6ecd2", bd: "#4f9a5a", r: 10, font: "Nunito,sans-serif", shadow: "0 3px 0" },
   sunset:    { bg: "linear-gradient(160deg,#fff1e6,#ffe7ee 60%,#f3e9ff)", card: "#fff", ink: "#4a2b3f", a: "#ffd3c2", ad: "#ff7a59", b: "#ffe2b8", bd: "#f5a524", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },

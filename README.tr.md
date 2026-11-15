@@ -33,7 +33,7 @@ Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfan�
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
 | Geliştirici/test araçları, temalar ve koyu mod | ✅ | ✅ |
 | Video indirme | Instagram, TikTok ve düz video dosyası oynatan siteler | YouTube, X, Reddit dahil 1000'den fazla site; kalite seçimi ve sadece ses |
-| Telegram: sayfa gönder, telefondan link kaydet | ✅ kendi botunla, Chrome açıkken | ✅ her zaman açık, ayrıca video indirme ve günlük özet |
+| Telegram: sayfa gönder, telefondan link kaydet | ✅ tek dokunuşla (ya da kendi botunla), Chrome açıkken | ✅ her zaman açık, ayrıca video indirme ve günlük özet |
 | Telefon için web uygulaması | — | ✅ |
 | Hesap / üyelik | yok | yok, sunucu senin |
 
@@ -97,13 +97,11 @@ Sunucu olmadan Raf yalnızca sayfanın zaten tek parça dosya olarak oynattığ�
 
 Hangi sürüm olursa olsun Raf ücretli/DRM'li servislerden (Netflix, Disney+, Prime Video, Spotify…) ve canlı yayınlardan asla indirmez. Yalnızca indirmene izin verilen içerikleri, kişisel kullanım için indir.
 
-### Sunucusuz Telegram (kendi botun)
+### Sunucusuz Telegram
 
-Ayarlar → **Telegram** kartı seni yaklaşık iki dakikada adım adım götürür:
+Ayarlar → **Telegram** → **Telegram'a bağlan**. Telegram [@rafshelf_bot](https://t.me/rafshelf_bot) ile açılır: **Başlat**'a bas, bu kadar.
 
-1. [@BotFather](https://t.me/BotFather)'ı aç, `/newbot` yaz ve bir ad seç. BotFather sana bir **token** verir.
-2. Token'ı Raf'a yapıştır.
-3. Yeni botunu açıp **Başlat**'a bas. Raf sohbetini kendisi bulur ve bir hoşgeldin mesajı atar.
+Raf'ın botu küçük bir Cloudflare Worker'da çalışır ([`worker/`](worker/)) ve mesajları sadece iletir. Bota attığın linkler tarayıcın alana kadar orada bekler, alınınca (en geç 14 gün sonra) silinir. Arada hiçbir şey olmasın mı istiyorsun? **Bunun yerine kendi botumu kullan**'ı seç: [@BotFather](https://t.me/BotFather) ile bir bot aç (`/newbot`), token'ı yapıştır, Başlat'a bas; mesajlar doğrudan tarayıcınla Telegram arasında gider.
 
 Sonra:
 - Popup'tan (not ve etiketle), sağ tık menüsünden ya da raftaki herhangi bir kayıttan **Telegram'a gönder**. İstersen kaydettiğin her sayfa otomatik gönderilir.

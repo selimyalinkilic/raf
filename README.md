@@ -33,7 +33,7 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title,
 | Save, tags, notes, search, sessions | ✅ | ✅ |
 | Dev & test tools, themes & dark mode | ✅ | ✅ |
 | Video downloads | Instagram, TikTok and sites that play a plain video file | 1000+ sites incl. YouTube, X, Reddit, with quality choice and audio-only |
-| Telegram: send pages, save links from your phone | ✅ with your own bot, while Chrome is open | ✅ always on, plus video downloads and a daily digest |
+| Telegram: send pages, save links from your phone | ✅ one tap (or your own bot), while Chrome is open | ✅ always on, plus video downloads and a daily digest |
 | Web app / PWA for the phone | — | ✅ |
 | Account or sign-up | none | none, it's your server |
 
@@ -97,13 +97,11 @@ The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow
 
 Whatever the version, Raf never downloads from paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify…) or live streams. Download only what you're allowed to, for personal use.
 
-### Telegram without a server (your own bot)
+### Telegram without a server
 
-Settings → **Telegram** walks you through it in about two minutes:
+Settings → **Telegram** → **Connect Telegram**. Telegram opens on [@rafshelf_bot](https://t.me/rafshelf_bot): press **Start** and you're done.
 
-1. Open [@BotFather](https://t.me/BotFather), send `/newbot`, and pick a name. BotFather gives you a **token**.
-2. Paste the token into Raf.
-3. Open your new bot and press **Start**. Raf finds your chat by itself and sends a welcome message.
+Raf's bot runs on a small Cloudflare Worker ([`worker/`](worker/)): it only passes messages along. Links you send to it wait there until your browser picks them up (then they're deleted, at the latest after 14 days). Prefer nothing in between? Choose **Use my own bot instead**: make one with [@BotFather](https://t.me/BotFather) (`/newbot`), paste its token, press Start, and messages go straight between your browser and Telegram.
 
 Then:
 - **Send to Telegram** from the popup (with a note and tags), from the right-click menu, or from any item on your shelf. You can also have every page you save sent automatically.

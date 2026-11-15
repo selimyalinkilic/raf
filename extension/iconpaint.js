@@ -3,6 +3,7 @@ const RAF_ICON_PAL = {
   pastel:    { bg: "#d9ccff", base: "#ab97ec", b: ["#ffd6bf", "#bdf0d6", "#c6e3ff"], line: "#3d3a5c", bar: "#3d3a5c" },
   minimal:   { bg: "#e8edf4", base: "#4a6fa5", b: ["#ffffff", "#dcf2e4", "#eaf2fb"], line: "#1f2328", bar: "#1f2328" },
   cyberpunk: { bg: "#12101f", base: "#2b2150", b: ["#ff2bd6", "#00f5d4", "#3ab0ff"], line: "#07060f", bar: "#ff2bd6" },
+  neon:      { bg: "#2b0b3f", base: "#ff3fa4", b: ["#ff9a3d", "#2de2e6", "#ffd23f"], line: "#12041f", bar: "#2de2e6" },
   ocean:     { bg: "#12385a", base: "#0b1626", b: ["#ff9d5c", "#2ee6c5", "#5cb8ff"], line: "#08121f", bar: "#3fc1ff" },
   forest:    { bg: "#dfe8d0", base: "#6f8f4e", b: ["#f4e0c8", "#d6ecd2", "#dbe9e4"], line: "#2f3b2c", bar: "#2f3b2c" },
   sunset:    { bg: "#ffd3c2", base: "#ff7a59", b: ["#ffefc2", "#ffd6e0", "#e9d9ff"], line: "#4a2b3f", bar: "#4a2b3f" },
