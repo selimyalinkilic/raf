@@ -895,5 +895,17 @@
  },
  "mailLabelA": {
   "message": "Add +raf to your address (you+raf@gmail.com still reaches you). Then in Gmail: Settings → Filters → Create a new filter → To: you+raf@gmail.com → Apply the label “Raf” (and Skip the inbox if you like). Every Raf email is sorted automatically from then on."
+ },
+ "skin_graphite": {
+  "message": "Graphite"
+ },
+ "skind_graphite": {
+  "message": "Pencil sketch on grid paper"
+ },
+ "f_bookmarkSync": {
+  "message": "Also add to Chrome bookmarks"
+ },
+ "fd_bookmarkSync": {
+  "message": "Saved pages go to Bookmarks › Raf too. With Chrome sync on they appear on your phone's Chrome, no setup."
  }
 }

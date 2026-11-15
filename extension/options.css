@@ -58,7 +58,7 @@ body.options{width:auto;max-width:620px;margin:0 auto;padding:0 16px 40px;min-he
 #telegram .chk{margin-top:8px;font-size:13px}
 #telegram .row{margin-top:10px;gap:6px}
 #telegram .row .mini{display:inline-flex;align-items:center;gap:5px}
-.skins{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0 6px}
+.skins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 6px}
 @media (max-width:560px){.skins{grid-template-columns:repeat(2,1fr)}}
 .skin{display:flex;flex-direction:column;gap:3px;padding:6px;border:2px solid var(--rim);border-radius:14px;background:var(--card);cursor:pointer;text-align:left;color:var(--ink)}
 .skin:hover{border-color:var(--lav-d)}

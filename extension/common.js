@@ -16,6 +16,32 @@ async function rafSettings() {
 }
 
 async function rafApi(path, opts = {}) {
+  const r = await rafApiRaw(path, opts);
+  if (path === "/api/items" && opts.method === "POST" && !opts.noQueue) rafBookmark(JSON.parse(opts.body || "{}")).catch(() => {});
+  return r;
+}
+
+// Chrome bookmarks › Other bookmarks › Raf. With Chrome sync on, saved pages show up on the phone's Chrome too.
+async function rafBookmark(item) {
+  if (!item.url || !chrome.bookmarks || (item.tags || []).includes("oturum")) return;
+  const { features = {} } = await chrome.storage.sync.get("features");
+  if (!features.bookmarkSync) return;
+  let { rafBmFolder } = await chrome.storage.local.get("rafBmFolder");
+  if (rafBmFolder) { try { await chrome.bookmarks.get(rafBmFolder); } catch (e) { rafBmFolder = null; } }
+  if (!rafBmFolder) {
+    const roots = (await chrome.bookmarks.getTree())[0].children;
+    const other = roots.find((n) => n.folderType === "other") || roots.find((n) => n.id === "2") || roots[roots.length - 1];
+    const found = (await chrome.bookmarks.getChildren(other.id)).find((n) => !n.url && n.title === "Raf");
+    rafBmFolder = (found || await chrome.bookmarks.create({ parentId: other.id, title: "Raf" })).id;
+    await chrome.storage.local.set({ rafBmFolder });
+  }
+  const title = item.title && item.title !== item.url ? item.title : item.url;
+  const same = (await chrome.bookmarks.getChildren(rafBmFolder)).find((n) => n.url === item.url);
+  if (same) { if (same.title !== title) await chrome.bookmarks.update(same.id, { title }); return; }
+  await chrome.bookmarks.create({ parentId: rafBmFolder, index: 0, title, url: item.url });  // newest on top
+}
+
+async function rafApiRaw(path, opts = {}) {
   const { server, token } = await rafSettings();
   if (!server || !token) return rafLocal(path, opts);  // local mode (local.js)
   const { noQueue, ...init } = opts;

@@ -3,9 +3,9 @@
 // - theme (storage.sync "theme"): auto (follows the OS) | light | dark              → <html data-theme>
 //   Some skins have a single mode, so the light/dark choice only matters for Pastel and Minimal.
 // The header logo is repainted in the skin's colours (iconpaint.js).
-const RAF_SKINS = ["pastel", "minimal", "cyberpunk", "ocean", "forest", "sunset", "paper", "pop"];
+const RAF_SKINS = ["pastel", "minimal", "graphite", "cyberpunk", "ocean", "forest", "sunset", "paper", "pop"];
 const RAF_DARK_ONLY = ["cyberpunk", "ocean"];
-const RAF_LIGHT_ONLY = ["forest", "sunset", "paper", "pop"];
+const RAF_LIGHT_ONLY = ["graphite", "forest", "sunset", "paper", "pop"];
 (() => {
   const root = document.documentElement;
   const theme = (v) => { if (v === "light" || v === "dark") root.dataset.theme = v; else delete root.dataset.theme; };

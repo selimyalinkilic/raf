@@ -895,5 +895,17 @@
  },
  "mailLabelA": {
   "message": "Adresine +raf ekle (sen+raf@gmail.com yine sana gelir). Sonra Gmail'de: Ayarlar → Filtreler → Yeni filtre oluştur → Kime: sen+raf@gmail.com → “Raf” etiketini uygula (istersen “Gelen kutusunu atla”). Bundan sonra her Raf maili kendiliğinden oraya gider."
+ },
+ "skin_graphite": {
+  "message": "Grafit"
+ },
+ "skind_graphite": {
+  "message": "Kareli kâğıtta kurşun kalem eskiz"
+ },
+ "f_bookmarkSync": {
+  "message": "Chrome yer imlerine de ekle"
+ },
+ "fd_bookmarkSync": {
+  "message": "Kaydettiğin sayfalar Yer imleri › Raf klasörüne de eklenir. Chrome senkronu açıksa telefonundaki Chrome'da da görünür, kurulum yok."
  }
 }

@@ -80,6 +80,7 @@ const SKIN_PREVIEW = {
   forest:    { bg: "linear-gradient(160deg,#f7f4ea,#f2f1e4 60%,#eef3e6)", card: "#fffdf6", ink: "#2f3b2c", a: "#dfe8d0", ad: "#6f8f4e", b: "#d6ecd2", bd: "#4f9a5a", r: 10, font: "Nunito,sans-serif", shadow: "0 3px 0" },
   sunset:    { bg: "linear-gradient(160deg,#fff1e6,#ffe7ee 60%,#f3e9ff)", card: "#fff", ink: "#4a2b3f", a: "#ffd3c2", ad: "#ff7a59", b: "#ffe2b8", bd: "#f5a524", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },
   paper:     { bg: "#f4ecd8", card: "#fbf6e9", ink: "#3b2f22", a: "#eadfc6", ad: "#8b5e34", b: "#e3e5c8", bd: "#6b7d3a", r: 3, font: "Georgia,serif", shadow: "" },
+  graphite:  { bg: "linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px) 0 0/10px 10px,linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px) 0 0/10px 10px,#f4f4f2", card: "#fbfbfa", ink: "#2b2b2b", a: "#e4e4e4", ad: "#3a3a3a", b: "#ececec", bd: "#3a3a3a", r: 8, font: "'Segoe Print','Comic Sans MS',cursive", shadow: "2px 2px 0" },
   pop:       { bg: "linear-gradient(160deg,#fff7d6,#ffeaf4 60%,#e6f7ff)", card: "#fff", ink: "#111", a: "#ffd23f", ad: "#111", b: "#7cf2c2", bd: "#111", r: 6, font: "Nunito,sans-serif", shadow: "3px 3px 0" },
 };
 function skinTile(id, on) {
@@ -141,8 +142,16 @@ async function render() {
         <span class="ft"><b>${t("f_" + f.id)}</b><small>${local && f.server ? t("needsServer") : t("fd_" + f.id)}</small></span>
         <span class="sw"><input type="checkbox" data-f="${f.id}" ${on[f.id] ? "checked" : ""}${local && f.server ? " disabled" : ""}><span></span></span>
       </label>`).join("") + "</div>").join("");
-  document.querySelectorAll("[data-f]").forEach((cb) => cb.onchange = () => setFeatures({ [cb.dataset.f]: cb.checked }));
+  document.querySelectorAll("[data-f]").forEach((cb) => cb.onchange = async () => {
+    const perm = RAF_FEATURES.find((f) => f.id === cb.dataset.f)?.perm;
+    if (perm && cb.checked && !(await chrome.permissions.request({ permissions: [perm] }).catch(() => false))) { cb.checked = false; return; }
+    setFeatures({ [cb.dataset.f]: cb.checked });
+  });
 }
-$("all-on").onclick = () => setFeatures(Object.fromEntries(RAF_FEATURES.map((f) => [f.id, true])));
+$("all-on").onclick = async () => {
+  const perms = [...new Set(RAF_FEATURES.map((f) => f.perm).filter(Boolean))];
+  const ok = !perms.length || await chrome.permissions.request({ permissions: perms }).catch(() => false);
+  setFeatures(Object.fromEntries(RAF_FEATURES.map((f) => [f.id, !f.perm || ok])));
+};
 $("all-off").onclick = () => setFeatures(Object.fromEntries(RAF_FEATURES.map((f) => [f.id, false])));
 render();

@@ -73,7 +73,8 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
   - sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored
 - **Telegram & phone:** a QR code to open the page on your phone, or send it to your own Telegram bot with a note and tags. Saved pages can be sent from your shelf too.
 - **Email:** open a ready draft (title, link, tags, note) in your mail app, Gmail or Outlook, then just press Send. Set a default recipient in Settings.
-- **8 themes:** Pastel (default) and Minimal in light & dark, Cyberpunk, Ocean, Forest, Sunset, Paper and Pop. The toolbar icon takes on the theme’s colours too.
+- **9 themes**, each with its own look, not just colours: Pastel (default) and Minimal in light & dark, Graphite (pencil sketch on grid paper), Cyberpunk, Ocean (frosted glass), Forest, Sunset, Paper and Pop. The toolbar icon takes on the theme’s colours too.
+- **To your phone with zero setup:** turn on *Also add to Chrome bookmarks* and saved pages land in Bookmarks › Raf, which Chrome sync brings to your phone.
 - **For developers & testers:**
   - **Locator picker:** click an element and get a Playwright locator (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test data (TR):** names, emails, phone numbers, addresses, valid national ID / tax numbers / IBANs

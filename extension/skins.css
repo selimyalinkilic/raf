@@ -76,6 +76,52 @@
 :root[data-skin=pop] :is(h2,.tool-h,details.tool summary,header span,#save,.btn,.tabs button){font-weight:900!important}
 :root[data-skin=pop] header{border-bottom:2px solid #111}
 
+/* ===== Each skin's own shape language (not just colours) ===== */
+
+/* Ocean = frosted glass: translucent cards over glowing depths, pill buttons */
+:root[data-skin=ocean] body{background:radial-gradient(circle at 15% 8%,#1b4f7a 0,transparent 42%),radial-gradient(circle at 95% 55%,#0e5a5a 0,transparent 40%),radial-gradient(circle at 30% 100%,#22346e 0,transparent 45%),linear-gradient(160deg,#08121f,#0b1a2e)!important;background-attachment:fixed!important}
+:root[data-skin=ocean] :is(.tool,.options .card,.it,header,.banner){background:rgba(255,255,255,.06)!important;backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.13)!important;outline:0!important;box-shadow:0 10px 30px -12px rgba(0,0,0,.6)!important;border-radius:18px!important}
+:root[data-skin=ocean] header{border-radius:0!important;border-width:0 0 1px!important}
+:root[data-skin=ocean] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button){border-radius:999px!important;background:rgba(63,193,255,.12)!important;border:1px solid rgba(63,193,255,.35)!important;box-shadow:none!important;color:var(--ink)!important}
+:root[data-skin=ocean] :is(#save,.btn.main,.tabs button.on){background:linear-gradient(90deg,#1f8fff,#2ee6c5)!important;color:#04121f!important;border-color:transparent!important;box-shadow:0 6px 20px -6px rgba(46,230,197,.6)!important}
+:root[data-skin=ocean] :is(input,textarea,select){background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.16)!important;border-radius:14px!important}
+:root[data-skin=ocean] :is(input,textarea):focus{border-color:#3fc1ff!important;box-shadow:0 0 0 3px rgba(63,193,255,.2)!important}
+
+/* Forest = organic: leaf-shaped corners, soft drop shadows, dotted moss background, italic serif titles */
+:root[data-skin=forest] body{background:radial-gradient(#d3dcc2 1px,transparent 1.6px) 0 0/16px 16px,linear-gradient(160deg,#f7f4ea,#eef3e6)!important}
+:root[data-skin=forest] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.tool,.options .card,.it,input,textarea,select,.banner){border-radius:18px 4px 18px 4px!important}
+:root[data-skin=forest] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button){box-shadow:0 6px 14px -8px rgba(47,59,44,.55)!important;border:1px solid #d6dcc6!important}
+:root[data-skin=forest] :is(.tool,.options .card,.it){outline:0!important;border:1px solid #e3e6d6!important;box-shadow:0 10px 24px -14px rgba(47,59,44,.45)!important}
+:root[data-skin=forest] :is(#save,.btn.main,.tabs button.on){background:var(--lav-d)!important;color:#fffdf6!important;border-color:var(--lav-d)!important}
+:root[data-skin=forest] :is(header span,h2,.tool-h,details.tool summary){font-family:Georgia,"Iowan Old Style",serif!important;font-style:italic;font-weight:700!important}
+:root[data-skin=forest] header{box-shadow:0 1px 0 #dfe3d0!important}
+
+/* Sunset = warm gradients and glow, big soft radii, gradient title */
+:root[data-skin=sunset] :is(#save,.btn.main,.tabs button.on){background:linear-gradient(90deg,#ff9a5a,#ff6f91 55%,#b48cff)!important;color:#fff!important;border:0!important;border-radius:999px!important;box-shadow:0 10px 22px -8px rgba(255,111,145,.75)!important}
+:root[data-skin=sunset] :is(.btn,.tabs button,.chips button,.mini,.sess button){border-radius:999px!important;border:0!important;box-shadow:0 6px 16px -10px rgba(232,93,138,.8)!important}
+:root[data-skin=sunset] :is(.tool,.options .card,.it){border-radius:24px!important;outline:0!important;border:0!important;box-shadow:0 14px 30px -18px rgba(232,93,138,.7)!important}
+:root[data-skin=sunset] :is(input,textarea,select){border-radius:16px!important;border:2px solid #ffd3c2!important}
+:root[data-skin=sunset] header span{background:linear-gradient(90deg,#ff7a59,#e85d8a,#9b6bdf);-webkit-background-clip:text;background-clip:text;color:transparent}
+:root[data-skin=sunset] header{box-shadow:0 2px 0 #ffd3c2!important}
+
+/* Paper: ruled lines in the note field, small caps title */
+:root[data-skin=paper] textarea{background:repeating-linear-gradient(#fffaf0 0 21px,#e6dabd 21px 22px)!important;line-height:22px!important;background-attachment:local!important}
+:root[data-skin=paper] header span{font-variant:small-caps;letter-spacing:.06em}
+
+/* ---------- Graphite: pencil sketch on grid paper, all greys (light only) ---------- */
+:root[data-skin=graphite]{--ink:#2b2b2b;--muted:#707070;--lav:#e4e4e4;--lav-d:#3a3a3a;--mint:#ececec;--mint-d:#3a3a3a;--peach:#e8e8e8;--peach-d:#5a5a5a;--sky:#f0f0f0;--sky-d:#5a5a5a;
+  --card:#fbfbfa;--rim:#3a3a3a;--field:#fff;--soft:#d6d6d6;--hover:#f0f0ee;--off:#ededed;--off-d:#bdbdbd;--off-i:#9a9a9a;--err:#a33;--ok:#3a3a3a;--pink:#ececec;--pink-d:#5a5a5a;
+  --sun:#f2f2f0;--sun-d:#5a5a5a;--sun-i:#3a3a3a;--bg1:#f4f4f2;--bg2:#f4f4f2;--bg3:#f4f4f2;color-scheme:light}
+:root[data-skin=graphite] body{background:linear-gradient(rgba(0,0,0,.055) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,rgba(0,0,0,.055) 1px,transparent 1px) 0 0/16px 16px,#f4f4f2!important}
+:root[data-skin=graphite] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.tool,.options .card,.it,.banner){border:2px solid #3a3a3a!important;border-radius:255px 14px 225px 14px/14px 225px 14px 255px!important;box-shadow:2px 3px 0 -1px rgba(0,0,0,.28)!important;outline:0!important}
+:root[data-skin=graphite] :is(.tool,.options .card,.it){border-radius:12px 4px 14px 5px/5px 14px 4px 12px!important}
+:root[data-skin=graphite] :is(input,textarea,select){border:2px solid #3a3a3a!important;border-radius:10px 3px 12px 4px/4px 12px 3px 10px!important;background:#fff!important}
+:root[data-skin=graphite] :is(#save,.btn.main,.tabs button.on){background:repeating-linear-gradient(-45deg,#e2e2e2 0 3px,#f7f7f7 3px 7px)!important;color:#1f1f1f!important}
+:root[data-skin=graphite] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button):hover{transform:rotate(-.6deg)}
+:root[data-skin=graphite] :is(header span,h2,.tool-h,details.tool summary,#save,.tabs button,.btn){font-family:"Segoe Print","Bradley Hand","Chalkboard SE","Comic Sans MS",Fredoka,cursive!important;font-weight:700!important}
+:root[data-skin=graphite] header{border-bottom:2px solid #3a3a3a;box-shadow:0 3px 0 -1px rgba(0,0,0,.15)!important}
+:root[data-skin=graphite] header img{filter:grayscale(1)}
+
 /* QR codes stay black on white in every skin so phones can scan them */
 .qr{background:#fff!important}
 

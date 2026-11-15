@@ -7,6 +7,7 @@ const RAF_ICON_PAL = {
   forest:    { bg: "#dfe8d0", base: "#6f8f4e", b: ["#f4e0c8", "#d6ecd2", "#dbe9e4"], line: "#2f3b2c", bar: "#2f3b2c" },
   sunset:    { bg: "#ffd3c2", base: "#ff7a59", b: ["#ffefc2", "#ffd6e0", "#e9d9ff"], line: "#4a2b3f", bar: "#4a2b3f" },
   paper:     { bg: "#eadfc6", base: "#8b5e34", b: ["#fbf6e9", "#e3e5c8", "#f0d9bf"], line: "#3b2f22", bar: "#3b2f22" },
+  graphite:  { bg: "#e6e6e6", base: "#5a5a5a", b: ["#ffffff", "#d0d0d0", "#a8a8a8"], line: "#2b2b2b", bar: "#2b2b2b" },
   pop:       { bg: "#ffd23f", base: "#111111", b: ["#ff9fd0", "#7cf2c2", "#8fd3ff"], line: "#111111", bar: "#111111" },
 };
 const rafIconPal = (skin) => RAF_ICON_PAL[skin] || RAF_ICON_PAL.pastel;
