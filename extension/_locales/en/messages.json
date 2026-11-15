@@ -574,5 +574,20 @@
  },
  "langAuto": {
   "message": "Automatic"
+ },
+ "optTheme": {
+  "message": "Appearance"
+ },
+ "optThemeHint": {
+  "message": "“Automatic” follows your system's light or dark mode."
+ },
+ "themeAuto": {
+  "message": "Automatic"
+ },
+ "themeLight": {
+  "message": "Light"
+ },
+ "themeDark": {
+  "message": "Dark"
  }
 }

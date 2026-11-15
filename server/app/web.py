@@ -111,13 +111,25 @@ def platform_of(url):
     return host.replace("www.", "") or "?"
 
 
+# Theme lives in the browser (localStorage "rafTheme": auto|light|dark) and is applied before first paint.
+THEME_JS = """<script>(function(){var d=document.documentElement,m=document.querySelector('meta[name=theme-color]');
+function a(t){if(t==="light"||t==="dark")d.dataset.theme=t;else delete d.dataset.theme}
+try{a(localStorage.getItem("rafTheme"))}catch(e){}
+window.rafTheme=function(){var o=["auto","light","dark"],c=d.dataset.theme||"auto",n=o[(o.indexOf(c)+1)%3];a(n);try{localStorage.setItem("rafTheme",n)}catch(e){}}})()</script>"""
+
+
+def theme_btn(lang):
+    title = "Theme: auto / light / dark" if lang == "en" else "Tema: otomatik / açık / koyu"
+    return f'<button type="button" class="langbtn themebtn" onclick="rafTheme()" title="{title}" aria-label="{title}">{ic("monitor", "t-auto")}{ic("sun", "t-light")}{ic("moon", "t-dark")}</button>'
+
+
 def head(title, lang):
     return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>{esc(title)}</title>
 <link rel="icon" href="/static/icon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
-<meta name="theme-color" content="#d9ccff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#d9ccff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1b1929" media="(prefers-color-scheme: dark)"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Raf"><meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js")</script><link rel="stylesheet" href="/static/style.css"></head><body>'''
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js")</script>{THEME_JS}<link rel="stylesheet" href="/static/style.css"></head><body>'''
 
 
 def lang_btn(request, lang):
@@ -181,7 +193,7 @@ def index(request: Request, q: str = "", tag: str = "", page: int = 1):
 <header class="top">
   <a class="brand" href="/"><img src="/static/icon.svg" alt=""> Raf</a>
   <form class="search" action="/"><span class="field">{ic("search")}<input name="q" value="{esc(q)}" placeholder="{esc(_("search_shelf"))}"></span></form>
-  <div class="stats"><span>{_("today")} <b>{today}</b></span><span>{_("total")} <b>{total}</b></span><a class="navbtn" href="/indirilenler">{ic("download")} {_("downloads")}</a>{lang_btn(request, lang)}</div>
+  <div class="stats"><span>{_("today")} <b>{today}</b></span><span>{_("total")} <b>{total}</b></span><a class="navbtn" href="/indirilenler">{ic("download")} {_("downloads")}</a>{theme_btn(lang)}{lang_btn(request, lang)}</div>
 </header>
 <main>
   <form class="addform" method="post" action="/ui/save">
@@ -269,7 +281,7 @@ def downloads_page(request: Request, q: str = "", durum: str = "", tur: str = ""
     return head(f"Raf · {_('downloads')}", lang) + f'''
 <header class="top"><a class="brand" href="/"><img src="/static/icon.svg" alt=""> Raf</a>
 <form class="search" method="post" action="/ui/dl-new"><span class="field">{ic("plus")}<input name="url" type="url" inputmode="url" placeholder="{esc(_("paste_video"))}"></span></form>
-<div class="stats"><a class="navbtn" href="/">{ic("library")} Raf</a>{lang_btn(request, lang)}</div></header>
+<div class="stats"><a class="navbtn" href="/">{ic("library")} Raf</a>{theme_btn(lang)}{lang_btn(request, lang)}</div></header>
 <main><h1>{ic("download")} {_("downloads")}</h1>{filters}{summary}<section class="list">{"".join(out) or empty}</section></main>
 {'<script>setTimeout(function r(){var a=document.activeElement;if(a&&(a.tagName==="INPUT"||a.tagName==="SELECT"))return setTimeout(r,3000);location.reload()},3000)</script>' if busy else ''}
 </body></html>'''
@@ -351,5 +363,5 @@ SETUP = {
 def setup_page(request: Request):
     lang = lang_of(request); _ = T(lang)
     return head(f"Raf · {_('setup')}", lang) + f'''
-<header class="top"><a class="brand" href="/"><img src="/static/icon.svg" alt=""> Raf</a><div class="stats">{lang_btn(request, lang)}</div></header>
+<header class="top"><a class="brand" href="/"><img src="/static/icon.svg" alt=""> Raf</a><div class="stats">{theme_btn(lang)}{lang_btn(request, lang)}</div></header>
 <main class="prose">{SETUP[lang]}</main></body></html>'''

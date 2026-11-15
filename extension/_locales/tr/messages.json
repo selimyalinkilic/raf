@@ -574,5 +574,20 @@
  },
  "langAuto": {
   "message": "Otomatik"
+ },
+ "optTheme": {
+  "message": "Görünüm"
+ },
+ "optThemeHint": {
+  "message": "“Otomatik”, sisteminin açık/koyu moduna uyar."
+ },
+ "themeAuto": {
+  "message": "Otomatik"
+ },
+ "themeLight": {
+  "message": "Açık"
+ },
+ "themeDark": {
+  "message": "Koyu"
  }
 }

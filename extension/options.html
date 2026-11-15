@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>Raf</title><link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="options.css"></head>
+<html lang="en"><head><meta charset="utf-8"><title>Raf</title><link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="options.css"><script src="theme.js"></script></head>
 <body class="options">
   <header><img src="icons/icon.svg" alt=""><span data-t="optTitle" data-t-title="optTitle"></span><em id="flash"></em></header>
   <main>
@@ -10,6 +10,15 @@
         <label><input type="radio" name="lang" value="auto"><span data-t="langAuto"></span></label>
         <label><input type="radio" name="lang" value="en"><span>English</span></label>
         <label><input type="radio" name="lang" value="tr"><span>Türkçe</span></label>
+      </div>
+    </section>
+    <section class="card">
+      <h2><i data-i="moon"></i> <span data-t="optTheme"></span></h2>
+      <p class="hint"><span data-t="optThemeHint"></span></p>
+      <div class="langs" id="themes">
+        <label><input type="radio" name="theme" value="auto"><i data-i="monitor"></i><span data-t="themeAuto"></span></label>
+        <label><input type="radio" name="theme" value="light"><i data-i="sun"></i><span data-t="themeLight"></span></label>
+        <label><input type="radio" name="theme" value="dark"><i data-i="moon"></i><span data-t="themeDark"></span></label>
       </div>
     </section>
     <section class="card">

@@ -18,6 +18,12 @@ document.querySelectorAll('#langs input').forEach((r) => r.onchange = async () =
   location.reload();
 });
 
+// ---------- Theme ----------
+chrome.storage.sync.get("theme").then(({ theme = "auto" }) => {
+  const r = document.querySelector(`#themes input[value="${theme}"]`); if (r) r.checked = true;
+});
+document.querySelectorAll("#themes input").forEach((r) => r.onchange = () => chrome.storage.sync.set({ theme: r.value }));  // theme.js applies it live
+
 // ---------- Features ----------
 let flashTimer;
 function flash() { $("flash").textContent = t("optSavedFlash"); $("flash").classList.add("show"); clearTimeout(flashTimer); flashTimer = setTimeout(() => $("flash").classList.remove("show"), 1200); }
