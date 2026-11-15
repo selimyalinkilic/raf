@@ -6,7 +6,7 @@ import threading
 import time
 
 DB_PATH = os.environ.get("DB_PATH", "/data/raf.db")
-_lock = threading.Lock()
+_lock = threading.RLock()  # re-entrant: write blocks call read helpers while holding it
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS items (
@@ -75,7 +75,41 @@ def connect():
     return con
 
 
-_con = connect()
+class _Rows:
+    """Fully fetched result, so no cursor is shared between threads."""
+    def __init__(self, cur):
+        self.rows, self.rowcount, self.lastrowid = cur.fetchall(), cur.rowcount, cur.lastrowid
+
+    def fetchone(self):
+        return self.rows[0] if self.rows else None
+
+    def fetchall(self):
+        return self.rows
+
+    def __iter__(self):
+        return iter(self.rows)
+
+
+class _LockedCon:
+    """One SQLite connection shared by the API threads, the downloader and the Telegram bot.
+    Every statement runs under _lock — unlocked concurrent reads raised IndexError (HTTP 500)."""
+    def __init__(self, con):
+        self._c = con
+
+    def execute(self, sql, args=()):
+        with _lock:
+            return _Rows(self._c.execute(sql, args))
+
+    def executescript(self, sql):
+        with _lock:
+            self._c.executescript(sql)
+
+    def commit(self):
+        with _lock:
+            self._c.commit()
+
+
+_con = _LockedCon(connect())
 _con.executescript(SCHEMA)
 # Geriye uyumlu şema güncellemeleri
 _cols = {r[1] for r in _con.execute("PRAGMA table_info(items)")}

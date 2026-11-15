@@ -29,8 +29,14 @@ footer a{color:var(--muted);text-decoration:none}footer a:hover{color:var(--ink)
 .tool-h{font:700 14px Fredoka,"Segoe UI",sans-serif;margin-bottom:8px}
 .opts{display:flex;gap:10px;align-items:center;margin-bottom:8px}
 .opts select{font:700 12px Nunito,sans-serif;border:2px solid var(--sky);border-radius:8px;padding:2px 6px;color:var(--ink)}
-.chk{display:flex;align-items:center;gap:4px;margin:0;color:var(--ink);font-size:12px}
-.chk input{width:auto;margin:0}
+.chk{display:flex;align-items:center;gap:6px;margin:0;color:var(--ink);font-size:12px;cursor:pointer;user-select:none}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:18px;height:18px;margin:0;padding:0;border-radius:6px;border:2.5px solid var(--lav);background:#fff;box-shadow:0 2px 0 var(--lav);cursor:pointer;display:grid;place-items:center;transition:background .12s,border-color .12s,box-shadow .12s,transform .08s}
+.chk input::after{content:"";width:10px;height:10px;background:var(--ink);transform:scale(0);transition:transform .12s;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat}
+.chk input:checked{background:var(--mint);border-color:var(--mint-d);box-shadow:0 2px 0 var(--mint-d)}
+.chk input:checked::after{transform:scale(1)}
+.chk input:active{transform:translateY(1px);box-shadow:0 1px 0 var(--lav-d)}
+.chk input:focus-visible{outline:2px solid var(--sky-d);outline-offset:2px}
+.chk:hover input:not(:checked){border-color:var(--lav-d)}
 #u-out{font:600 12px ui-monospace,Consolas,monospace;border-color:var(--sky);resize:none;background:#f7fbff}
 .row{display:flex;gap:8px;margin-top:8px}
 .btn{flex:1;border:2px solid #fff;border-radius:12px;padding:7px;background:var(--sky);box-shadow:0 4px 0 var(--sky-d);font:700 13px Fredoka,"Segoe UI",sans-serif;color:var(--ink);cursor:pointer}
