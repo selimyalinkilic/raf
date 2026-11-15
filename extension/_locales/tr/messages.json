@@ -832,5 +832,35 @@
  },
  "skind_terminal": {
   "message": "Siyah üstüne yeşil, monospace"
+ },
+ "offlineErr": {
+  "message": "Raf sunucuna ulaşılamıyor. VPN / Tailscale açık mı?"
+ },
+ "offlineTitle": {
+  "message": "Sunucuya ulaşılamıyor"
+ },
+ "outboxTitle": {
+  "message": "Bekleyen kayıtlar"
+ },
+ "offlineHint": {
+  "message": "VPN / Tailscale açık mı? Kaydettiklerin bağlantı gelene kadar bu tarayıcıda bekler."
+ },
+ "offlineQueued": {
+  "message": "$1 kayıt burada bekliyor, sunucuya ulaşılınca kendiliğinden aktarılacak."
+ },
+ "offlineRetry": {
+  "message": "Tekrar dene"
+ },
+ "queuedBtn": {
+  "message": "Sonra aktarılacak"
+ },
+ "queuedMsg": {
+  "message": "Sunucuya ulaşılamadı: bu tarayıcıda saklandı ($1 bekliyor)"
+ },
+ "outboxSent": {
+  "message": "$1 kayıt sunucuna aktarıldı"
+ },
+ "tgQueued": {
+  "message": "Sonra aktarılmak üzere saklandı (sunucuya ulaşılamıyor)"
  }
 }

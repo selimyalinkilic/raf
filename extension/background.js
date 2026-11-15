@@ -86,7 +86,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     } else {
       r = await savePage(tab);
     }
-    flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));
+    flash(tab.id, true, `${r.item.title || r.item.url}\n` + (r.queued ? t("queuedMsg", r.waiting) : t("todayCount", r.today)));
     if ((await rafTgGet()).autoSend) rafSendToTelegram({ ...r.item, note: info.selectionText || r.item.note }).catch((e) => flash(tab.id, false, "Telegram: " + (e.message || e)));
   } catch (e) {
     flash(tab.id, false, String(e.message || e));
@@ -130,7 +130,7 @@ chrome.commands.onCommand.addListener(async (cmd) => {
   if (cmd !== "quick-save" || !f.menuSave) return;
   try {
     const r = await savePage(tab);
-    flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));
+    flash(tab.id, true, `${r.item.title || r.item.url}\n` + (r.queued ? t("queuedMsg", r.waiting) : t("todayCount", r.today)));
   } catch (e) {
     flash(tab.id, false, String(e.message || e));
   }
@@ -166,7 +166,8 @@ async function doCheck() {
   }
   if (!left.length) chrome.alarms.clear("raf-dl");
 }
-chrome.alarms.onAlarm.addListener((a) => { if (a.name === "raf-dl") checkDownloads(); if (a.name === "raf-tg") rafTgPoll(); });
+chrome.alarms.onAlarm.addListener((a) => { if (a.name === "raf-dl") checkDownloads(); if (a.name === "raf-tg") rafTgPoll(); if (a.name === "raf-outbox") rafFlushOutbox(); });
+chrome.runtime.onStartup.addListener(() => rafFlushOutbox());
 // Own Telegram bot: check for new messages every 30 s while Chrome is open (and right away on start)
 async function tgSchedule() {
   const tg = await rafTgGet();

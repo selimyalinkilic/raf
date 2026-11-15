@@ -109,7 +109,7 @@ async function rafTgHandle(m) {
   const tags = [...text.matchAll(/#([\p{L}\p{N}_-]+)/gu)].map((x) => x[1]);
   const note = text.replace(url, "").replace(/#[\p{L}\p{N}_-]+/gu, "").replace(/\s+/g, " ").trim();
   const r = await rafApi("/api/items", { method: "POST", body: JSON.stringify({ url, title: "", note, tags, source: "telegram" }) });
-  return rafTgReply(`✅ ${r.new ? t("tgSaved") : t("tgUpdated")}\n${rafTgEsc(url)}${tags.length ? "\n" + tags.map(rafTgTag).join(" ") : ""}`);
+  return rafTgReply(`${r.queued ? "🕓 " + t("tgQueued") : "✅ " + (r.new ? t("tgSaved") : t("tgUpdated"))}\n${rafTgEsc(url)}${tags.length ? "\n" + tags.map(rafTgTag).join(" ") : ""}`);
 }
 let rafTgPolling = false;
 async function rafTgPoll() {

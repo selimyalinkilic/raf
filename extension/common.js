@@ -18,16 +18,71 @@ async function rafSettings() {
 async function rafApi(path, opts = {}) {
   const { server, token } = await rafSettings();
   if (!server || !token) return rafLocal(path, opts);  // local mode (local.js)
-  const res = await fetch(server + path, {
-    ...opts,
-    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) },
-  });
+  const { noQueue, ...init } = opts;
+  let res;
+  try {
+    res = await fetch(server + path, {
+      ...init,
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(init.headers || {}) },
+    });
+  } catch (e) {  // network error: the server can't be reached (VPN / Tailscale off, server down)
+    await chrome.storage.local.set({ rafOffline: Date.now() });
+    if (!noQueue && init.method === "POST" && path === "/api/items") return rafQueue(JSON.parse(init.body || "{}"));
+    const err = new Error(t("offlineErr")); err.offline = true; throw err;
+  }
+  const { rafOffline, outbox = [] } = await chrome.storage.local.get(["rafOffline", "outbox"]);
+  if (rafOffline) chrome.storage.local.remove("rafOffline");
+  if (outbox.length && !noQueue) rafFlushOutbox();  // back online: hand over what waited
   if (!res.ok) {
     const txt = await res.text().catch(() => "");
     let detail = txt; try { detail = JSON.parse(txt).detail || txt; } catch (e) {}
     throw new Error(String(detail || "HTTP " + res.status));
   }
   return res.json();
+}
+
+// ---------- Offline outbox: saves made while the server is unreachable wait here ----------
+const RAF_OUTBOX_MAX = 300;
+async function rafOutbox() { const { outbox = [] } = await chrome.storage.local.get("outbox"); return outbox; }
+async function rafQueue(body) {
+  const item = { ...body, text: (body.text || "").slice(0, 50000), queuedAt: Date.now() };
+  if ((item.screenshot || "").length > 1500000) item.screenshot = "";  // keep storage small
+  let outbox = (await rafOutbox()).filter((x) => x.url !== item.url);  // same page again: newest wins
+  outbox.push(item);
+  outbox = outbox.slice(-RAF_OUTBOX_MAX);
+  try { await chrome.storage.local.set({ outbox }); }
+  catch (e) { outbox.forEach((x) => (x.screenshot = "")); await chrome.storage.local.set({ outbox }); }  // quota: drop screenshots
+  chrome.alarms?.create("raf-outbox", { periodInMinutes: 1 });
+  return { new: true, queued: true, waiting: outbox.length, today: outbox.length, item: { ...item, id: null, tags: item.tags || [] } };
+}
+let rafFlushing = null;
+function rafFlushOutbox() {
+  if (!rafFlushing) rafFlushing = (async () => {
+    let sent = 0;
+    try {
+      for (;;) {
+        const outbox = await rafOutbox();
+        if (!outbox.length) break;
+        const { queuedAt, tries = 0, ...body } = outbox[0];
+        let drop = true;
+        try { await rafApi("/api/items", { method: "POST", body: JSON.stringify(body), noQueue: true }); sent++; }
+        catch (e) {
+          if (e.offline) return;  // still unreachable: keep everything for the next try
+          drop = tries >= 4;  // server rejected it: retry a few times, then give up on this one
+          if (!drop) outbox[0] = { ...outbox[0], tries: tries + 1 };
+        }
+        const now = await rafOutbox();  // re-read: something may have been queued meanwhile
+        const rest = now.filter((x) => x.queuedAt !== queuedAt || x.url !== body.url);
+        await chrome.storage.local.set({ outbox: drop ? rest : [...rest, outbox[0]] });
+        if (!drop) break;
+      }
+    } finally {
+      rafFlushing = null;
+      if (!(await rafOutbox()).length) chrome.alarms?.clear("raf-outbox");
+      if (sent) chrome.notifications?.create({ type: "basic", iconUrl: chrome.runtime.getURL("icons/128.png"), title: "Raf", message: t("outboxSent", sent) });
+    }
+  })();
+  return rafFlushing;
 }
 
 // Runs in the tab: collects title, description, favicon, selection and readable text

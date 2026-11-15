@@ -65,6 +65,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 ### Chrome extension
 - **Save** the current page, a link or a text selection (popup, right-click menu or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>). Includes tag suggestions, a note and an optional screenshot of the visible area.
 - **Sessions:** save all open tabs at once and reopen them later in a new window.
+- **Works when your server is out of reach:** if your Raf server can't be reached (VPN / Tailscale off, server down), saves wait in the browser and are sent automatically once it's back.
 - **Video download without a server:** a Raf button on Instagram videos (posts, reels, feed), TikTok and any site that plays a plain video file. Saved straight to *Downloads/Raf*.
 - **Video & audio download with your Raf server** from YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo and [1000+ sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md):
   - a **Raf button on top of videos** with quality selection (up to 4K)

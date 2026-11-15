@@ -832,5 +832,35 @@
  },
  "skind_terminal": {
   "message": "Green on black, monospace"
+ },
+ "offlineErr": {
+  "message": "Can't reach your Raf server. Is your VPN / Tailscale on?"
+ },
+ "offlineTitle": {
+  "message": "Server unreachable"
+ },
+ "outboxTitle": {
+  "message": "Saves waiting"
+ },
+ "offlineHint": {
+  "message": "Is your VPN / Tailscale on? Saves are kept in this browser until it's back."
+ },
+ "offlineQueued": {
+  "message": "$1 saved here, sent to the server automatically once it's reachable."
+ },
+ "offlineRetry": {
+  "message": "Retry"
+ },
+ "queuedBtn": {
+  "message": "Kept for later"
+ },
+ "queuedMsg": {
+  "message": "Server unreachable: kept in this browser ($1 waiting)"
+ },
+ "outboxSent": {
+  "message": "$1 saved pages sent to your server"
+ },
+ "tgQueued": {
+  "message": "Saved for later (server unreachable)"
  }
 }

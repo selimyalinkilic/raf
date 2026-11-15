@@ -21,7 +21,25 @@ async function checkVersion() {
         <a class="bbtn" href="${escHtml(r.download)}" target="_blank">${ic("download")} ${escHtml(t("nvDownload"))}</a>`;
       $("banner").hidden = false;
     }
-  } catch (e) { /* server unreachable: stay quiet */ }
+  } catch (e) { /* server unreachable: the offline banner below says so */ }
+}
+
+// Server unreachable (e.g. Tailscale off) or saves still waiting: say so, offer a retry
+async function showOffline() {
+  if (await rafIsLocal()) return;
+  const n = (await rafOutbox()).length;
+  const { rafOffline } = await chrome.storage.local.get("rafOffline");
+  if (!n && !rafOffline) { if ($("banner").dataset.off) { $("banner").hidden = true; delete $("banner").dataset.off; } return; }
+  $("banner").dataset.off = "1";
+  $("banner").innerHTML = `${ic("alert")}<div class="btxt"><b>${escHtml(t(rafOffline ? "offlineTitle" : "outboxTitle"))}</b>
+    <small>${escHtml(n ? t("offlineQueued", n) : t("offlineHint"))}</small></div>
+    <button class="bbtn" id="retry">${ic("refresh")} ${escHtml(t("offlineRetry"))}</button>`;
+  $("banner").hidden = false;
+  $("retry").onclick = async () => {
+    $("retry").disabled = true;
+    try { await rafApi("/api/tags"); await rafFlushOutbox(); } catch (e) {}
+    showOffline();
+  };
 }
 
 // ---------- Feature toggles (Settings page) ----------
@@ -94,8 +112,9 @@ async function init() {
       $("suggest").appendChild(b);
     });
   } catch (e) {
-    msg(String(e.message || e), true);
+    if (!e.offline) msg(String(e.message || e), true);
   }
+  showOffline();
   $("tags").focus();
 }
 
@@ -111,15 +130,16 @@ async function save() {
       method: "POST",
       body: JSON.stringify({ url: page.url, title: $("title").value.trim(), description: page.description || "", favicon: page.favicon || "", text: page.text || "", note: $("note").value.trim(), tags: parseTags($("tags").value), screenshot }),
     });
-    $("save").innerHTML = ic("check") + " " + t(r.new ? "saved" : "updated");
+    $("save").innerHTML = ic("check") + " " + t(r.queued ? "queuedBtn" : r.new ? "saved" : "updated");
     $("save").classList.add("done");
     let sent = "";
     if (!$("tgrow").hidden && $("withTg").checked) {
       try { await rafSendToTelegram({ ...r.item, title: r.item.title || $("title").value, note: $("note").value.trim(), tags: parseTags($("tags").value) }); sent = " · " + t("tgSentShort"); }
       catch (e) { sent = " · Telegram: " + (e.message || e); }
     }
-    msg(t("savedToday", r.today) + sent);
-    setTimeout(() => window.close(), sent.startsWith(" · Telegram:") ? 4000 : 1200);
+    msg((r.queued ? t("queuedMsg", r.waiting) : t("savedToday", r.today)) + sent);
+    if (r.queued) showOffline();
+    setTimeout(() => window.close(), sent.startsWith(" · Telegram:") ? 4000 : r.queued ? 2500 : 1200);
   } catch (e) {
     $("save").disabled = false;
     msg(String(e.message || e), true);

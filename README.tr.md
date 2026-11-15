@@ -65,6 +65,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 ### Chrome eklentisi
 - **Kaydet:** sayfayı, bir linki ya da seçili metni kaydet (popup, sağ tık menüsü veya <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>). Etiket önerileri, not ve isteğe bağlı ekran görüntüsü.
 - **Oturumlar:** açık sekmelerin hepsini tek seferde kaydet, sonra yeni bir pencerede geri aç.
+- **Sunucuya ulaşılamadığında da çalışır:** Raf sunucuna erişilemiyorsa (VPN / Tailscale kapalı, sunucu kapalı) kayıtlar tarayıcıda bekler, bağlantı gelince kendiliğinden aktarılır.
 - **Sunucusuz video indirme:** Instagram videolarında (gönderi, reel, akış), TikTok'ta ve düz video dosyası oynatan her sitede Raf düğmesi. Doğrudan *İndirilenler/Raf*'a kaydeder.
 - **Raf sunucunla video ve ses indirme:** YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo ve [1000'den fazla site](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
   - videoların üstünde **Raf butonu** ve kalite seçimi (4K'ya kadar)
