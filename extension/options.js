@@ -34,6 +34,42 @@ chrome.storage.sync.get("theme").then(({ theme = "auto" }) => {
 });
 document.querySelectorAll("#themes input").forEach((r) => r.onchange = () => chrome.storage.sync.set({ theme: r.value }));  // theme.js applies it live
 
+// ---------- Telegram (own bot, no server needed) ----------
+async function tgRender() {
+  const tg = await rafTgGet();
+  const on = !!(tg.token && tg.chatId);
+  $("tg-on").hidden = !on; $("tg-off").hidden = on;
+  if (on) {
+    $("tg-status").innerHTML = `${ic("check", "ok")} ${escHtml(t("tgConnected", "@" + tg.bot, tg.chatName || ""))}`;
+    $("tg-auto").checked = !!tg.autoSend; $("tg-listen").checked = tg.listen !== false;
+  } else if (tg.token && tg.bot) {  // token OK, waiting for /start
+    $("tg-open").hidden = false; $("tg-open").href = `https://t.me/${tg.bot}?start=raf`; $("tg-open").textContent = `@${tg.bot} ↗`;
+  }
+}
+$("tg-connect").onclick = async () => {
+  const token = $("tg-token").value;
+  $("tg-msg").textContent = t("tgChecking"); $("tg-msg").className = "hint";
+  const granted = await chrome.permissions.request({ origins: ["https://api.telegram.org/*"] }).catch(() => false);
+  if (!granted) { $("tg-msg").textContent = t("tgNeedPermission"); $("tg-msg").className = "hint err"; return; }
+  try {
+    const me = await rafTgConnect(token);
+    $("tg-token").value = "";
+    $("tg-open").hidden = false; $("tg-open").href = `https://t.me/${me.username}?start=raf`; $("tg-open").textContent = `@${me.username} ↗`;
+    $("tg-msg").innerHTML = `${ic("spinner", "spin")} ${escHtml(t("tgWaiting", "@" + me.username))}`;
+    const chat = await rafTgWaitForStart();
+    $("tg-msg").textContent = chat ? "" : t("tgTimeout");
+    tgRender();
+  } catch (e) { $("tg-msg").textContent = String(e.message || e); $("tg-msg").className = "hint err"; }
+};
+$("tg-auto").onchange = () => rafTgSet({ autoSend: $("tg-auto").checked });
+$("tg-listen").onchange = () => rafTgSet({ listen: $("tg-listen").checked });
+$("tg-test").onclick = async () => {
+  try { await rafSendToTelegram({ url: "https://github.com/selimyalinkilic/raf", title: t("tgTestTitle"), tags: ["raf"] }); $("tg-msg2").textContent = t("sentTelegram"); }
+  catch (e) { $("tg-msg2").textContent = String(e.message || e); }
+};
+$("tg-disconnect").onclick = async () => { if (!confirm(t("tgConfirmDisconnect"))) return; await rafTgDisconnect(); location.reload(); };
+tgRender();
+
 // ---------- Features ----------
 let flashTimer;
 function flash() { $("flash").textContent = t("optSavedFlash"); $("flash").classList.add("show"); clearTimeout(flashTimer); flashTimer = setTimeout(() => $("flash").classList.remove("show"), 1200); }

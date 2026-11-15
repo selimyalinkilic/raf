@@ -28,7 +28,8 @@ Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfan�
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
 | Geliştirici/test araçları, koyu tema | ✅ | ✅ |
 | Video indirme | Instagram, TikTok ve düz video dosyası oynatan siteler | YouTube, X, Reddit dahil 1000'den fazla site; kalite seçimi ve sadece ses |
-| Telegram botu, telefon için web uygulaması | — | ✅ |
+| Telegram: sayfa gönder, telefondan link kaydet | ✅ kendi botunla, Chrome açıkken | ✅ her zaman açık, ayrıca video indirme ve günlük özet |
+| Telefon için web uygulaması | — | ✅ |
 | Hesap / üyelik | yok | yok, sunucu senin |
 
 ### Eklentiyi kurma
@@ -64,7 +65,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
   - videoların üstünde **Raf butonu** ve kalite seçimi (4K'ya kadar)
   - dosyalar otomatik olarak *İndirilenler/Raf* klasörüne iner
   - giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz
-- **Telefona gönder:** sayfanın QR kodu ya da Telegram'a gönderme.
+- **Telegram ve telefon:** sayfayı telefonda açmak için QR kod ya da not ve etiketle kendi Telegram botuna gönderme. Kayıtlı sayfaları raftan da gönderebilirsin.
 - **Geliştiriciler ve test uzmanları için:**
   - **Locator seçici:** bir öğeye tıkla, Playwright locator'ını al (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test verisi (TR):** ad, e-posta, telefon, adres; doğrulamadan geçen TCKN / VKN / IBAN
@@ -87,7 +88,22 @@ Sunucu olmadan Raf yalnızca sayfanın zaten tek parça dosya olarak oynattığ�
 
 Hangi sürüm olursa olsun Raf ücretli/DRM'li servislerden (Netflix, Disney+, Prime Video, Spotify…) ve canlı yayınlardan asla indirmez. Yalnızca indirmene izin verilen içerikleri, kişisel kullanım için indir.
 
-### Telegram botu
+### Sunucusuz Telegram (kendi botun)
+
+Ayarlar → **Telegram** kartı seni yaklaşık iki dakikada adım adım götürür:
+
+1. [@BotFather](https://t.me/BotFather)'ı aç, `/newbot` yaz ve bir ad seç. BotFather sana bir **token** verir.
+2. Token'ı Raf'a yapıştır.
+3. Yeni botunu açıp **Başlat**'a bas. Raf sohbetini kendisi bulur ve bir hoşgeldin mesajı atar.
+
+Sonra:
+- Popup'tan (not ve etiketle), sağ tık menüsünden ya da raftaki herhangi bir kayıttan **Telegram'a gönder**. İstersen kaydettiğin her sayfa otomatik gönderilir.
+- **Telefondan kaydet:** botuna bir link at (istersen `#etiket` ve not ekle), Raf rafına kaydetsin.
+- **Botuna sor:** `/son` son 5 kaydı, `/bugun` bugün kaydedilenleri gösterir, `/ara kelime` arama yapar.
+
+Raf, Telegram'la doğrudan tarayıcından konuşur. Token yalnızca o bilgisayarda kalır, eşitlenmez. Senden başkasının mesajları yok sayılır. Sunucu olmadan bot, bilgisayarında Chrome açıkken cevap verir. Kapalıyken gönderdiğin mesajlar Telegram'da bekler, Chrome açılınca işlenir.
+
+### Raf sunucundaki Telegram botu
 - Link gönder, kaydedilsin. Aynı mesaja `#etiket` ve not ekleyebilirsin.
 - `/indir <link>` video, `/ses <link>` sadece ses indirir (50 MB altı dosyalar sohbete gelir)
 - `/bugun`, `/son`, `/ara <kelime>` ve her akşam 21:00'de günlük özet

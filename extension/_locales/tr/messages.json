@@ -501,10 +501,10 @@
   "message": "Açık sekmelerin hepsini oturum olarak kaydet, sonra tek tıkla geri aç"
  },
  "f_phone": {
-  "message": "Telefona gönder"
+  "message": "Telegram ve telefon"
  },
  "fd_phone": {
-  "message": "Sayfanın QR kodu + linki Telegram'ına gönder"
+  "message": "Sayfayı telefonda açmak için QR kod + sayfaları kendi Telegram botuna gönder"
  },
  "saveAllTabs": {
   "message": "$1 sekmenin hepsini oturum olarak kaydet"
@@ -528,7 +528,7 @@
   "message": "Henüz kayıtlı oturum yok"
  },
  "phoneTitle": {
-  "message": "Telefona gönder"
+  "message": "Telegram ve telefon"
  },
  "phoneHint": {
   "message": "Telefonun kamerasıyla okut — ya da Telegram'ına gönder"
@@ -682,5 +682,104 @@
  },
  "ovSaving": {
   "message": "Kaydediliyor…"
+ },
+ "qrHint": {
+  "message": "Bu kodu telefonunun kamerasıyla okut, sayfa telefonunda açılsın."
+ },
+ "phTgNote": {
+  "message": "Neden gönderiyorsun?"
+ },
+ "withTg": {
+  "message": "Telegram'a da gönder"
+ },
+ "tgSentShort": {
+  "message": "Telegram'a gönderildi"
+ },
+ "tgNotSetUp": {
+  "message": "Telegram henüz kurulmadı."
+ },
+ "tgSetUpLink": {
+  "message": "Kur (2 dakika)"
+ },
+ "tgUnreachable": {
+  "message": "Telegram'a ulaşılamıyor — internete bağlı mısın?"
+ },
+ "tgBadToken": {
+  "message": "Bu geçerli bir bot token'ına benzemiyor. @BotFather'ın verdiği token'ın tamamını kopyala."
+ },
+ "tgWelcome": {
+  "message": "✅ <b>Raf bağlandı.</b>\nRaf'tan gönderdiğin sayfalar buraya gelecek.\n\nBana bir link at (istersen #etiket ve not ekle), bilgisayarında Chrome açıkken Raf onu rafına kaydeder.\n/son: son 5 · /bugun: bugün · /ara kelime: ara"
+ },
+ "tgHelp": {
+  "message": "<b>Raf</b>\n• Link gönder: rafına kaydedilir (aynı mesaja #etiket ve not ekleyebilirsin)\n• /son: son kaydedilen 5\n• /bugun: bugün kaydedilenler\n• /ara kelime: rafında ara\n\nRaf, bilgisayarında Chrome açıkken cevap verir."
+ },
+ "tgNothing": {
+  "message": "Henüz bir şey yok."
+ },
+ "tgSearchHow": {
+  "message": "/ara'dan sonra bir kelime yaz, ör. <code>/ara tarif</code>"
+ },
+ "tgSendALink": {
+  "message": "Kaydetmem için bir link gönder ya da /help yaz."
+ },
+ "tgSaved": {
+  "message": "Rafına kaydedildi"
+ },
+ "tgUpdated": {
+  "message": "Zaten rafındaydı, güncellendi"
+ },
+ "tgTitle": {
+  "message": "Telegram"
+ },
+ "tgIntro": {
+  "message": "Sayfaları Telegram'a gönder, telefondan bota link atarak rafına kaydet. Sunucu gerekmez: kendi botunu kullanırsın, mesajlar yalnızca Chrome ile Telegram arasında gider."
+ },
+ "tgStep1": {
+  "message": "Telegram'da <a href=\"https://t.me/BotFather\" target=\"_blank\">@BotFather</a>'ı aç, <code>/newbot</code> yaz; bir ad (ör. <i>Rafım</i>) ve sonu <code>bot</code> ile biten bir kullanıcı adı seç."
+ },
+ "tgStep2": {
+  "message": "BotFather sana <code>123456789:AA…</code> gibi bir <b>token</b> gönderir. Buraya yapıştır:"
+ },
+ "tgStep3": {
+  "message": "Yeni botunu aç ve <b>Başlat</b>'a bas. Raf sohbetini kendisi bulur."
+ },
+ "tgConnect": {
+  "message": "Bağla"
+ },
+ "tgChecking": {
+  "message": "Token kontrol ediliyor…"
+ },
+ "tgNeedPermission": {
+  "message": "Botunu kullanmak için Raf'ın api.telegram.org ile konuşma izni gerekiyor."
+ },
+ "tgWaiting": {
+  "message": "Şimdi Telegram'da $1'u aç ve Başlat'a bas…"
+ },
+ "tgTimeout": {
+  "message": "Henüz /start gelmedi. Botunu açıp Başlat'a bas, sonra tekrar Bağla'ya tıkla."
+ },
+ "tgConnected": {
+  "message": "$1 bağlı ($2)"
+ },
+ "tgAuto": {
+  "message": "Kaydettiğim her sayfayı Telegram'a da gönder"
+ },
+ "tgListen": {
+  "message": "Bota gönderdiğim linkleri kaydet (Chrome açıkken 30 saniyede bir bakılır)"
+ },
+ "tgCommands": {
+  "message": "Botta: link gönder, kaydedilsin · <code>/son</code> son 5 · <code>/bugun</code> bugün · <code>/ara kelime</code> ara"
+ },
+ "tgTest": {
+  "message": "Deneme mesajı gönder"
+ },
+ "tgDisconnect": {
+  "message": "Bağlantıyı kes"
+ },
+ "tgTestTitle": {
+  "message": "Raf deneme mesajı ✓"
+ },
+ "tgConfirmDisconnect": {
+  "message": "Telegram botunun Raf bağlantısı kesilsin mi? (Bot Telegram'da kalır.)"
  }
 }

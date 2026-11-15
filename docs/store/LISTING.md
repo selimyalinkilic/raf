@@ -126,6 +126,7 @@ Kaynak kod: https://github.com/selimyalinkilic/raf
 | notifications | Tell the user that a save or download finished or failed. |
 | Host permissions (video sites) | Show a small download button on videos on these sites. It saves the video file the page already plays straight to the user's Downloads folder, or hands the link to the user's own self-hosted server. |
 | cookies (optional) | Requested only when the user connects their own server. Lets downloads work on sites that need a login: that site's cookies are sent to the user's own server for that one download and are not stored. |
+| Optional host permission api.telegram.org | Requested only when the user connects their own Telegram bot in Settings: send pages the user chooses to the user's chat and read messages the user sends to that bot. |
 | Optional host permissions (any https) | Requested for the one server address the user enters in Settings, so the extension can reach the user's own self-hosted Raf server. |
 
 **Remote code:** No, I am not using remote code.

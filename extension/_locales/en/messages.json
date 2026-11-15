@@ -501,10 +501,10 @@
   "message": "Save every open tab as a session and reopen them later in one click"
  },
  "f_phone": {
-  "message": "Send to phone"
+  "message": "Telegram & phone"
  },
  "fd_phone": {
-  "message": "QR code of the page + send the link to your Telegram"
+  "message": "QR code to open the page on your phone + send pages to your own Telegram bot"
  },
  "saveAllTabs": {
   "message": "Save all $1 tabs as a session"
@@ -528,7 +528,7 @@
   "message": "No saved sessions yet"
  },
  "phoneTitle": {
-  "message": "Send to phone"
+  "message": "Telegram & phone"
  },
  "phoneHint": {
   "message": "Scan with your phone camera — or send it to your Telegram"
@@ -682,5 +682,104 @@
  },
  "ovSaving": {
   "message": "Saving…"
+ },
+ "qrHint": {
+  "message": "Scan this with your phone's camera to open this page on your phone."
+ },
+ "phTgNote": {
+  "message": "Why are you sending this?"
+ },
+ "withTg": {
+  "message": "Also send to Telegram"
+ },
+ "tgSentShort": {
+  "message": "sent to Telegram"
+ },
+ "tgNotSetUp": {
+  "message": "Telegram isn't set up yet."
+ },
+ "tgSetUpLink": {
+  "message": "Set it up (2 minutes)"
+ },
+ "tgUnreachable": {
+  "message": "Can't reach Telegram — are you online?"
+ },
+ "tgBadToken": {
+  "message": "That doesn't look like a valid bot token. Copy the whole token from @BotFather."
+ },
+ "tgWelcome": {
+  "message": "✅ <b>Raf is connected.</b>\nPages you send from Raf arrive here.\n\nSend me a link (add #tags and a note if you like) and Raf saves it to your shelf while Chrome is open on your computer.\n/son: last 5 · /bugun: today · /ara word: search"
+ },
+ "tgHelp": {
+  "message": "<b>Raf</b>\n• Send a link: it's saved to your shelf (add #tags and a note in the same message)\n• /son: last 5 saved\n• /bugun: saved today\n• /ara word: search your shelf\n\nRaf answers while Chrome is open on your computer."
+ },
+ "tgNothing": {
+  "message": "Nothing here yet."
+ },
+ "tgSearchHow": {
+  "message": "Write a word after /ara, e.g. <code>/ara recipe</code>"
+ },
+ "tgSendALink": {
+  "message": "Send me a link to save it, or /help."
+ },
+ "tgSaved": {
+  "message": "Saved to your shelf"
+ },
+ "tgUpdated": {
+  "message": "Already on your shelf, updated"
+ },
+ "tgTitle": {
+  "message": "Telegram"
+ },
+ "tgIntro": {
+  "message": "Send pages to Telegram, and save links from your phone by sending them to the bot. No server needed: you use your own bot, and messages go only between Chrome and Telegram."
+ },
+ "tgStep1": {
+  "message": "In Telegram, open <a href=\"https://t.me/BotFather\" target=\"_blank\">@BotFather</a>, send <code>/newbot</code> and pick a name (e.g. <i>My Raf</i>) and a username ending in <code>bot</code>."
+ },
+ "tgStep2": {
+  "message": "BotFather replies with a <b>token</b> like <code>123456789:AA…</code>. Paste it here:"
+ },
+ "tgStep3": {
+  "message": "Open your new bot and press <b>Start</b>. Raf finds your chat by itself."
+ },
+ "tgConnect": {
+  "message": "Connect"
+ },
+ "tgChecking": {
+  "message": "Checking the token…"
+ },
+ "tgNeedPermission": {
+  "message": "Raf needs permission to talk to api.telegram.org to use your bot."
+ },
+ "tgWaiting": {
+  "message": "Now open $1 in Telegram and press Start…"
+ },
+ "tgTimeout": {
+  "message": "Didn't see /start yet. Open your bot, press Start, then press Connect again."
+ },
+ "tgConnected": {
+  "message": "Connected to $1 ($2)"
+ },
+ "tgAuto": {
+  "message": "Send every page I save to Telegram too"
+ },
+ "tgListen": {
+  "message": "Save links I send to the bot (checked every 30 seconds while Chrome is open)"
+ },
+ "tgCommands": {
+  "message": "In the bot: send a link to save it · <code>/son</code> last 5 · <code>/bugun</code> today · <code>/ara word</code> search"
+ },
+ "tgTest": {
+  "message": "Send a test message"
+ },
+ "tgDisconnect": {
+  "message": "Disconnect"
+ },
+ "tgTestTitle": {
+  "message": "Raf test message ✓"
+ },
+ "tgConfirmDisconnect": {
+  "message": "Disconnect your Telegram bot from Raf? (The bot itself stays in Telegram.)"
  }
 }

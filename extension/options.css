@@ -49,3 +49,12 @@ body.options{width:auto;max-width:620px;margin:0 auto;padding:0 16px 40px;min-he
 .srv code{font:700 11px ui-monospace,Consolas,monospace;background:var(--hover);border-radius:5px;padding:0 4px}
 .srv a{color:var(--ink);display:inline-flex;align-items:center;gap:4px}
 .srv ul{margin:4px 0 0;padding-left:18px}
+.steps{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:13px;font-weight:700}
+.steps li::marker{font:700 14px Fredoka,"Segoe UI",sans-serif;color:var(--lav-d)}
+.steps code,#telegram code{font:700 12px ui-monospace,Consolas,monospace;background:var(--hover);border-radius:5px;padding:0 4px}
+.steps a,#telegram .hint a{color:var(--ink)}
+.tgrow{display:flex;gap:8px;align-items:center;margin-top:6px}.tgrow input{margin:0;flex:1}.tgrow .btn{flex:none;padding:7px 12px}
+.tglink{display:inline-flex;margin-left:4px;text-decoration:none;color:var(--ink)}
+#telegram .chk{margin-top:8px;font-size:13px}
+#telegram .row{margin-top:10px;gap:6px}
+#telegram .row .mini{display:inline-flex;align-items:center;gap:5px}

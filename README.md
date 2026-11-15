@@ -28,7 +28,8 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title,
 | Save, tags, notes, search, sessions | ✅ | ✅ |
 | Dev & test tools, dark mode | ✅ | ✅ |
 | Video downloads | Instagram, TikTok and sites that play a plain video file | 1000+ sites incl. YouTube, X, Reddit, with quality choice and audio-only |
-| Telegram bot, web app / PWA for the phone | — | ✅ |
+| Telegram: send pages, save links from your phone | ✅ with your own bot, while Chrome is open | ✅ always on, plus video downloads and a daily digest |
+| Web app / PWA for the phone | — | ✅ |
 | Account or sign-up | none | none, it's your server |
 
 ### Install the extension
@@ -64,7 +65,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
   - a **Raf button on top of videos** with quality selection (up to 4K)
   - files land in *Downloads/Raf* automatically
   - sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored
-- **Send to phone:** QR code of the current page, or send it to your Telegram.
+- **Telegram & phone:** a QR code to open the page on your phone, or send it to your own Telegram bot with a note and tags. Saved pages can be sent from your shelf too.
 - **For developers & testers:**
   - **Locator picker:** click an element and get a Playwright locator (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test data (TR):** names, emails, phone numbers, addresses, valid national ID / tax numbers / IBANs
@@ -87,7 +88,22 @@ The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow
 
 Whatever the version, Raf never downloads from paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify…) or live streams. Download only what you're allowed to, for personal use.
 
-### Telegram bot
+### Telegram without a server (your own bot)
+
+Settings → **Telegram** walks you through it in about two minutes:
+
+1. Open [@BotFather](https://t.me/BotFather), send `/newbot`, and pick a name. BotFather gives you a **token**.
+2. Paste the token into Raf.
+3. Open your new bot and press **Start**. Raf finds your chat by itself and sends a welcome message.
+
+Then:
+- **Send to Telegram** from the popup (with a note and tags), from the right-click menu, or from any item on your shelf. You can also have every page you save sent automatically.
+- **Save from your phone:** send a link to your bot, with `#tags` and a note if you like, and Raf saves it to your shelf.
+- **Ask your bot:** `/son` shows the last 5, `/bugun` today's saves, `/ara word` searches.
+
+Raf talks to Telegram directly from your browser. The token stays on that computer and isn't synced. Messages from anyone other than you are ignored. Without a server, the bot answers while Chrome is open on your computer. Messages you send while it's closed wait in Telegram and are handled when Chrome opens.
+
+### Telegram bot on your Raf server
 - Send a link and it's saved. Add `#tags` and a note in the same message.
 - `/indir <link>` downloads video, `/ses <link>` downloads audio only (files under 50 MB arrive in the chat)
 - `/bugun`, `/son`, `/ara <word>` and a daily digest at 21:00

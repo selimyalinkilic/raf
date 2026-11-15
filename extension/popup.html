@@ -12,6 +12,7 @@
     <div class="chips" id="suggest"></div>
     <label><span data-t="lblNote"></span><textarea id="note" rows="3" data-t-ph="phNote"></textarea></label>
     <label class="chk shotchk" id="shotrow"><input type="checkbox" id="withShot" checked> <i data-i="camera"></i> <span data-t="withShot"></span></label>
+    <label class="chk shotchk" id="tgrow" hidden><input type="checkbox" id="withTg"> <i data-i="send"></i> <span data-t="withTg"></span></label>
     <button id="save"><i data-i="plus"></i> <span data-t="btnSave"></span></button>
     <p id="msg"></p>
     </div>
@@ -35,7 +36,11 @@
     </details>
     <details class="tool" data-k="phone"><summary><i data-i="phone"></i> <span data-t="phoneTitle"></span></summary>
       <div id="qr" class="qr"></div>
-      <p class="hint center"><span data-t="phoneHint"></span></p>
+      <p class="hint center"><span data-t="qrHint"></span></p>
+      <div class="tgbox">
+        <label><span data-t="lblNote"></span><input id="tg-note" data-t-ph="phTgNote"></label>
+        <label><span data-t="lblTags"></span><input id="tg-tags" data-t-ph="phTags"></label>
+      </div>
       <div class="row"><button id="ph-tg" class="btn main"><i data-i="send"></i> <span data-t="sendTelegram"></span></button><button id="ph-copy" class="btn"><i data-i="link"></i> <span data-t="copyLink"></span></button></div>
       <div id="ph-msg" class="hint"></div>
     </details>
@@ -85,5 +90,5 @@
   </div>
   <div id="alloff" class="pane empty-all" hidden><span data-t="allOff"></span></div>
   <footer><a id="open" href="#"><i data-i="external"></i> <span data-t="openRaf"></span></a><a href="options.html" target="_blank"><i data-i="settings"></i> <span data-t="settings"></span></a></footer>
-  <script src="config.js"></script><script src="common.js"></script><script src="local.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="vendor/qrcode.js"></script><script src="vendor/qrcode_UTF8.js"></script><script src="testdata.js"></script><script src="popup.js"></script>
+  <script src="config.js"></script><script src="common.js"></script><script src="local.js"></script><script src="tg.js"></script><script src="icons.js"></script><script src="i18n.js"></script><script src="features.js"></script><script src="vendor/qrcode.js"></script><script src="vendor/qrcode_UTF8.js"></script><script src="testdata.js"></script><script src="popup.js"></script>
 </body></html>

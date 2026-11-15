@@ -1,6 +1,6 @@
 // Local shelf (no server): browse, search, delete, export / import — everything stays in this browser.
 const $ = (id) => document.getElementById(id);
-let tag = "", timer;
+let tag = "", timer, tgOn = false;
 
 function fmtDate(sec) {
   return new Date(sec * 1000).toLocaleDateString(rafLocale(), { day: "numeric", month: "short", year: "numeric" });
@@ -17,7 +17,8 @@ function card(it) {
       ${it.tags.length ? `<div class="tg">${it.tags.map((x) => `<span>#${escHtml(x)}</span>`).join("")}</div>` : ""}
       ${it.screenshot ? `<a class="shot" href="${escHtml(it.url)}" target="_blank" rel="noopener"><img src="${escHtml(it.screenshot)}" alt=""></a>` : ""}
     </div>
-    <button class="del" data-id="${it.id}" title="${escHtml(t("shelfDelete"))}">${ic("trash")}</button>
+    <div class="acts">${tgOn ? `<button class="send" data-id="${it.id}" title="${escHtml(t("sendTelegram"))}">${ic("send")}</button>` : ""}
+    <button class="del" data-id="${it.id}" title="${escHtml(t("shelfDelete"))}">${ic("trash")}</button></div>
   </article>`;
 }
 
@@ -32,6 +33,14 @@ async function render() {
 $("q").oninput = () => { clearTimeout(timer); timer = setTimeout(render, 150); };
 $("tags").onclick = (e) => { const b = e.target.closest("[data-tag]"); if (!b) return; tag = tag === b.dataset.tag ? "" : b.dataset.tag; render(); };
 $("list").onclick = async (e) => {
+  const s = e.target.closest(".send");
+  if (s) {
+    const it = (await rafLocalAll()).find((x) => x.id === +s.dataset.id);
+    s.disabled = true;
+    try { await rafSendToTelegram(it); s.innerHTML = ic("check", "ok"); $("note").textContent = t("sentTelegram"); }
+    catch (err) { $("note").textContent = String(err.message || err); s.disabled = false; }
+    return;
+  }
   const b = e.target.closest(".del"); if (!b) return;
   if (!confirm(t("shelfConfirmDelete"))) return;
   await rafLocalDelete(b.dataset.id); render();
@@ -50,6 +59,7 @@ $("import").onchange = async () => {
 
 (async () => {
   await rafI18nReady; rafApplyDom();
+  tgOn = await rafTgReady();
   if (!(await rafIsLocal())) $("note").textContent = t("shelfServerNote");
   render();
 })();

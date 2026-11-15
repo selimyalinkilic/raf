@@ -101,6 +101,8 @@ def api_dl_create(body: DownloadIn):
 class SendIn(BaseModel):
     url: str
     title: str = ""
+    note: str = ""
+    tags: list[str] = Field(default_factory=list)
 
 
 @app.post("/api/send-to-phone", dependencies=[Depends(auth)])
@@ -111,7 +113,13 @@ def api_send_to_phone(body: SendIn):
     if not body.url.startswith(("http://", "https://")):
         raise HTTPException(400, "Invalid link")
     title = html.escape((body.title or body.url)[:200])
-    telegram.send(telegram.OWNER, f'📱 <a href="{html.escape(body.url, quote=True)}">{title}</a>\n<code>{html.escape(body.url[:300])}</code>')
+    extra = ""
+    tags = [re.sub(r"[^\w]+", "_", t.strip().lstrip("#")) for t in body.tags if t.strip()]
+    if tags:
+        extra += "\n" + " ".join("#" + html.escape(t) for t in tags[:20])
+    if body.note.strip():
+        extra += "\n📝 " + html.escape(body.note.strip()[:1000])
+    telegram.send(telegram.OWNER, f'📱 <a href="{html.escape(body.url, quote=True)}">{title}</a>\n<code>{html.escape(body.url[:300])}</code>{extra}')
     return {"ok": True}
 
 

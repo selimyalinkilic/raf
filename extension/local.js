@@ -58,7 +58,7 @@ async function rafLocalSave(b) {
     }
     const it = { url: b.url, title: b.title || "", description: b.description || "", note: b.note || "", tags,
       text: (b.text || "").slice(0, 200000), favicon: b.favicon || "", screenshot: b.screenshot || "",
-      source: "extension", created_at: now, updated_at: now };
+      source: b.source || "extension", created_at: now, updated_at: now };
     it.id = await rafReq(s.add(it)); return { item: rafPublic(it), new: true };
   });
 }

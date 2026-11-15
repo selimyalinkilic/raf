@@ -1,4 +1,4 @@
-importScripts("config.js", "i18n.js", "common.js", "local.js", "features.js", "testdata.js");
+importScripts("config.js", "i18n.js", "common.js", "local.js", "tg.js", "features.js", "testdata.js");
 
 // Right-click menus follow the feature toggles on the Settings page
 async function buildMenus() {
@@ -10,7 +10,7 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "save-link", title: t("ctxSaveLink"), contexts: ["link"] });
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
   }
-  if (f.phone && !(await rafIsLocal())) chrome.contextMenus.create({ id: "phone", title: t("ctxSendPhone"), contexts: ["page", "link"] });
+  if (f.phone && await rafTgAvailable()) chrome.contextMenus.create({ id: "phone", title: t("ctxSendPhone"), contexts: ["page", "link"] });
   if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
   if (f.testData) chrome.contextMenus.create({ id: "fill", title: t("ctxFill"), contexts: ["page", "editable"] });
   if (f.menuTestData) {
@@ -58,7 +58,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "fill") return fillAndReport(tab);
   if (info.menuItemId === "phone") {
     try {
-      await rafApi("/api/send-to-phone", { method: "POST", body: JSON.stringify({ url: info.linkUrl || tab.url, title: info.linkUrl ? info.selectionText || info.linkUrl : tab.title }) });
+      await rafSendToTelegram({ url: info.linkUrl || tab.url, title: info.linkUrl ? info.selectionText || info.linkUrl : tab.title });
       chrome.notifications.create({ type: "basic", iconUrl: "icons/128.png", title: t("notifSent"), message: info.linkUrl || tab.title || tab.url });
     } catch (e) { flash(tab.id, false, String(e.message || e)); }
     return;
@@ -87,6 +87,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       r = await savePage(tab);
     }
     flash(tab.id, true, `${r.item.title || r.item.url}\n` + t("todayCount", r.today));
+    if ((await rafTgGet()).autoSend) rafSendToTelegram({ ...r.item, note: info.selectionText || r.item.note }).catch((e) => flash(tab.id, false, "Telegram: " + (e.message || e)));
   } catch (e) {
     flash(tab.id, false, String(e.message || e));
   }
@@ -165,7 +166,16 @@ async function doCheck() {
   }
   if (!left.length) chrome.alarms.clear("raf-dl");
 }
-chrome.alarms.onAlarm.addListener((a) => { if (a.name === "raf-dl") checkDownloads(); });
+chrome.alarms.onAlarm.addListener((a) => { if (a.name === "raf-dl") checkDownloads(); if (a.name === "raf-tg") rafTgPoll(); });
+// Own Telegram bot: check for new messages every 30 s while Chrome is open (and right away on start)
+async function tgSchedule() {
+  const tg = await rafTgGet();
+  if (tg.token && tg.chatId && tg.listen !== false) { chrome.alarms.create("raf-tg", { periodInMinutes: 0.5 }); rafTgPoll(); }
+  else chrome.alarms.clear("raf-tg");
+}
+chrome.runtime.onStartup.addListener(tgSchedule);
+chrome.runtime.onInstalled.addListener(tgSchedule);
+chrome.storage.onChanged.addListener((ch, area) => { if (area === "local" && ch.tg) { tgSchedule(); buildMenus(); } });
 chrome.runtime.onMessage.addListener((m, sender, reply) => {
   if (m === "check-downloads") { checkDownloads(); return; }
   if (!m || !m.raf) return;

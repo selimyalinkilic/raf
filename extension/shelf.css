@@ -27,3 +27,6 @@ body.shelf{max-width:760px}
 .it .del:hover{background:var(--pink);color:var(--err)}
 .empty{text-align:center;padding:40px 16px;color:var(--muted);font-weight:800;border:3px dashed var(--lav);border-radius:18px;line-height:1.6}
 .shelf .hbtns .mini{margin:0;font-size:12px;color:var(--ink);line-height:1.35}
+.it .acts{display:flex;flex-direction:column;gap:4px}
+.it .send{border:0;background:transparent;color:var(--sky-d);cursor:pointer;border-radius:8px;padding:4px;display:grid;place-items:center}
+.it .send:hover{background:var(--sky);color:var(--ink)}

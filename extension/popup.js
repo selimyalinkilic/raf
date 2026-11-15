@@ -51,13 +51,15 @@ async function init() {
   const { server } = await rafSettings();
   const local = await rafIsLocal();
   $("open").onclick = (e) => { e.preventDefault(); chrome.tabs.create({ url: local ? chrome.runtime.getURL("shelf.html") : server }); };
-  $("ph-tg").hidden = local;  // Telegram needs a server; the QR code works everywhere
+
   // ?tab=<id> lets docs/screenshots open the popup as a page for a specific tab
   const forced = +new URLSearchParams(location.search).get("tab");
   const [tab] = forced ? [await chrome.tabs.get(forced)] : await chrome.tabs.query({ active: true, currentWindow: true });
   page = (await rafExtract(tab.id)) || { url: tab.url, title: tab.title, favicon: tab.favIconUrl };
   if (!page.favicon && tab.favIconUrl) page.favicon = tab.favIconUrl;
   page.windowId = tab.windowId; page.tabId = tab.id;
+  const tgOk = FEAT.phone && await rafTgReady();  // own bot set up → offer "also send to Telegram"
+  if (tgOk) { $("tgrow").hidden = false; $("withTg").checked = !!(await rafTgGet()).autoSend; }
   const { withShot } = await chrome.storage.sync.get("withShot");
   $("withShot").checked = FEAT.withShot && withShot !== false;
   $("title").value = page.title || "";
@@ -111,8 +113,13 @@ async function save() {
     });
     $("save").innerHTML = ic("check") + " " + t(r.new ? "saved" : "updated");
     $("save").classList.add("done");
-    msg(t("savedToday", r.today));
-    setTimeout(() => window.close(), 1200);
+    let sent = "";
+    if (!$("tgrow").hidden && $("withTg").checked) {
+      try { await rafSendToTelegram({ ...r.item, title: r.item.title || $("title").value, note: $("note").value.trim(), tags: parseTags($("tags").value) }); sent = " · " + t("tgSentShort"); }
+      catch (e) { sent = " · Telegram: " + (e.message || e); }
+    }
+    msg(t("savedToday", r.today) + sent);
+    setTimeout(() => window.close(), sent.startsWith(" · Telegram:") ? 4000 : 1200);
   } catch (e) {
     $("save").disabled = false;
     msg(String(e.message || e), true);
@@ -331,13 +338,19 @@ function renderQr() {
 }
 $("ph-copy").onclick = async () => { await navigator.clipboard.writeText(page.url); $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("copied"))}`; };
 $("ph-tg").onclick = async () => {
+  if (!(await rafTgAvailable())) {  // nothing set up yet: show how
+    $("ph-msg").innerHTML = `${ic("alert")} ${escHtml(t("tgNotSetUp"))} <a href="options.html#telegram" target="_blank">${escHtml(t("tgSetUpLink"))}</a>`;
+    return;
+  }
+  $("ph-tg").disabled = true;
   try {
-    await rafApi("/api/send-to-phone", { method: "POST", body: JSON.stringify({ url: page.url, title: $("title").value || page.title }) });
+    await rafSendToTelegram({ url: page.url, title: $("title").value || page.title, note: $("tg-note").value.trim(), tags: parseTags($("tg-tags").value || $("tags").value) });
     $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("sentTelegram"))}`;
   } catch (e) {
     const m = String(e.message || e);
     $("ph-msg").innerHTML = `${ic("alert", "err")} ${escHtml(/not configured/i.test(m) ? t("tgNotConfigured") : m)}`;
   }
+  $("ph-tg").disabled = false;
 };
 
 init();

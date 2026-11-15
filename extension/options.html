@@ -21,6 +21,27 @@
         <label><input type="radio" name="theme" value="dark"><i data-i="moon"></i><span data-t="themeDark"></span></label>
       </div>
     </section>
+    <section class="card" id="telegram">
+      <h2><i data-i="send"></i> <span data-t="tgTitle"></span></h2>
+      <p class="hint"><span data-t="tgIntro"></span></p>
+      <div id="tg-off">
+        <ol class="steps">
+          <li data-t-html="tgStep1"></li>
+          <li><span data-t-html="tgStep2"></span>
+            <div class="tgrow"><input id="tg-token" type="password" autocomplete="off" placeholder="123456789:AA…"><button id="tg-connect" class="btn"><i data-i="link"></i> <span data-t="tgConnect"></span></button></div></li>
+          <li><span data-t-html="tgStep3"></span> <a id="tg-open" class="mini tglink" target="_blank" hidden></a></li>
+        </ol>
+        <p id="tg-msg" class="hint"></p>
+      </div>
+      <div id="tg-on" hidden>
+        <p class="mode" id="tg-status"></p>
+        <label class="chk"><input type="checkbox" id="tg-auto"> <span data-t="tgAuto"></span></label>
+        <label class="chk"><input type="checkbox" id="tg-listen"> <span data-t="tgListen"></span></label>
+        <p class="hint" data-t-html="tgCommands"></p>
+        <div class="row"><button id="tg-test" class="mini"><i data-i="send"></i> <span data-t="tgTest"></span></button><button id="tg-disconnect" class="mini"><i data-i="x"></i> <span data-t="tgDisconnect"></span></button></div>
+        <p id="tg-msg2" class="hint"></p>
+      </div>
+    </section>
     <section class="card">
       <h2><i data-i="link"></i> <span data-t="optConnection"></span></h2>
       <p class="mode" id="mode"></p>
@@ -45,6 +66,6 @@
       <div id="features"></div>
     </section>
   </main>
-  <script src="config.js"></script><script src="i18n.js"></script><script src="common.js"></script><script src="local.js"></script>
+  <script src="config.js"></script><script src="i18n.js"></script><script src="common.js"></script><script src="local.js"></script><script src="tg.js"></script>
   <script src="features.js"></script><script src="icons.js"></script><script src="options.js"></script>
 </body></html>

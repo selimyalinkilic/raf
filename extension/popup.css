@@ -117,3 +117,5 @@ details.tool summary .i{flex:none}
   background:var(--card);border:2px solid var(--rim);border-radius:10px;padding:5px 9px;box-shadow:0 3px 0 var(--sun-d)}
 .banner .bbtn .i{width:13px;height:13px}
 html{background:var(--bg1)}
+.tgbox{margin-top:8px}.tgbox label{margin-top:6px}
+#ph-msg a{color:var(--ink);font-weight:800}
