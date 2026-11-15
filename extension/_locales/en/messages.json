@@ -827,12 +827,6 @@
  "skind_cyberpunk": {
   "message": "Neon on black"
  },
- "skin_terminal": {
-  "message": "Terminal"
- },
- "skind_terminal": {
-  "message": "Green on black, monospace"
- },
  "offlineErr": {
   "message": "Can't reach your Raf server. Is your VPN / Tailscale on?"
  },
@@ -862,5 +856,44 @@
  },
  "tgQueued": {
   "message": "Saved for later (server unreachable)"
+ },
+ "skin_ocean": {
+  "message": "Ocean"
+ },
+ "skind_ocean": {
+  "message": "Deep blue, aqua accents"
+ },
+ "skin_forest": {
+  "message": "Forest"
+ },
+ "skind_forest": {
+  "message": "Sage, moss and cream"
+ },
+ "skin_sunset": {
+  "message": "Sunset"
+ },
+ "skind_sunset": {
+  "message": "Coral, peach and lilac"
+ },
+ "skin_paper": {
+  "message": "Paper"
+ },
+ "skind_paper": {
+  "message": "Sepia and serif, like a book"
+ },
+ "skin_pop": {
+  "message": "Pop"
+ },
+ "skind_pop": {
+  "message": "Bold outlines, bright colours"
+ },
+ "optThemeLightOnly": {
+  "message": "This theme is light only."
+ },
+ "mailLabelQ": {
+  "message": "Want these emails to land in a “Raf” label in Gmail?"
+ },
+ "mailLabelA": {
+  "message": "Add +raf to your address (you+raf@gmail.com still reaches you). Then in Gmail: Settings → Filters → Create a new filter → To: you+raf@gmail.com → Apply the label “Raf” (and Skip the inbox if you like). Every Raf email is sorted automatically from then on."
  }
 }

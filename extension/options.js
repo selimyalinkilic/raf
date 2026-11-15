@@ -76,7 +76,11 @@ const SKIN_PREVIEW = {
   pastel:    { bg: "linear-gradient(160deg,#fffaf4,#fbf6ff 60%,#f4fbff)", card: "#fff", ink: "#3d3a5c", a: "#d9ccff", ad: "#ab97ec", b: "#bdf0d6", bd: "#7fd0a8", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },
   minimal:   { bg: "#f6f8fa", card: "#fff", ink: "#1f2328", a: "#e8edf4", ad: "#4a6fa5", b: "#dcf2e4", bd: "#2f9e5b", r: 5, font: "system-ui,sans-serif", shadow: "" },
   cyberpunk: { bg: "linear-gradient(160deg,#07060f,#0d0a1c 60%,#050d1a)", card: "#12101f", ink: "#e8f7ff", a: "#2a0f3d", ad: "#ff2bd6", b: "#05302d", bd: "#00f5d4", r: 1, font: "ui-monospace,monospace", glow: true },
-  terminal:  { bg: "#030503", card: "#0a100a", ink: "#b9f5b9", a: "#0f2a12", ad: "#39ff14", b: "#0f2a12", bd: "#39ff14", r: 0, font: "ui-monospace,monospace", shadow: "" },
+  ocean:     { bg: "linear-gradient(160deg,#08121f,#0b1a2e 60%,#071a24)", card: "#10233a", ink: "#e3f2ff", a: "#12385a", ad: "#3fc1ff", b: "#0d3b3a", bd: "#2ee6c5", r: 10, font: "Nunito,sans-serif", shadow: "0 3px 0" },
+  forest:    { bg: "linear-gradient(160deg,#f7f4ea,#f2f1e4 60%,#eef3e6)", card: "#fffdf6", ink: "#2f3b2c", a: "#dfe8d0", ad: "#6f8f4e", b: "#d6ecd2", bd: "#4f9a5a", r: 10, font: "Nunito,sans-serif", shadow: "0 3px 0" },
+  sunset:    { bg: "linear-gradient(160deg,#fff1e6,#ffe7ee 60%,#f3e9ff)", card: "#fff", ink: "#4a2b3f", a: "#ffd3c2", ad: "#ff7a59", b: "#ffe2b8", bd: "#f5a524", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },
+  paper:     { bg: "#f4ecd8", card: "#fbf6e9", ink: "#3b2f22", a: "#eadfc6", ad: "#8b5e34", b: "#e3e5c8", bd: "#6b7d3a", r: 3, font: "Georgia,serif", shadow: "" },
+  pop:       { bg: "linear-gradient(160deg,#fff7d6,#ffeaf4 60%,#e6f7ff)", card: "#fff", ink: "#111", a: "#ffd23f", ad: "#111", b: "#7cf2c2", bd: "#111", r: 6, font: "Nunito,sans-serif", shadow: "3px 3px 0" },
 };
 function skinTile(id, on) {
   const p = SKIN_PREVIEW[id];
@@ -84,7 +88,7 @@ function skinTile(id, on) {
   return `<button class="skin${on ? " on" : ""}" data-skin="${id}" title="${escHtml(t("skin_" + id))}">
     <span class="pv" style="background:${p.bg};font-family:${p.font}">
       <span class="pc" style="background:${p.card};color:${p.ink};border-radius:${p.r}px;${p.shadow || p.glow ? `box-shadow:${sh(p.ad)}` : `border:1px solid ${p.a}`}">
-        <b style="color:${p.glow || id === "terminal" ? p.ad : p.ink}">${id === "terminal" ? "&gt; Raf_" : "Raf"}</b>
+        <b style="color:${p.glow ? p.ad : p.ink}"><img src="${rafIconUrl(id)}" alt="" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px">Raf</b>
         <i style="background:${p.a};border-radius:${p.r}px"></i><i style="background:${p.a};border-radius:${p.r}px;width:60%"></i>
         <em style="background:${p.b};border-radius:${p.r}px;box-shadow:${sh(p.bd)}"></em>
       </span>
@@ -94,10 +98,10 @@ function skinTile(id, on) {
 async function skinsRender() {
   const { skin = "pastel" } = await chrome.storage.sync.get("skin");
   $("skins").innerHTML = RAF_SKINS.map((id) => skinTile(id, id === skin)).join("");
-  const darkOnly = RAF_DARK_ONLY.includes(skin);
-  document.querySelectorAll("#themes input").forEach((r) => (r.disabled = darkOnly));
-  $("themes").classList.toggle("locked", darkOnly);
-  $("mode-hint").textContent = darkOnly ? t("optThemeDarkOnly") : t("optThemeHint");
+  const darkOnly = RAF_DARK_ONLY.includes(skin), lightOnly = RAF_LIGHT_ONLY.includes(skin);
+  document.querySelectorAll("#themes input").forEach((r) => (r.disabled = darkOnly || lightOnly));
+  $("themes").classList.toggle("locked", darkOnly || lightOnly);
+  $("mode-hint").textContent = darkOnly ? t("optThemeDarkOnly") : lightOnly ? t("optThemeLightOnly") : t("optThemeHint");
 }
 $("skins").onclick = async (e) => {
   const b = e.target.closest("[data-skin]"); if (!b) return;

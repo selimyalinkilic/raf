@@ -71,3 +71,4 @@ body.options{width:auto;max-width:620px;margin:0 auto;padding:0 16px 40px;min-he
 .skin .nm{font:700 13px Fredoka,"Segoe UI",sans-serif;margin-top:4px}
 .skin small{font-size:11px;color:var(--muted);font-weight:700;line-height:1.3}
 #themes.locked{opacity:.45}
+.mailtip summary{cursor:pointer;font-weight:800;color:var(--ink)}.mailtip p{margin:6px 0 0}

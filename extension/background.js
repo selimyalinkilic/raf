@@ -1,4 +1,4 @@
-importScripts("config.js", "i18n.js", "common.js", "local.js", "tg.js", "features.js", "testdata.js");
+importScripts("iconpaint.js", "config.js", "i18n.js", "common.js", "local.js", "tg.js", "features.js", "testdata.js");
 
 // Right-click menus follow the feature toggles on the Settings page
 async function buildMenus() {
@@ -24,6 +24,9 @@ async function buildMenus() {
   }
 }
 chrome.runtime.onInstalled.addListener(buildMenus);
+chrome.runtime.onInstalled.addListener(rafApplyActionIcon);
+chrome.runtime.onStartup.addListener(rafApplyActionIcon);
+chrome.storage.onChanged.addListener((c, area) => { if (area === "sync" && c.skin) rafApplyActionIcon(); });
 // After install/update, put the video button into tabs that are already open (no page reload needed)
 async function reinjectOverlays() {
   const cs = chrome.runtime.getManifest().content_scripts?.[0];

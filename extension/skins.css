@@ -1,6 +1,6 @@
 /* Themes ("skins"). Pastel is the default look in popup.css; the others override its tokens and a few
    rules. <html data-skin="…"> is set by theme.js; data-theme="light|dark" picks the mode for skins that
-   have both (Pastel, Minimal). Cyberpunk and Terminal are dark-only. Loaded after the page's own CSS. */
+   have both (Pastel, Minimal). Cyberpunk and Ocean are dark-only; Forest, Sunset, Paper and Pop light-only. Loaded after the page's own CSS. */
 
 /* ---------- Minimal: flat, quiet, system font ---------- */
 :root[data-skin=minimal]{--ink:#1f2328;--muted:#656d76;--lav:#e8edf4;--lav-d:#4a6fa5;--mint:#dcf2e4;--mint-d:#2f9e5b;--peach:#fbeee4;--peach-d:#c96f3b;--sky:#eaf2fb;--sky-d:#3b82c4;
@@ -37,25 +37,48 @@
 :root[data-skin=cyberpunk] :is(input,textarea):focus{border-color:var(--mint-d)!important;box-shadow:0 0 10px -2px var(--mint-d)!important}
 :root[data-skin=cyberpunk] body{background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%,var(--bg3)),repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,43,214,.025) 3px 4px)!important}
 
-/* ---------- Terminal: green on black, monospace everywhere (dark only) ---------- */
-:root[data-skin=terminal]{--ink:#b9f5b9;--muted:#5f9a5f;--lav:#0f2a12;--lav-d:#39ff14;--mint:#0f2a12;--mint-d:#39ff14;--peach:#2a2005;--peach-d:#ffb000;--sky:#0c1f1a;--sky-d:#2ee6a6;
-  --card:#0a100a;--rim:#1d3a1d;--field:#050805;--soft:#1d3a1d;--hover:#0f1a0f;--off:#0d140d;--off-d:#1d3a1d;--off-i:#3f6b3f;--err:#ff5f56;--ok:#39ff14;--pink:#2a0d0b;--pink-d:#ff5f56;
-  --sun:#221c05;--sun-d:#ffb000;--sun-i:#ffb000;--bg1:#030503;--bg2:#030503;--bg3:#030503;color-scheme:dark}
-:root[data-skin=terminal] *{font-family:ui-monospace,"Cascadia Mono","DejaVu Sans Mono",Consolas,monospace!important;box-shadow:none!important}
-:root[data-skin=terminal] *:not(.sw span):not(.langs input){border-radius:0!important}
-:root[data-skin=terminal] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.jmeta span,#status,.mode,.langs label){border:1px solid var(--lav-d)!important;background:transparent!important}
-:root[data-skin=terminal] :is(.btn.main,#save.done,.tabs button.on,.langs label:has(input:checked)){background:var(--lav)!important}
-:root[data-skin=terminal] :is(#save,.btn,.tabs button)::before{content:"> ";color:var(--lav-d)}
-:root[data-skin=terminal] :is(.tool,.options .card,.it){outline:1px dashed var(--rim)!important;border:0!important}
-:root[data-skin=terminal] header{border-bottom:1px solid var(--rim)}
-:root[data-skin=terminal] header span::after{content:"_";animation:rafblink 1s steps(1) infinite;color:var(--lav-d)}
-@keyframes rafblink{50%{opacity:0}}
-:root[data-skin=terminal] :is(input,textarea,select){border-width:1px!important;border-color:var(--rim)!important;caret-color:var(--lav-d)}
-:root[data-skin=terminal] header img{filter:grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(.9)}
+/* ---------- Ocean: deep navy, aqua accents (dark only) ---------- */
+:root[data-skin=ocean]{--ink:#e3f2ff;--muted:#7fa3c2;--lav:#12385a;--lav-d:#3fc1ff;--mint:#0d3b3a;--mint-d:#2ee6c5;--peach:#3a2618;--peach-d:#ff9d5c;--sky:#12304f;--sky-d:#5cb8ff;
+  --card:#10233a;--rim:#10233a;--field:#0a1a2d;--soft:#1d3a5c;--hover:#142a45;--off:#12253c;--off-d:#1d3a5c;--off-i:#4d6c8c;--err:#ff7a8a;--ok:#2ee6c5;--pink:#3a1626;--pink-d:#ff7aa8;
+  --sun:#2e2a12;--sun-d:#b8982f;--sun-i:#ffd76a;--bg1:#08121f;--bg2:#0b1a2e;--bg3:#071a24;color-scheme:dark}
+:root[data-skin=ocean] header span{color:var(--lav-d)}
+
+/* ---------- Forest: sage, moss, cream (light only) ---------- */
+:root[data-skin=forest]{--ink:#2f3b2c;--muted:#7a8572;--lav:#dfe8d0;--lav-d:#6f8f4e;--mint:#d6ecd2;--mint-d:#4f9a5a;--peach:#f4e0c8;--peach-d:#c98a4b;--sky:#dbe9e4;--sky-d:#5f9a8a;
+  --card:#fffdf6;--rim:#fffdf6;--field:#faf8f0;--soft:#e2ddcb;--hover:#f1efe2;--off:#ecebe0;--off-d:#d8d6c6;--off-i:#a5a893;--err:#b0412e;--ok:#4f8a3c;--pink:#f2d9d0;--pink-d:#d08f7a;
+  --sun:#f5ecc4;--sun-d:#cfb35a;--sun-i:#9c7f22;--bg1:#f7f4ea;--bg2:#f2f1e4;--bg3:#eef3e6;color-scheme:light}
+
+/* ---------- Sunset: coral, peach, lilac (light only) ---------- */
+:root[data-skin=sunset]{--ink:#4a2b3f;--muted:#a07a8c;--lav:#ffd3c2;--lav-d:#ff7a59;--mint:#ffe2b8;--mint-d:#f5a524;--peach:#ffd0dc;--peach-d:#e85d8a;--sky:#e9d9ff;--sky-d:#9b6bdf;
+  --card:#fff;--rim:#fff;--field:#fff8f5;--soft:#f4dfe4;--hover:#fff3ef;--off:#f6e9ec;--off-d:#e6d2d8;--off-i:#bfa1ad;--err:#c83a4a;--ok:#3c9a6e;--pink:#ffd6e0;--pink-d:#f08aa6;
+  --sun:#ffefc2;--sun-d:#f0c45c;--sun-i:#c08a1a;--bg1:#fff1e6;--bg2:#ffe7ee;--bg3:#f3e9ff;color-scheme:light}
+
+/* ---------- Paper: sepia, serif, flat like a printed page (light only) ---------- */
+:root[data-skin=paper]{--ink:#3b2f22;--muted:#8a7a63;--lav:#eadfc6;--lav-d:#8b5e34;--mint:#e3e5c8;--mint-d:#6b7d3a;--peach:#f0d9bf;--peach-d:#b4693a;--sky:#e1dccb;--sky-d:#5d6f86;
+  --card:#fbf6e9;--rim:#dccfb2;--field:#fffaf0;--soft:#e2d6bb;--hover:#f3ead6;--off:#ece2cc;--off-d:#d9cbab;--off-i:#a8987a;--err:#9e2a1e;--ok:#5b7a2a;--pink:#f0d4c8;--pink-d:#c08a76;
+  --sun:#f3e6b8;--sun-d:#c9a74a;--sun-i:#8a6a12;--bg1:#f4ecd8;--bg2:#f4ecd8;--bg3:#f4ecd8;color-scheme:light}
+:root[data-skin=paper] *{font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif!important;box-shadow:none!important}
+:root[data-skin=paper] *:not(.sw span):not(.langs input){border-radius:3px!important}
+:root[data-skin=paper] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.jmeta span,#status,.mode,.langs label){border:1px solid var(--rim)!important}
+:root[data-skin=paper] :is(.btn.main,#save.done,.tabs button.on){border-color:var(--lav-d)!important}
+:root[data-skin=paper] :is(.tool,.options .card,.it){outline:1px solid var(--rim)!important;border:0!important}
+:root[data-skin=paper] header{border-bottom:1px double var(--rim)}
+:root[data-skin=paper] :is(input,textarea,select){border-width:1px!important;border-color:var(--rim)!important}
+
+/* ---------- Pop: bold black outlines, offset shadows, bright fills (light only) ---------- */
+:root[data-skin=pop]{--ink:#111;--muted:#555;--lav:#ffd23f;--lav-d:#111;--mint:#7cf2c2;--mint-d:#111;--peach:#ff9f7a;--peach-d:#111;--sky:#8fd3ff;--sky-d:#111;
+  --card:#fff;--rim:#111;--field:#fff;--soft:#111;--hover:#fff3b0;--off:#eee;--off-d:#111;--off-i:#888;--err:#d0202a;--ok:#0a7a40;--pink:#ff9fd0;--pink-d:#111;
+  --sun:#fff0a0;--sun-d:#111;--sun-i:#111;--bg1:#fff7d6;--bg2:#ffeaf4;--bg3:#e6f7ff;color-scheme:light}
+:root[data-skin=pop] *:not(.sw span):not(.langs input){border-radius:7px!important}
+:root[data-skin=pop] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.banner,.tool,.options .card,.it,header img){border:2px solid #111!important;box-shadow:3px 3px 0 #111!important}
+:root[data-skin=pop] :is(input,textarea,select){border:2px solid #111!important}
+:root[data-skin=pop] :is(.btn:active,#save:active,.mini:active){transform:translate(2px,2px);box-shadow:1px 1px 0 #111!important}
+:root[data-skin=pop] :is(h2,.tool-h,details.tool summary,header span,#save,.btn,.tabs button){font-weight:900!important}
+:root[data-skin=pop] header{border-bottom:2px solid #111}
 
 /* QR codes stay black on white in every skin so phones can scan them */
 .qr{background:#fff!important}
 
-/* Minimal / Terminal switch shadows off — keep the dot of a checked radio */
-:root[data-skin=minimal] .langs input:checked,:root[data-skin=terminal] .langs input:checked{box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 8px var(--lav-d)!important;border-color:var(--lav-d)!important}
+/* Minimal / Paper switch shadows off — keep the dot of a checked radio */
+:root[data-skin=minimal] .langs input:checked,:root[data-skin=paper] .langs input:checked{box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 8px var(--lav-d)!important;border-color:var(--lav-d)!important}
 :root[data-skin=minimal] .langs label:has(input:checked){border-color:var(--lav-d)!important}

@@ -73,7 +73,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
   - giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz
 - **Telegram ve telefon:** sayfayı telefonda açmak için QR kod ya da not ve etiketle kendi Telegram botuna gönderme. Kayıtlı sayfaları raftan da gönderebilirsin.
 - **E-posta:** başlık, link, etiket ve notla hazır bir taslağı posta uygulamanda, Gmail'de ya da Outlook'ta aç, sadece Gönder'e bas. Varsayılan alıcıyı Ayarlar'dan seçebilirsin.
-- **Temalar:** Pastel (varsayılan), Minimal açık/koyu, Cyberpunk ve Terminal; ayrıca otomatik koyu mod.
+- **8 tema:** Pastel (varsayılan) ve Minimal açık & koyu, Cyberpunk, Okyanus, Orman, Gün batımı, Kâğıt ve Pop. Araç çubuğundaki ikon da temanın renklerini alır.
 - **Geliştiriciler ve test uzmanları için:**
   - **Locator seçici:** bir öğeye tıkla, Playwright locator'ını al (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test verisi (TR):** ad, e-posta, telefon, adres; doğrulamadan geçen TCKN / VKN / IBAN

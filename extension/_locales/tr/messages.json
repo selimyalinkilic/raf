@@ -827,12 +827,6 @@
  "skind_cyberpunk": {
   "message": "Siyah üstüne neon"
  },
- "skin_terminal": {
-  "message": "Terminal"
- },
- "skind_terminal": {
-  "message": "Siyah üstüne yeşil, monospace"
- },
  "offlineErr": {
   "message": "Raf sunucuna ulaşılamıyor. VPN / Tailscale açık mı?"
  },
@@ -862,5 +856,44 @@
  },
  "tgQueued": {
   "message": "Sonra aktarılmak üzere saklandı (sunucuya ulaşılamıyor)"
+ },
+ "skin_ocean": {
+  "message": "Okyanus"
+ },
+ "skind_ocean": {
+  "message": "Koyu mavi, turkuaz vurgular"
+ },
+ "skin_forest": {
+  "message": "Orman"
+ },
+ "skind_forest": {
+  "message": "Adaçayı, yosun ve krem"
+ },
+ "skin_sunset": {
+  "message": "Gün batımı"
+ },
+ "skind_sunset": {
+  "message": "Mercan, şeftali ve leylak"
+ },
+ "skin_paper": {
+  "message": "Kâğıt"
+ },
+ "skind_paper": {
+  "message": "Sepya ve tırnaklı yazı, kitap gibi"
+ },
+ "skin_pop": {
+  "message": "Pop"
+ },
+ "skind_pop": {
+  "message": "Kalın çizgiler, canlı renkler"
+ },
+ "optThemeLightOnly": {
+  "message": "Bu tema yalnızca açık modda."
+ },
+ "mailLabelQ": {
+  "message": "Bu mailler Gmail'de “Raf” etiketine düşsün mü?"
+ },
+ "mailLabelA": {
+  "message": "Adresine +raf ekle (sen+raf@gmail.com yine sana gelir). Sonra Gmail'de: Ayarlar → Filtreler → Yeni filtre oluştur → Kime: sen+raf@gmail.com → “Raf” etiketini uygula (istersen “Gelen kutusunu atla”). Bundan sonra her Raf maili kendiliğinden oraya gider."
  }
 }
