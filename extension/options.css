@@ -72,3 +72,4 @@ body.options{width:auto;max-width:620px;margin:0 auto;padding:0 16px 40px;min-he
 .skin small{font-size:11px;color:var(--muted);font-weight:700;line-height:1.3}
 #themes.locked{opacity:.45}
 .mailtip summary{cursor:pointer;font-weight:800;color:var(--ink)}.mailtip p{margin:6px 0 0}
+.tgown{margin-top:10px}.tgown>summary{cursor:pointer;font-weight:800;color:var(--muted);font-size:12px}.tgown.solo>summary{display:none}#tg-hub .btn{width:100%}

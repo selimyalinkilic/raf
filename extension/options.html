@@ -26,6 +26,12 @@
       <h2><i data-i="send"></i> <span data-t="tgTitle"></span></h2>
       <p class="hint"><span data-t="tgIntro"></span></p>
       <div id="tg-off">
+        <div id="tg-hub" hidden>
+          <button id="tg-hub-connect" class="btn main wide"><i data-i="send"></i> <span data-t="tgHubConnect"></span></button>
+          <p class="hint" data-t="tgHubHint"></p>
+          <p id="tg-hub-msg" class="hint"></p>
+        </div>
+        <details id="tg-own" class="tgown"><summary data-t="tgOwnBot"></summary>
         <ol class="steps">
           <li data-t-html="tgStep1"></li>
           <li><span data-t-html="tgStep2"></span>
@@ -33,6 +39,7 @@
           <li><span data-t-html="tgStep3"></span> <a id="tg-open" class="mini tglink" target="_blank" hidden></a></li>
         </ol>
         <p id="tg-msg" class="hint"></p>
+        </details>
       </div>
       <div id="tg-on" hidden>
         <p class="mode" id="tg-status"></p>

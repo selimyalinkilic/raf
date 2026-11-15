@@ -3,13 +3,15 @@
 // - send: popup "Send to Telegram", right-click, shelf items, optionally every save
 // - listen (while Chrome is open): links sent to the bot are saved to the shelf; /son /bugun /ara answer from it
 const RAF_TG_API = "https://api.telegram.org";
+// Shared Raf bot (worker/ in this repo): one tap to connect, no @BotFather. Empty = only "your own bot" is offered.
+const RAF_HUB = "";
 
 async function rafTgGet() { const { tg = {} } = await chrome.storage.local.get("tg"); return tg; }
 async function rafTgSet(patch) { const tg = { ...(await rafTgGet()), ...patch }; await chrome.storage.local.set({ tg }); return tg; }
-async function rafTgReady() { const tg = await rafTgGet(); return !!(tg.token && tg.chatId); }
+async function rafTgReady() { const tg = await rafTgGet(); return !!((tg.token || tg.hub) && tg.chatId); }
 
 async function rafTgCall(method, params = {}, token) {
-  token ||= (await rafTgGet()).token;
+  if (!token) { const tg = await rafTgGet(); if (tg.hub) return rafHubCall(method, params, tg.hub); token = tg.token; }
   if (!token) throw new Error(t("tgNotSetUp"));
   let r;
   try {
@@ -33,7 +35,7 @@ function rafTgFormat({ url, title, tags = [], note = "" }) {
 // Send a page / saved item: own bot if set up, otherwise the Raf server's bot, otherwise explain how to set it up.
 async function rafSendToTelegram(item) {
   const tg = await rafTgGet();
-  if (tg.token && tg.chatId) {
+  if ((tg.token || tg.hub) && tg.chatId) {
     await rafTgCall("sendMessage", { chat_id: tg.chatId, text: rafTgFormat(item), parse_mode: "HTML", link_preview_options: { url: item.url } });
     return "bot";
   }
@@ -44,6 +46,38 @@ async function rafSendToTelegram(item) {
   throw new Error(t("tgNotSetUp"));
 }
 async function rafTgAvailable() { return (await rafTgReady()) || !(await rafIsLocal()); }
+
+// ---------- Shared bot (Raf hub): same calls, the hub holds the bot token and knows the user's chat ----------
+async function rafHubFetch(path, body) {
+  let r;
+  try { r = await fetch(RAF_HUB + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
+  catch (e) { throw new Error(t("tgUnreachable")); }
+  const j = await r.json().catch(() => ({}));
+  if (!j.ok) throw new Error(j.error === "not_linked" ? t("tgHubUnlinked") : j.error === "daily_limit" ? t("tgHubLimit") : j.error || "Raf hub HTTP " + r.status);
+  return j;
+}
+async function rafHubCall(method, params, secret) {
+  if (method === "sendMessage") return (await rafHubFetch("/send", { secret, text: params.text, parse_mode: params.parse_mode, link_preview_options: params.link_preview_options })).result;
+  if (method === "getUpdates") return (await rafHubFetch("/inbox", { secret, offset: params.offset || 0 })).result;
+  throw new Error("hub: " + method);
+}
+// 1) get a code + secret, open t.me/<bot>?start=<code>   2) wait until the user tapped Start
+async function rafHubConnect() {
+  const r = await rafHubFetch("/link", {});
+  await chrome.storage.local.set({ tg: { hub: r.secret, bot: r.bot, offset: 0, listen: true, autoSend: false } });
+  return r;
+}
+async function rafHubWait(onTick) {
+  for (let i = 0; i < 90; i++) {
+    const tg = await rafTgGet();
+    if (!tg.hub) return null;
+    const s = await rafHubFetch("/status", { secret: tg.hub }).catch(() => ({}));
+    if (s.linked) { await rafTgSet({ chatId: s.chat_id, chatName: s.name }); return s; }
+    onTick?.(i);
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+  return null;
+}
 
 // ---------- Setup (Settings page) ----------
 // 1) check the token → bot username   2) wait for the user's /start → remember that chat
@@ -77,7 +111,11 @@ async function rafTgWaitForStart(onTick) {
   }
   return null;
 }
-async function rafTgDisconnect() { await chrome.storage.local.remove("tg"); }
+async function rafTgDisconnect() {
+  const tg = await rafTgGet();
+  if (tg.hub) await rafHubFetch("/unlink", { secret: tg.hub }).catch(() => {});
+  await chrome.storage.local.remove("tg");
+}
 
 // ---------- Listening (background, while Chrome is open) ----------
 const RAF_URL_RE = /https?:\/\/[^\s<>"']+/i;
@@ -116,7 +154,7 @@ async function rafTgPoll() {
   if (rafTgPolling) return; rafTgPolling = true;
   try {
     const tg = await rafTgGet();
-    if (!tg.token || !tg.chatId || tg.listen === false) return;
+    if (!(tg.token || tg.hub) || !tg.chatId || tg.listen === false) return;
     const ups = await rafTgCall("getUpdates", { offset: tg.offset || 0, timeout: 0, allowed_updates: ["message"] });
     let offset = tg.offset || 0;
     for (const u of ups) {

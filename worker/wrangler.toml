@@ -1,0 +1,17 @@
+# Raf hub: one shared Telegram bot for everyone, so users connect with a single tap (no @BotFather).
+# Setup: see README.md in this folder. Nothing here is secret; the bot token and webhook secret are Worker secrets.
+name = "raf-hub"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+BOT_USERNAME = ""            # e.g. RafShelfBot (without @)
+SEND_PER_DAY = "300"         # messages the bot may send to one user per day
+
+[[d1_databases]]
+binding = "DB"
+database_name = "raf-hub"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+
+[triggers]
+crons = ["17 3 * * *"]       # daily clean-up of old rows

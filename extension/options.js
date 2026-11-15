@@ -37,12 +37,14 @@ document.querySelectorAll("#themes input").forEach((r) => r.onchange = () => chr
 // ---------- Telegram (own bot, no server needed) ----------
 async function tgRender() {
   const tg = await rafTgGet();
-  const on = !!(tg.token && tg.chatId);
+  const on = !!((tg.token || tg.hub) && tg.chatId);
+  $("tg-hub").hidden = !RAF_HUB; if (!RAF_HUB) { $("tg-own").open = true; $("tg-own").classList.add("solo"); }
   $("tg-on").hidden = !on; $("tg-off").hidden = on;
   if (on) {
     $("tg-status").innerHTML = `${ic("check", "ok")} ${escHtml(t("tgConnected", "@" + tg.bot, tg.chatName || ""))}`;
     $("tg-auto").checked = !!tg.autoSend; $("tg-listen").checked = tg.listen !== false;
-  } else if (tg.token && tg.bot) {  // token OK, waiting for /start
+  } else if (tg.token && tg.bot) {  // own bot: token OK, waiting for /start
+    $("tg-own").open = true;
     $("tg-open").hidden = false; $("tg-open").href = `https://t.me/${tg.bot}?start=raf`; $("tg-open").textContent = `@${tg.bot} ↗`;
   }
 }
@@ -60,6 +62,19 @@ $("tg-connect").onclick = async () => {
     $("tg-msg").textContent = chat ? "" : t("tgTimeout");
     tgRender();
   } catch (e) { $("tg-msg").textContent = String(e.message || e); $("tg-msg").className = "hint err"; }
+};
+$("tg-hub-connect").onclick = async () => {
+  const b = $("tg-hub-connect"), m = $("tg-hub-msg"); b.disabled = true; m.className = "hint";
+  try {
+    const r = await rafHubConnect();
+    chrome.tabs.create({ url: r.url });  // Telegram opens; the user taps Start
+    m.innerHTML = `${ic("spinner", "spin")} ${escHtml(t("tgHubWaiting"))} <a href="${escHtml(r.url)}" target="_blank">@${escHtml(r.bot)} ↗</a>`;
+    const ok = await rafHubWait();
+    if (!ok) { await chrome.storage.local.remove("tg"); m.textContent = t("tgTimeout"); }
+    else m.textContent = "";
+    tgRender();
+  } catch (e) { m.textContent = String(e.message || e); m.className = "hint err"; }
+  b.disabled = false;
 };
 $("tg-auto").onchange = () => rafTgSet({ autoSend: $("tg-auto").checked });
 $("tg-listen").onchange = () => rafTgSet({ listen: $("tg-listen").checked });

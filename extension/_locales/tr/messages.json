@@ -732,7 +732,7 @@
   "message": "Telegram"
  },
  "tgIntro": {
-  "message": "Sayfaları Telegram'a gönder, telefondan bota link atarak rafına kaydet. Sunucu gerekmez: kendi botunu kullanırsın, mesajlar yalnızca Chrome ile Telegram arasında gider."
+  "message": "Sayfaları Telegram'a gönder, telefondan bota link atarak rafına kaydet. Sunucu gerekmez."
  },
  "tgStep1": {
   "message": "Telegram'da <a href=\"https://t.me/BotFather\" target=\"_blank\">@BotFather</a>'ı aç, <code>/newbot</code> yaz; bir ad (ör. <i>Rafım</i>) ve sonu <code>bot</code> ile biten bir kullanıcı adı seç."
@@ -765,7 +765,7 @@
   "message": "Kaydettiğim her sayfayı Telegram'a da gönder"
  },
  "tgListen": {
-  "message": "Bota gönderdiğim linkleri kaydet (Chrome açıkken 30 saniyede bir bakılır)"
+  "message": "Bota gönderdiğim linkleri kaydet (Chrome açıkken dakikada bir bakılır)"
  },
  "tgCommands": {
   "message": "Botta: link gönder, kaydedilsin · <code>/son</code> son 5 · <code>/bugun</code> bugün · <code>/ara kelime</code> ara"
@@ -907,5 +907,23 @@
  },
  "fd_bookmarkSync": {
   "message": "Kaydettiğin sayfalar Yer imleri › Raf klasörüne de eklenir. Chrome senkronu açıksa telefonundaki Chrome'da da görünür, kurulum yok."
+ },
+ "tgHubConnect": {
+  "message": "Telegram'a bağlan"
+ },
+ "tgHubHint": {
+  "message": "Telegram açılır: Başlat'a bas, bu kadar. Raf'ın botu mesajları sadece iletir, linklerini saklamaz."
+ },
+ "tgHubWaiting": {
+  "message": "Telegram'da Başlat'a basmanı bekliyorum…"
+ },
+ "tgOwnBot": {
+  "message": "Bunun yerine kendi botumu kullan (gelişmiş)"
+ },
+ "tgHubUnlinked": {
+  "message": "Telegram bağlantısı kopmuş. Ayarlar → Telegram'dan yeniden bağlan."
+ },
+ "tgHubLimit": {
+  "message": "Günlük Telegram sınırına ulaşıldı, yarın tekrar dene."
  }
 }

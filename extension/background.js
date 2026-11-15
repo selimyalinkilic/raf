@@ -174,7 +174,8 @@ chrome.runtime.onStartup.addListener(() => rafFlushOutbox());
 // Own Telegram bot: check for new messages every 30 s while Chrome is open (and right away on start)
 async function tgSchedule() {
   const tg = await rafTgGet();
-  if (tg.token && tg.chatId && tg.listen !== false) { chrome.alarms.create("raf-tg", { periodInMinutes: 0.5 }); rafTgPoll(); }
+  // own bot: every 30 s; shared bot: every minute (keeps the free hub within its daily request budget)
+  if ((tg.token || tg.hub) && tg.chatId && tg.listen !== false) { chrome.alarms.create("raf-tg", { periodInMinutes: tg.hub ? 1 : 0.5 }); rafTgPoll(); }
   else chrome.alarms.clear("raf-tg");
 }
 chrome.runtime.onStartup.addListener(tgSchedule);

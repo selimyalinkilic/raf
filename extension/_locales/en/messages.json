@@ -732,7 +732,7 @@
   "message": "Telegram"
  },
  "tgIntro": {
-  "message": "Send pages to Telegram, and save links from your phone by sending them to the bot. No server needed: you use your own bot, and messages go only between Chrome and Telegram."
+  "message": "Send pages to Telegram, and save links from your phone by sending them to the bot. No server needed."
  },
  "tgStep1": {
   "message": "In Telegram, open <a href=\"https://t.me/BotFather\" target=\"_blank\">@BotFather</a>, send <code>/newbot</code> and pick a name (e.g. <i>My Raf</i>) and a username ending in <code>bot</code>."
@@ -765,7 +765,7 @@
   "message": "Send every page I save to Telegram too"
  },
  "tgListen": {
-  "message": "Save links I send to the bot (checked every 30 seconds while Chrome is open)"
+  "message": "Save links I send to the bot (checked every minute while Chrome is open)"
  },
  "tgCommands": {
   "message": "In the bot: send a link to save it · <code>/son</code> last 5 · <code>/bugun</code> today · <code>/ara word</code> search"
@@ -907,5 +907,23 @@
  },
  "fd_bookmarkSync": {
   "message": "Saved pages go to Bookmarks › Raf too. With Chrome sync on they appear on your phone's Chrome, no setup."
+ },
+ "tgHubConnect": {
+  "message": "Connect Telegram"
+ },
+ "tgHubHint": {
+  "message": "Telegram opens: tap Start and you're done. Raf's bot only passes messages along; it doesn't keep your links."
+ },
+ "tgHubWaiting": {
+  "message": "Waiting for you to tap Start in Telegram…"
+ },
+ "tgOwnBot": {
+  "message": "Use my own bot instead (advanced)"
+ },
+ "tgHubUnlinked": {
+  "message": "Telegram isn't connected any more. Connect again in Settings → Telegram."
+ },
+ "tgHubLimit": {
+  "message": "Daily Telegram limit reached, try again tomorrow."
  }
 }
