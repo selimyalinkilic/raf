@@ -3,10 +3,20 @@ const $ = (id) => document.getElementById(id);
 // ---------- Connection ----------
 (async () => { const s = await rafSettings(); $("server").value = s.server; $("token").value = s.token; })();
 $("save").onclick = async () => {
-  await chrome.storage.sync.set({ server: $("server").value.trim().replace(/\/$/, ""), token: $("token").value.trim() });
+  const server = $("server").value.trim().replace(/\/$/, ""), token = $("token").value.trim();
+  if (server) {
+    // Ask for access to this server (and, in the store build, cookies for logged-in video sites) — needs this click
+    let origin; try { origin = new URL(server).origin + "/*"; } catch (e) { $("msg").textContent = t("cantConnect", e.message); $("msg").className = "err"; return; }
+    const perms = { origins: [origin], ...(RAF_BUILD === "store" ? { permissions: ["cookies"] } : {}) };
+    await chrome.permissions.request(perms).catch(() => false);
+  }
+  await chrome.storage.sync.set({ server, token });
+  render();
+  if (!server || !token) { $("msg").textContent = t("localModeOn"); $("msg").className = ""; return; }
   try { const r = await rafApi("/api/tags"); $("msg").textContent = t("connected", r.tags.length); $("msg").className = ""; }
   catch (e) { $("msg").textContent = t("cantConnect", e.message || e); $("msg").className = "err"; }
 };
+$("open-shelf").onclick = () => chrome.tabs.create({ url: chrome.runtime.getURL("shelf.html") });
 
 // ---------- Language ----------
 chrome.storage.sync.get("lang").then(({ lang = "auto" }) => {
@@ -35,14 +45,15 @@ async function setFeatures(changes) {
 }
 
 async function render() {
-  const on = await rafFeatures();
+  const on = await rafFeatures(), local = await rafIsLocal();
+  $("mode").innerHTML = local ? `${ic("inbox")} ${escHtml(t("modeLocal"))}` : `${ic("link")} ${escHtml(t("modeServer"))}`;
   const groups = [...new Set(RAF_FEATURES.map((f) => f.group))];
   $("features").innerHTML = groups.map((g) => `<div class="fgroup"><h3>${t(g)}</h3>` +
     RAF_FEATURES.filter((f) => f.group === g).map((f) => `
-      <label class="frow ${on[f.id] ? "" : "off"}">
+      <label class="frow ${on[f.id] ? "" : "off"}${local && f.server ? " locked" : ""}">
         <span class="fic">${ic(f.icon)}</span>
-        <span class="ft"><b>${t("f_" + f.id)}</b><small>${t("fd_" + f.id)}</small></span>
-        <span class="sw"><input type="checkbox" data-f="${f.id}" ${on[f.id] ? "checked" : ""}><span></span></span>
+        <span class="ft"><b>${t("f_" + f.id)}</b><small>${local && f.server ? t("needsServer") : t("fd_" + f.id)}</small></span>
+        <span class="sw"><input type="checkbox" data-f="${f.id}" ${on[f.id] ? "checked" : ""}${local && f.server ? " disabled" : ""}><span></span></span>
       </label>`).join("") + "</div>").join("");
   document.querySelectorAll("[data-f]").forEach((cb) => cb.onchange = () => setFeatures({ [cb.dataset.f]: cb.checked }));
 }

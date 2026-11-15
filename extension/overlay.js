@@ -208,10 +208,10 @@
   async function sync() {
     if (!alive()) return teardown();
     const d = await send({ raf: "dict" }); DICT = d && !d.error ? d.dict : null;
-    const { features = {} } = await chrome.storage.sync.get("features").catch(() => ({}));
-    enabled = features.videoOverlay ?? true;
+    const f = await send({ raf: "features" });  // background knows about local mode / store build
+    enabled = !!(f && !f.error && f.videoOverlay);
     if (!enabled) { pill.classList.remove("show"); closeMenu(); }
   }
-  try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && (ch.features || ch.lang)) sync(); }); } catch (e) {}
+  try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && (ch.features || ch.lang || ch.server || ch.token)) sync(); }); } catch (e) {}
   sync();
 })();

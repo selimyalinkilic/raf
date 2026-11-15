@@ -207,7 +207,7 @@
   "message": "Raf · Ayarlar"
  },
  "optIntro": {
-  "message": "Sunucudan indirdiğin eklentide bu alanlar hazır gelir; değiştirmen gerekmez."
+  "message": "Boş bırakırsan rafın bu tarayıcıda tutulur (yerel mod). Video indirme, Telegram ve web uygulaması için kendi Raf sunucunu bağla. Eklentiyi sunucundan indirdiysen bu alanlar zaten dolu gelir."
  },
  "lblServer": {
   "message": "Sunucu adresi"
@@ -589,5 +589,62 @@
  },
  "themeDark": {
   "message": "Koyu"
+ },
+ "needsServer": {
+  "message": "Raf sunucusu gerekir — Bağlantı bölümünden bağlayabilirsin."
+ },
+ "ytStoreBlocked": {
+  "message": "Chrome Web Mağazası sürümünde YouTube indirme yok."
+ },
+ "ytStoreHow": {
+  "message": "Nasıl açılır?"
+ },
+ "localModeOn": {
+  "message": "Yerel mod: rafın bu tarayıcıda tutuluyor."
+ },
+ "modeLocal": {
+  "message": "Yerel mod — bu tarayıcıda saklanıyor"
+ },
+ "modeServer": {
+  "message": "Raf sunucuna bağlı"
+ },
+ "openShelf": {
+  "message": "Rafımı aç"
+ },
+ "shelfTitle": {
+  "message": "Raf · Rafım"
+ },
+ "shelfExport": {
+  "message": "Dışa aktar"
+ },
+ "shelfImport": {
+  "message": "İçe aktar"
+ },
+ "shelfSearch": {
+  "message": "Rafta ara…"
+ },
+ "shelfDelete": {
+  "message": "Sil"
+ },
+ "shelfResults": {
+  "message": "$1 sonuç"
+ },
+ "shelfTotal": {
+  "message": "$1 kayıt"
+ },
+ "shelfNoMatch": {
+  "message": "Eşleşen bir şey yok."
+ },
+ "shelfEmpty": {
+  "message": "Burada henüz bir şey yok. Raf düğmesi, sağ tık menüsü ya da Alt+Shift+S ile sayfa kaydet."
+ },
+ "shelfConfirmDelete": {
+  "message": "Bu kayıt raftan silinsin mi?"
+ },
+ "shelfImported": {
+  "message": "$1 kayıt içe aktarıldı."
+ },
+ "shelfServerNote": {
+  "message": "Bir Raf sunucusuna bağlısın — burada yerel modda bu tarayıcıda tutulan kayıtlar var. Sunucundaki raf, web uygulamasında."
  }
 }

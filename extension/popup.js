@@ -11,6 +11,7 @@ async function checkVersion() {
   }
   try {
     const { server } = await rafSettings();
+    if (!server) return;  // local mode: no server to ask
     const r = await (await fetch(server + "/api/extension")).json();
     const newer = (a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number);
       for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
@@ -48,7 +49,9 @@ async function init() {
   checkVersion();
   if (!(await applyFeatures())) return;
   const { server } = await rafSettings();
-  $("open").onclick = (e) => { e.preventDefault(); chrome.tabs.create({ url: server || "options.html" }); };
+  const local = await rafIsLocal();
+  $("open").onclick = (e) => { e.preventDefault(); chrome.tabs.create({ url: local ? chrome.runtime.getURL("shelf.html") : server }); };
+  $("ph-tg").hidden = local;  // Telegram needs a server; the QR code works everywhere
   // ?tab=<id> lets docs/screenshots open the popup as a page for a specific tab
   const forced = +new URLSearchParams(location.search).get("tab");
   const [tab] = forced ? [await chrome.tabs.get(forced)] : await chrome.tabs.query({ active: true, currentWindow: true });
@@ -60,7 +63,11 @@ async function init() {
   $("title").value = page.title || "";
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
-  loadQualities();
+  if (rafStoreBlocked(page.url)) {  // Chrome Web Store build: YouTube downloads are off — explain how to get them
+    $("dl-quality").hidden = true; $("dl-video").parentElement.hidden = true;
+    $("dl-store").innerHTML = `${ic("alert")} ${escHtml(t("ytStoreBlocked"))} <a href="${RAF_YT_INFO}" target="_blank">${escHtml(t("ytStoreHow"))}</a>`;
+    $("dl-store").hidden = false;
+  } else loadQualities();
   loadSessions();
   renderQr();
   if (!FEAT.save) return;

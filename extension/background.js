@@ -1,4 +1,4 @@
-importScripts("config.js", "i18n.js", "common.js", "features.js", "testdata.js");
+importScripts("config.js", "i18n.js", "common.js", "local.js", "features.js", "testdata.js");
 
 // Right-click menus follow the feature toggles on the Settings page
 async function buildMenus() {
@@ -10,7 +10,7 @@ async function buildMenus() {
     chrome.contextMenus.create({ id: "save-link", title: t("ctxSaveLink"), contexts: ["link"] });
     chrome.contextMenus.create({ id: "save-selection", title: t("ctxSaveSelection"), contexts: ["selection"] });
   }
-  if (f.phone) chrome.contextMenus.create({ id: "phone", title: t("ctxSendPhone"), contexts: ["page", "link"] });
+  if (f.phone && !(await rafIsLocal())) chrome.contextMenus.create({ id: "phone", title: t("ctxSendPhone"), contexts: ["page", "link"] });
   if (f.menuUuid) chrome.contextMenus.create({ id: "uuid", title: t("ctxInsertUuid"), contexts: ["editable"] });
   if (f.testData) chrome.contextMenus.create({ id: "fill", title: t("ctxFill"), contexts: ["page", "editable"] });
   if (f.menuTestData) {
@@ -36,7 +36,7 @@ chrome.runtime.onStartup.addListener(buildMenus);
 chrome.storage.onChanged.addListener(async (ch, area) => {
   if (area !== "sync") return;
   if (ch.lang) await rafLoadLang(ch.lang.newValue || "auto");
-  if (ch.features || ch.lang) buildMenus();
+  if (ch.features || ch.lang || ch.server || ch.token) buildMenus();
 });
 
 function flash(tabId, ok, msg) {
@@ -170,6 +170,7 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     status: () => rafApi("/api/downloads/" + m.id),
     deliver: () => checkDownloads(),
     dict: async () => { await rafI18nReady; return { dict: RAF_DICT }; },
+    features: () => rafFeatures(),
   }[m.raf];
   if (!run) return;
   run().then((r) => reply(r ?? {})).catch((e) => reply({ error: String(e.message || e) }));

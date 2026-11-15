@@ -207,7 +207,7 @@
   "message": "Raf · Settings"
  },
  "optIntro": {
-  "message": "When you download the extension from your Raf server these fields come pre-filled — no changes needed."
+  "message": "Leave these empty to keep your shelf in this browser (local mode). Connect your own Raf server for video downloads, Telegram and the web app. Downloaded the extension from your server? Then they're already filled in."
  },
  "lblServer": {
   "message": "Server URL"
@@ -589,5 +589,62 @@
  },
  "themeDark": {
   "message": "Dark"
+ },
+ "needsServer": {
+  "message": "Needs a Raf server — connect one under Connection."
+ },
+ "ytStoreBlocked": {
+  "message": "YouTube downloads aren't available in the Chrome Web Store version."
+ },
+ "ytStoreHow": {
+  "message": "How to enable them"
+ },
+ "localModeOn": {
+  "message": "Local mode: your shelf is kept in this browser."
+ },
+ "modeLocal": {
+  "message": "Local mode — saved in this browser"
+ },
+ "modeServer": {
+  "message": "Connected to your Raf server"
+ },
+ "openShelf": {
+  "message": "Open my shelf"
+ },
+ "shelfTitle": {
+  "message": "Raf · My shelf"
+ },
+ "shelfExport": {
+  "message": "Export"
+ },
+ "shelfImport": {
+  "message": "Import"
+ },
+ "shelfSearch": {
+  "message": "Search your shelf…"
+ },
+ "shelfDelete": {
+  "message": "Delete"
+ },
+ "shelfResults": {
+  "message": "$1 results"
+ },
+ "shelfTotal": {
+  "message": "$1 saved"
+ },
+ "shelfNoMatch": {
+  "message": "Nothing matches."
+ },
+ "shelfEmpty": {
+  "message": "Nothing here yet. Save a page from the Raf button, the right-click menu or Alt+Shift+S."
+ },
+ "shelfConfirmDelete": {
+  "message": "Delete this from your shelf?"
+ },
+ "shelfImported": {
+  "message": "Imported $1 items."
+ },
+ "shelfServerNote": {
+  "message": "You're connected to a Raf server — this is the copy kept in this browser from local mode. Your server's shelf is in its web app."
  }
 }

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Raf</title>
+<link rel="stylesheet" href="popup.css"><link rel="stylesheet" href="options.css"><link rel="stylesheet" href="shelf.css"><script src="theme.js"></script></head>
+<body class="options shelf">
+  <header><img src="icons/icon.svg" alt=""><span data-t="shelfTitle" data-t-title="shelfTitle"></span>
+    <span class="hbtns"><button id="export" class="mini"><i data-i="download"></i> <span data-t="shelfExport"></span></button>
+    <label class="mini filebtn"><i data-i="inbox"></i> <span data-t="shelfImport"></span><input type="file" id="import" accept="application/json,.json" hidden></label></span></header>
+  <main>
+    <div class="field"><i data-i="search"></i><input id="q" type="search" data-t-ph="shelfSearch" autofocus></div>
+    <p id="note" class="hint"></p>
+    <div id="tags" class="chips"></div>
+    <p id="summary" class="hint"></p>
+    <section id="list" class="list"></section>
+  </main>
+  <script src="config.js"></script><script src="i18n.js"></script><script src="common.js"></script><script src="local.js"></script>
+  <script src="icons.js"></script><script src="shelf.js"></script>
+</body></html>

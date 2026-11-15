@@ -1,4 +1,14 @@
 // Helpers shared by the popup and the background worker
+// "full" = GitHub / served by your Raf server. "store" = Chrome Web Store build (scripts/build-store.sh):
+// no YouTube downloads, cookies permission is optional.
+const RAF_BUILD = self.RAF_BUILD || "full";
+const RAF_YT_INFO = "https://github.com/selimyalinkilic/raf#youtube-downloads";
+function rafStoreBlocked(url) {
+  if (RAF_BUILD !== "store") return false;
+  try { return /(^|\.)(youtube\.com|youtu\.be|youtube-nocookie\.com)$/i.test(new URL(url).hostname); } catch (e) { return false; }
+}
+async function rafIsLocal() { const { server, token } = await rafSettings(); return !server || !token; }
+
 async function rafSettings() {
   const d = self.RAF_DEFAULTS || {};
   const s = await chrome.storage.sync.get(["server", "token"]);
@@ -7,7 +17,7 @@ async function rafSettings() {
 
 async function rafApi(path, opts = {}) {
   const { server, token } = await rafSettings();
-  if (!server || !token) throw new Error(t("missingSettings"));
+  if (!server || !token) return rafLocal(path, opts);  // local mode (local.js)
   const res = await fetch(server + path, {
     ...opts,
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token, ...(opts.headers || {}) },
@@ -82,18 +92,20 @@ function rafMissingPermissions() {
   const miss = [];
   if (!chrome.alarms) miss.push("alarms");
   if (!chrome.downloads) miss.push("downloads");
-  if (!chrome.cookies) miss.push("cookies");
+  if (!chrome.cookies && RAF_BUILD !== "store") miss.push("cookies");  // optional in the store build
   return miss;
 }
 
 
 
 async function rafFormats(url) {
+  if (rafStoreBlocked(url)) throw new Error(t("ytStoreBlocked"));
   const cookies = await rafCookiesFor(url);
   return rafApi("/api/formats", { method: "POST", body: JSON.stringify({ url, cookies }) });
 }
 
 async function rafStartDownload(url, kind = "video", quality = 0) {
+  if (rafStoreBlocked(url)) throw new Error(t("ytStoreBlocked"));
   if (rafMissingPermissions().length) throw new Error(t("reloadNeeded"));
   const cookies = await rafCookiesFor(url);
   const d = await rafApi("/api/downloads", { method: "POST", body: JSON.stringify({ url, kind, cookies, quality }) });
