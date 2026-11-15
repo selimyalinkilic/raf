@@ -129,3 +129,24 @@ async function rafTgPoll() {
   } catch (e) { /* offline / token revoked: try again on the next alarm */ }
   finally { rafTgPolling = false; }
 }
+
+// ---------- Email (no server: open a ready draft in the user's mail app / Gmail / Outlook) ----------
+async function rafMailGet() { const { mail = {} } = await chrome.storage.sync.get("mail"); return { to: "", via: "default", ...mail }; }
+function rafMailBody({ url, title, tags = [], note = "" }) {
+  return [title && title !== url ? title : "", url, (tags || []).filter(Boolean).map((x) => "#" + String(x).replace(/^#+/, "")).join(" "), note ? "📝 " + note : ""]
+    .filter(Boolean).join("\n\n") + "\n\n— " + "Raf";
+}
+function rafMailUrl(item, { to = "", via = "default" } = {}) {
+  const su = (item.title || item.url).slice(0, 200), body = rafMailBody(item), e = encodeURIComponent;
+  if (via === "gmail") return `https://mail.google.com/mail/?view=cm&fs=1&to=${e(to)}&su=${e(su)}&body=${e(body)}`;
+  if (via === "outlook") return `https://outlook.live.com/mail/0/deeplink/compose?to=${e(to)}&subject=${e(su)}&body=${e(body)}`;
+  return `mailto:${e(to).replace(/%40/g, "@")}?subject=${e(su)}&body=${e(body)}`;
+}
+async function rafSendByMail(item) {
+  const m = await rafMailGet(), url = rafMailUrl(item, m);
+  if (url.startsWith("mailto:")) {  // hand it to the system's mail app without leaving an empty tab behind
+    const tab = await chrome.tabs.create({ url, active: false });
+    setTimeout(() => chrome.tabs.remove(tab.id).catch(() => {}), 1500);
+  } else await chrome.tabs.create({ url });
+  return m;
+}

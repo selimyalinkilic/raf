@@ -336,6 +336,10 @@ function renderQr() {
     $("qr").innerHTML = qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
   } catch (e) { $("qr").textContent = "QR: " + e.message; }
 }
+$("ph-mail").onclick = async () => {
+  const m = await rafSendByMail({ url: page.url, title: $("title").value || page.title, note: $("tg-note").value.trim(), tags: parseTags($("tg-tags").value || $("tags").value) });
+  $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("mailOpened"))}${m.to ? "" : ` <a href="options.html#mail" target="_blank">${escHtml(t("mailSetTo"))}</a>`}`;
+};
 $("ph-copy").onclick = async () => { await navigator.clipboard.writeText(page.url); $("ph-msg").innerHTML = `${ic("check", "ok")} ${escHtml(t("copied"))}`; };
 $("ph-tg").onclick = async () => {
   if (!(await rafTgAvailable())) {  // nothing set up yet: show how

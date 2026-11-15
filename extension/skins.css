@@ -1,0 +1,61 @@
+/* Themes ("skins"). Pastel is the default look in popup.css; the others override its tokens and a few
+   rules. <html data-skin="…"> is set by theme.js; data-theme="light|dark" picks the mode for skins that
+   have both (Pastel, Minimal). Cyberpunk and Terminal are dark-only. Loaded after the page's own CSS. */
+
+/* ---------- Minimal: flat, quiet, system font ---------- */
+:root[data-skin=minimal]{--ink:#1f2328;--muted:#656d76;--lav:#e8edf4;--lav-d:#4a6fa5;--mint:#dcf2e4;--mint-d:#2f9e5b;--peach:#fbeee4;--peach-d:#c96f3b;--sky:#eaf2fb;--sky-d:#3b82c4;
+  --card:#fff;--rim:#d8dee4;--field:#f6f8fa;--soft:#e6e9ed;--hover:#f2f4f7;--off:#eef0f3;--off-d:#d8dde3;--off-i:#9aa3ad;--err:#cf222e;--ok:#1a7f37;--pink:#ffebe9;--pink-d:#e8a5a5;
+  --sun:#fff8c5;--sun-d:#d4c26a;--sun-i:#9a6700;--bg1:#f6f8fa;--bg2:#f6f8fa;--bg3:#f6f8fa;color-scheme:light}
+@media (prefers-color-scheme:dark){:root[data-skin=minimal]:not([data-theme=light]){--ink:#e6edf3;--muted:#8b949e;--lav:#1f2a3a;--lav-d:#58a6ff;--mint:#12301f;--mint-d:#3fb950;--peach:#2d1f14;--peach-d:#d18b4f;--sky:#132235;--sky-d:#58a6ff;
+  --card:#161b22;--rim:#30363d;--field:#0d1117;--soft:#30363d;--hover:#1c2128;--off:#21262d;--off-d:#30363d;--off-i:#6e7681;--err:#ff7b72;--ok:#3fb950;--pink:#3d1d20;--pink-d:#8e4447;
+  --sun:#3a3212;--sun-d:#9e8a2e;--sun-i:#e3b341;--bg1:#0d1117;--bg2:#0d1117;--bg3:#0d1117;color-scheme:dark}}
+:root[data-skin=minimal][data-theme=dark]{--ink:#e6edf3;--muted:#8b949e;--lav:#1f2a3a;--lav-d:#58a6ff;--mint:#12301f;--mint-d:#3fb950;--peach:#2d1f14;--peach-d:#d18b4f;--sky:#132235;--sky-d:#58a6ff;
+  --card:#161b22;--rim:#30363d;--field:#0d1117;--soft:#30363d;--hover:#1c2128;--off:#21262d;--off-d:#30363d;--off-i:#6e7681;--err:#ff7b72;--ok:#3fb950;--pink:#3d1d20;--pink-d:#8e4447;
+  --sun:#3a3212;--sun-d:#9e8a2e;--sun-i:#e3b341;--bg1:#0d1117;--bg2:#0d1117;--bg3:#0d1117;color-scheme:dark}
+:root[data-skin=minimal] *{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important;box-shadow:none!important;text-shadow:none!important}
+:root[data-skin=minimal] *:not(.sw span):not(.langs input){border-radius:6px!important}
+:root[data-skin=minimal] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.jmeta span,#status,.mode,.langs label){border:1px solid var(--rim)!important}
+:root[data-skin=minimal] :is(.btn.main,#save.done,.tabs button.on){border-color:var(--lav-d)!important}
+:root[data-skin=minimal] :is(.tool,.options .card,.it){outline:1px solid var(--rim)!important;border:0!important}
+:root[data-skin=minimal] header{border-bottom:1px solid var(--rim)}
+:root[data-skin=minimal] :is(input,textarea,select){border-width:1px!important;border-color:var(--rim)!important}
+:root[data-skin=minimal] :is(input,textarea):focus{border-color:var(--lav-d)!important;outline:2px solid var(--lav)!important}
+:root[data-skin=minimal] :is(h2,.tool-h,details.tool summary,header span,#save,.btn,.tabs button,.frow .ft b){font-weight:600!important}
+
+/* ---------- Cyberpunk: neon on near-black, sharp corners (dark only) ---------- */
+:root[data-skin=cyberpunk]{--ink:#e8f7ff;--muted:#8f8ac0;--lav:#2a0f3d;--lav-d:#ff2bd6;--mint:#05302d;--mint-d:#00f5d4;--peach:#2e1a05;--peach-d:#ffb800;--sky:#0c1d3a;--sky-d:#3ab0ff;
+  --card:#12101f;--rim:#2b2150;--field:#0b0a16;--soft:#2b2150;--hover:#1b1630;--off:#17142a;--off-d:#2b2150;--off-i:#5d578a;--err:#ff4d6d;--ok:#00f5d4;--pink:#3a0a22;--pink-d:#ff4d6d;
+  --sun:#2e2605;--sun-d:#ffb800;--sun-i:#ffd84d;--bg1:#07060f;--bg2:#0d0a1c;--bg3:#050d1a;color-scheme:dark}
+:root[data-skin=cyberpunk] *:not(.sw span):not(.langs input){border-radius:2px!important}
+:root[data-skin=cyberpunk] :is(header span,h2,.tool-h,details.tool summary,#save,.btn,.tabs button,.frow .ft b,.mini,.fgroup h3){font-family:ui-monospace,"Cascadia Code",Consolas,monospace!important;letter-spacing:.04em;text-transform:uppercase}
+:root[data-skin=cyberpunk] :is(#save,.btn,.tabs button.on,.chips button,.mini,.sess button){box-shadow:0 0 0 1px var(--lav-d),0 0 14px -3px var(--lav-d)!important;border-color:transparent!important}
+:root[data-skin=cyberpunk] :is(.btn.main,#save.done,.sess button,.mailbtn){box-shadow:0 0 0 1px var(--mint-d),0 0 14px -3px var(--mint-d)!important}
+:root[data-skin=cyberpunk] :is(.tool,.options .card,.it){outline:1px solid var(--sky-d)!important;box-shadow:0 0 18px -8px var(--sky-d)!important;border-color:var(--card)!important}
+:root[data-skin=cyberpunk] header{box-shadow:0 1px 0 var(--lav-d),0 0 20px -6px var(--lav-d)!important}
+:root[data-skin=cyberpunk] header span{color:var(--lav-d);text-shadow:0 0 8px var(--lav-d)}
+:root[data-skin=cyberpunk] :is(input,textarea,select){border-width:1px!important;border-color:var(--rim)!important}
+:root[data-skin=cyberpunk] :is(input,textarea):focus{border-color:var(--mint-d)!important;box-shadow:0 0 10px -2px var(--mint-d)!important}
+:root[data-skin=cyberpunk] body{background:linear-gradient(160deg,var(--bg1),var(--bg2) 60%,var(--bg3)),repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,43,214,.025) 3px 4px)!important}
+
+/* ---------- Terminal: green on black, monospace everywhere (dark only) ---------- */
+:root[data-skin=terminal]{--ink:#b9f5b9;--muted:#5f9a5f;--lav:#0f2a12;--lav-d:#39ff14;--mint:#0f2a12;--mint-d:#39ff14;--peach:#2a2005;--peach-d:#ffb000;--sky:#0c1f1a;--sky-d:#2ee6a6;
+  --card:#0a100a;--rim:#1d3a1d;--field:#050805;--soft:#1d3a1d;--hover:#0f1a0f;--off:#0d140d;--off-d:#1d3a1d;--off-i:#3f6b3f;--err:#ff5f56;--ok:#39ff14;--pink:#2a0d0b;--pink-d:#ff5f56;
+  --sun:#221c05;--sun-d:#ffb000;--sun-i:#ffb000;--bg1:#030503;--bg2:#030503;--bg3:#030503;color-scheme:dark}
+:root[data-skin=terminal] *{font-family:ui-monospace,"Cascadia Mono","DejaVu Sans Mono",Consolas,monospace!important;box-shadow:none!important}
+:root[data-skin=terminal] *:not(.sw span):not(.langs input){border-radius:0!important}
+:root[data-skin=terminal] :is(.btn,#save,.tabs button,.chips button,.mini,.sess button,.jmeta span,#status,.mode,.langs label){border:1px solid var(--lav-d)!important;background:transparent!important}
+:root[data-skin=terminal] :is(.btn.main,#save.done,.tabs button.on,.langs label:has(input:checked)){background:var(--lav)!important}
+:root[data-skin=terminal] :is(#save,.btn,.tabs button)::before{content:"> ";color:var(--lav-d)}
+:root[data-skin=terminal] :is(.tool,.options .card,.it){outline:1px dashed var(--rim)!important;border:0!important}
+:root[data-skin=terminal] header{border-bottom:1px solid var(--rim)}
+:root[data-skin=terminal] header span::after{content:"_";animation:rafblink 1s steps(1) infinite;color:var(--lav-d)}
+@keyframes rafblink{50%{opacity:0}}
+:root[data-skin=terminal] :is(input,textarea,select){border-width:1px!important;border-color:var(--rim)!important;caret-color:var(--lav-d)}
+:root[data-skin=terminal] header img{filter:grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(.9)}
+
+/* QR codes stay black on white in every skin so phones can scan them */
+.qr{background:#fff!important}
+
+/* Minimal / Terminal switch shadows off — keep the dot of a checked radio */
+:root[data-skin=minimal] .langs input:checked,:root[data-skin=terminal] .langs input:checked{box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 8px var(--lav-d)!important;border-color:var(--lav-d)!important}
+:root[data-skin=minimal] .langs label:has(input:checked){border-color:var(--lav-d)!important}

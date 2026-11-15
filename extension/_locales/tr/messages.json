@@ -576,7 +576,7 @@
   "message": "Görünüm"
  },
  "optThemeHint": {
-  "message": "“Otomatik”, sisteminin açık/koyu moduna uyar."
+  "message": "Açık / koyu: “Otomatik” sistemine uyar."
  },
  "themeAuto": {
   "message": "Otomatik"
@@ -781,5 +781,56 @@
  },
  "tgConfirmDisconnect": {
   "message": "Telegram botunun Raf bağlantısı kesilsin mi? (Bot Telegram'da kalır.)"
+ },
+ "sendMail": {
+  "message": "E-posta"
+ },
+ "mailOpened": {
+  "message": "E-posta taslağı açıldı — Gönder'e basman yeterli."
+ },
+ "mailSetTo": {
+  "message": "Adresini ayarla"
+ },
+ "mailTitle": {
+  "message": "E-posta"
+ },
+ "mailIntro": {
+  "message": "Raf gönderilmeye hazır bir e-posta açar: alıcı senin adresin, konu sayfa başlığı, içinde link, etiketlerin ve notun. Sen sadece Gönder'e basarsın. Hiçbir şey Raf üzerinden geçmez."
+ },
+ "mailTo": {
+  "message": "Kime (genelde kendi adresin)"
+ },
+ "mailDefault": {
+  "message": "E-posta programım"
+ },
+ "mailBad": {
+  "message": "Bu bir e-posta adresine benzemiyor."
+ },
+ "optThemeDarkOnly": {
+  "message": "Bu tema hep koyu."
+ },
+ "skin_pastel": {
+  "message": "Pastel"
+ },
+ "skind_pastel": {
+  "message": "Yumuşak renkler, tombul düğmeler"
+ },
+ "skin_minimal": {
+  "message": "Minimal"
+ },
+ "skind_minimal": {
+  "message": "Düz ve sade"
+ },
+ "skin_cyberpunk": {
+  "message": "Cyberpunk"
+ },
+ "skind_cyberpunk": {
+  "message": "Siyah üstüne neon"
+ },
+ "skin_terminal": {
+  "message": "Terminal"
+ },
+ "skind_terminal": {
+  "message": "Siyah üstüne yeşil, monospace"
  }
 }

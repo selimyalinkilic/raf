@@ -576,7 +576,7 @@
   "message": "Appearance"
  },
  "optThemeHint": {
-  "message": "“Automatic” follows your system's light or dark mode."
+  "message": "Light / dark: “Automatic” follows your system."
  },
  "themeAuto": {
   "message": "Automatic"
@@ -781,5 +781,56 @@
  },
  "tgConfirmDisconnect": {
   "message": "Disconnect your Telegram bot from Raf? (The bot itself stays in Telegram.)"
+ },
+ "sendMail": {
+  "message": "Email"
+ },
+ "mailOpened": {
+  "message": "Email draft opened — just press Send."
+ },
+ "mailSetTo": {
+  "message": "Set your address"
+ },
+ "mailTitle": {
+  "message": "Email"
+ },
+ "mailIntro": {
+  "message": "Raf opens a ready-to-send email: your address, the page title as subject, the link with your tags and note. You just press Send. Nothing goes through Raf."
+ },
+ "mailTo": {
+  "message": "Send to (usually your own address)"
+ },
+ "mailDefault": {
+  "message": "My mail app"
+ },
+ "mailBad": {
+  "message": "That doesn't look like an email address."
+ },
+ "optThemeDarkOnly": {
+  "message": "This theme is always dark."
+ },
+ "skin_pastel": {
+  "message": "Pastel"
+ },
+ "skind_pastel": {
+  "message": "Soft colours, chunky buttons"
+ },
+ "skin_minimal": {
+  "message": "Minimal"
+ },
+ "skind_minimal": {
+  "message": "Flat and quiet"
+ },
+ "skin_cyberpunk": {
+  "message": "Cyberpunk"
+ },
+ "skind_cyberpunk": {
+  "message": "Neon on black"
+ },
+ "skin_terminal": {
+  "message": "Terminal"
+ },
+ "skind_terminal": {
+  "message": "Green on black, monospace"
  }
 }

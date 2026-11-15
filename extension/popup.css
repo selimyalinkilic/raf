@@ -119,3 +119,4 @@ details.tool summary .i{flex:none}
 html{background:var(--bg1)}
 .tgbox{margin-top:8px}.tgbox label{margin-top:6px}
 #ph-msg a{color:var(--ink);font-weight:800}
+.mailbtn{margin-top:8px;background:var(--peach);box-shadow:0 4px 0 var(--peach-d)}

@@ -70,6 +70,52 @@ $("tg-test").onclick = async () => {
 $("tg-disconnect").onclick = async () => { if (!confirm(t("tgConfirmDisconnect"))) return; await rafTgDisconnect(); location.reload(); };
 tgRender();
 
+// ---------- Skins ----------
+// Each tile is a tiny preview painted with that skin's own colours.
+const SKIN_PREVIEW = {
+  pastel:    { bg: "linear-gradient(160deg,#fffaf4,#fbf6ff 60%,#f4fbff)", card: "#fff", ink: "#3d3a5c", a: "#d9ccff", ad: "#ab97ec", b: "#bdf0d6", bd: "#7fd0a8", r: 9, font: "Fredoka,Nunito,sans-serif", shadow: "0 3px 0" },
+  minimal:   { bg: "#f6f8fa", card: "#fff", ink: "#1f2328", a: "#e8edf4", ad: "#4a6fa5", b: "#dcf2e4", bd: "#2f9e5b", r: 5, font: "system-ui,sans-serif", shadow: "" },
+  cyberpunk: { bg: "linear-gradient(160deg,#07060f,#0d0a1c 60%,#050d1a)", card: "#12101f", ink: "#e8f7ff", a: "#2a0f3d", ad: "#ff2bd6", b: "#05302d", bd: "#00f5d4", r: 1, font: "ui-monospace,monospace", glow: true },
+  terminal:  { bg: "#030503", card: "#0a100a", ink: "#b9f5b9", a: "#0f2a12", ad: "#39ff14", b: "#0f2a12", bd: "#39ff14", r: 0, font: "ui-monospace,monospace", shadow: "" },
+};
+function skinTile(id, on) {
+  const p = SKIN_PREVIEW[id];
+  const sh = (c) => (p.glow ? `0 0 0 1px ${c},0 0 10px -2px ${c}` : p.shadow ? `${p.shadow} ${c}` : "none");
+  return `<button class="skin${on ? " on" : ""}" data-skin="${id}" title="${escHtml(t("skin_" + id))}">
+    <span class="pv" style="background:${p.bg};font-family:${p.font}">
+      <span class="pc" style="background:${p.card};color:${p.ink};border-radius:${p.r}px;${p.shadow || p.glow ? `box-shadow:${sh(p.ad)}` : `border:1px solid ${p.a}`}">
+        <b style="color:${p.glow || id === "terminal" ? p.ad : p.ink}">${id === "terminal" ? "&gt; Raf_" : "Raf"}</b>
+        <i style="background:${p.a};border-radius:${p.r}px"></i><i style="background:${p.a};border-radius:${p.r}px;width:60%"></i>
+        <em style="background:${p.b};border-radius:${p.r}px;box-shadow:${sh(p.bd)}"></em>
+      </span>
+    </span>
+    <span class="nm">${escHtml(t("skin_" + id))}</span><small>${escHtml(t("skind_" + id))}</small></button>`;
+}
+async function skinsRender() {
+  const { skin = "pastel" } = await chrome.storage.sync.get("skin");
+  $("skins").innerHTML = RAF_SKINS.map((id) => skinTile(id, id === skin)).join("");
+  const darkOnly = RAF_DARK_ONLY.includes(skin);
+  document.querySelectorAll("#themes input").forEach((r) => (r.disabled = darkOnly));
+  $("themes").classList.toggle("locked", darkOnly);
+  $("mode-hint").textContent = darkOnly ? t("optThemeDarkOnly") : t("optThemeHint");
+}
+$("skins").onclick = async (e) => {
+  const b = e.target.closest("[data-skin]"); if (!b) return;
+  await chrome.storage.sync.set({ skin: b.dataset.skin });  // theme.js repaints this page right away
+  skinsRender();
+};
+skinsRender();
+
+// ---------- Email ----------
+rafMailGet().then((m) => { $("mail-to").value = m.to; const r = document.querySelector(`#mail-via input[value="${m.via}"]`); if (r) r.checked = true; });
+async function mailSave() {
+  const to = $("mail-to").value.trim(), via = document.querySelector("#mail-via input:checked")?.value || "default";
+  if (to && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) { $("mail-msg").textContent = t("mailBad"); return; }
+  await chrome.storage.sync.set({ mail: { to, via } }); $("mail-msg").textContent = t("optSavedFlash");
+}
+$("mail-to").onchange = mailSave;
+document.querySelectorAll("#mail-via input").forEach((r) => (r.onchange = mailSave));
+
 // ---------- Features ----------
 let flashTimer;
 function flash() { $("flash").textContent = t("optSavedFlash"); $("flash").classList.add("show"); clearTimeout(flashTimer); flashTimer = setTimeout(() => $("flash").classList.remove("show"), 1200); }

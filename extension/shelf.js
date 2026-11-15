@@ -17,7 +17,7 @@ function card(it) {
       ${it.tags.length ? `<div class="tg">${it.tags.map((x) => `<span>#${escHtml(x)}</span>`).join("")}</div>` : ""}
       ${it.screenshot ? `<a class="shot" href="${escHtml(it.url)}" target="_blank" rel="noopener"><img src="${escHtml(it.screenshot)}" alt=""></a>` : ""}
     </div>
-    <div class="acts">${tgOn ? `<button class="send" data-id="${it.id}" title="${escHtml(t("sendTelegram"))}">${ic("send")}</button>` : ""}
+    <div class="acts"><button class="mail" data-id="${it.id}" title="${escHtml(t("sendMail"))}">${ic("mail")}</button>${tgOn ? `<button class="send" data-id="${it.id}" title="${escHtml(t("sendTelegram"))}">${ic("send")}</button>` : ""}
     <button class="del" data-id="${it.id}" title="${escHtml(t("shelfDelete"))}">${ic("trash")}</button></div>
   </article>`;
 }
@@ -33,6 +33,8 @@ async function render() {
 $("q").oninput = () => { clearTimeout(timer); timer = setTimeout(render, 150); };
 $("tags").onclick = (e) => { const b = e.target.closest("[data-tag]"); if (!b) return; tag = tag === b.dataset.tag ? "" : b.dataset.tag; render(); };
 $("list").onclick = async (e) => {
+  const ml = e.target.closest(".mail");
+  if (ml) { await rafSendByMail((await rafLocalAll()).find((x) => x.id === +ml.dataset.id)); return; }
   const s = e.target.closest(".send");
   if (s) {
     const it = (await rafLocalAll()).find((x) => x.id === +s.dataset.id);

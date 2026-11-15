@@ -30,3 +30,5 @@ body.shelf{max-width:760px}
 .it .acts{display:flex;flex-direction:column;gap:4px}
 .it .send{border:0;background:transparent;color:var(--sky-d);cursor:pointer;border-radius:8px;padding:4px;display:grid;place-items:center}
 .it .send:hover{background:var(--sky);color:var(--ink)}
+.it .mail{border:0;background:transparent;color:var(--peach-d);cursor:pointer;border-radius:8px;padding:4px;display:grid;place-items:center}
+.it .mail:hover{background:var(--peach);color:var(--ink)}
