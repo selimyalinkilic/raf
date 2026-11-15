@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip"><img src="docs/download-tr.svg" width="340" alt="Raf'ı indir (raf-extension.zip)"></a><br>
-  <sub><a href="#eklentiyi-kurma">Nasıl kurulur?</a> · <a href="https://github.com/selimyalinkilic/raf/releases">Tüm sürümler</a></sub>
+  <sub><a href="https://selimyalinkilic.github.io/raf/?lang=tr">Web sitesi</a> · <a href="#eklentiyi-kurma">Nasıl kurulur?</a> · <a href="https://github.com/selimyalinkilic/raf/releases">Tüm sürümler</a></sub>
 </p>
 
 <p align="center">

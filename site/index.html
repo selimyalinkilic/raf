@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raf · your private read-later shelf</title>
+<meta name="description" content="Raf is a free, open-source browser extension: save any page in one click, find it again later, send it to your phone. Plus test tools for developers. No account.">
+<meta property="og:title" content="Raf · your private read-later shelf">
+<meta property="og:description" content="Save any page in one click, find it again later, send it to your phone. Free, open source, no account.">
+<meta property="og:image" content="img/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#d9ccff">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>
+  // theme + language before first paint (no flash)
+  try {
+    const th = localStorage.getItem("rafSiteTheme"); if (th === "light" || th === "dark") document.documentElement.dataset.theme = th;
+    const q = new URLSearchParams(location.search).get("lang"), saved = localStorage.getItem("rafSiteLang");
+    const lang = q || saved || (/^tr\b/i.test(navigator.language || "") ? "tr" : "en");
+    document.documentElement.lang = lang === "tr" ? "tr" : "en";
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap navin">
+    <a class="brand" href="#top"><img src="img/icon.svg" alt="" width="34" height="34"><span>Raf</span></a>
+    <nav class="links">
+      <a href="#features" data-t="navFeatures">Features</a>
+      <a href="#phone" data-t="navPhone">Phone</a>
+      <a href="#themes" data-t="navThemes">Themes</a>
+      <a href="#install" data-t="navInstall">Install</a>
+    </nav>
+    <div class="tools">
+      <button class="pill" id="lang" aria-label="Language"><i data-i="globe"></i> <span id="langlbl">TR</span></button>
+      <button class="pill icon" id="theme" aria-label="Light / dark"><i data-i="moon" class="moon"></i><i data-i="sun" class="sun"></i></button>
+      <a class="pill" href="https://github.com/selimyalinkilic/raf" target="_blank" rel="noopener"><i data-i="github"></i> <span class="hide-s">GitHub</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow"><i data-i="sparkle"></i> <span data-t="eyebrow">Free · open source · no account</span></p>
+      <h1 data-th="heroTitle">Put the web <mark>on your shelf.</mark></h1>
+      <p class="lead" data-t="heroLead">Raf saves the page you're on in one click: title, tags, a note, the readable text and a screenshot. Find it again later, even if the site goes away. Send it to your phone. And keep the little tools developers and testers reach for every day one click away.</p>
+      <div class="ctas">
+        <a class="btn main big" href="https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip"><i data-i="download"></i> <span data-t="ctaDownload">Download for Chrome</span></a>
+        <a class="btn ghost big" href="#video"><i data-i="play"></i> <span data-t="ctaWatch">Watch the demo</span></a>
+      </div>
+      <p class="small"><span data-t="ctaNote">Chrome, Edge, Brave and other Chromium browsers.</span> <span id="ver"></span></p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="window">
+        <div class="wbar"><span></span><span></span><span></span></div>
+        <img src="img/themes/pastel.webp" alt="" width="340" height="560">
+      </div>
+      <div class="float f1"><i data-i="tag"></i> #read-later</div>
+      <div class="float f2"><i data-i="send"></i> <span data-t="floatTg">Saved to your shelf ✓</span></div>
+      <div class="float f3"><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></div>
+    </div>
+  </section>
+
+  <!-- Strip -->
+  <section class="strip">
+    <div class="wrap stripin">
+      <span><i data-i="shield"></i> <span data-t="s1">No account, no tracking</span></span>
+      <span><i data-i="inbox"></i> <span data-t="s2">Works without a server</span></span>
+      <span><i data-i="globe"></i> <span data-t="s3">English &amp; Turkish</span></span>
+      <span><i data-i="github"></i> <span data-t="s4">MIT licensed</span></span>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="sec wrap" id="features">
+    <h2 data-t="featTitle">Everything in one small extension</h2>
+    <p class="sub" data-t="featSub">Turn on what you use, hide the rest. Every feature, menu entry and tool has its own switch.</p>
+    <div class="grid">
+      <article class="card c-lav"><span class="ic"><i data-i="bookmark"></i></span><h3 data-t="f1t">Save in one click</h3><p data-t="f1d">The page, a link or a selection, from the popup, the right-click menu or a shortcut. Tags, a note and a screenshot come along.</p></article>
+      <article class="card c-mint"><span class="ic"><i data-i="search"></i></span><h3 data-t="f2t">Find it again</h3><p data-t="f2d">Search titles, notes and the page text itself. Turkish-aware: <em>bakim</em> finds <em>bakım</em>.</p></article>
+      <article class="card c-sky"><span class="ic"><i data-i="layers"></i></span><h3 data-t="f3t">Sessions</h3><p data-t="f3d">Save every open tab at once, reopen them later in a new window.</p></article>
+      <article class="card c-peach"><span class="ic"><i data-i="video"></i></span><h3 data-t="f4t">Video downloads</h3><p data-t="f4d">Instagram, TikTok and plain video files straight from the page. With your own Raf server: YouTube, X, Reddit and 1000+ sites, up to 4K.</p></article>
+      <article class="card c-pink"><span class="ic"><i data-i="inbox"></i></span><h3 data-t="f5t">Never lose a save</h3><p data-t="f5d">Server out of reach? Saves wait in your browser and go through by themselves once it's back.</p></article>
+      <article class="card c-sun"><span class="ic"><i data-i="palette"></i></span><h3 data-t="f6t">10 themes</h3><p data-t="f6d">Each with its own look, not just colours. Even the toolbar icon follows along.</p></article>
+    </div>
+  </section>
+
+  <!-- Video -->
+  <section class="sec wrap" id="video">
+    <div class="video" id="player">
+      <img src="img/og.png" alt="" loading="lazy">
+      <button class="playbtn" aria-label="Play"><i data-i="play"></i></button>
+      <p class="vnote" data-t="vnote">Plays from YouTube (privacy-enhanced mode) when you press play.</p>
+    </div>
+  </section>
+
+  <!-- Phone -->
+  <section class="sec wrap split" id="phone">
+    <div>
+      <h2 data-t="phTitle">To your phone, without the setup</h2>
+      <p class="sub left" data-t="phSub">Found something on the laptop, want it on the bus? Pick whatever's easiest.</p>
+      <ul class="ways">
+        <li><span class="ic c-sky"><i data-i="send"></i></span><div><b data-t="w1t">Telegram, one tap</b><p data-t="w1d">Settings → Connect Telegram → press Start. Send pages to your chat; send links to the bot and they land on your shelf. /last /today /search answer from it.</p></div></li>
+        <li><span class="ic c-mint"><i data-i="bookmark"></i></span><div><b data-t="w2t">Chrome bookmarks</b><p data-t="w2d">Saved pages also go to Bookmarks › Raf, and Chrome sync brings them to your phone. Nothing to install.</p></div></li>
+        <li><span class="ic c-lav"><i data-i="qr"></i></span><div><b data-t="w3t">QR code</b><p data-t="w3d">Point the phone camera at the popup and the page opens.</p></div></li>
+        <li><span class="ic c-peach"><i data-i="mail"></i></span><div><b data-t="w4t">Email</b><p data-t="w4d">A ready draft in your mail app, Gmail or Outlook. Just press Send.</p></div></li>
+      </ul>
+    </div>
+    <div class="chat" aria-hidden="true">
+      <div class="chathead"><img src="img/icon.svg" alt="" width="34" height="34"><div><b>Raf</b><small>bot</small></div></div>
+      <div class="msg me">https://example.com/article #read-later<br>on the train</div>
+      <div class="msg bot">✅ <span data-t="chatSaved">Saved to your shelf</span><br><span class="u">example.com/article</span><br><span class="tagc">#read-later</span></div>
+      <div class="msg me">/today</div>
+      <div class="msg bot">🔖 <b data-t="chatToday">Saved today</b><br>1. <span class="u">A great article</span><br>2. <span class="u">CSS grid guide</span><br>3. <span class="u">example.com/article</span></div>
+    </div>
+  </section>
+
+  <!-- Dev tools -->
+  <section class="sec wrap" id="dev">
+    <h2 data-t="devTitle">Built by a tester, for developers &amp; testers</h2>
+    <p class="sub" data-t="devSub">The small things you open ten tabs for, right in the popup.</p>
+    <div class="devgrid">
+      <div class="dev big2"><img src="img/shots/screenshot-4-picker.webp" alt="" loading="lazy"><div><h3><i data-i="crosshair"></i> <span data-t="d1t">Locator picker</span></h3><p data-th="d1d">Hover, click, get a Playwright locator: <code>getByRole</code>, <code>getByTestId</code>… with how many elements it matches. <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd></p></div></div>
+      <div class="dev big2"><img src="img/shots/screenshot-3-fill.webp" alt="" loading="lazy"><div><h3><i data-i="user"></i> <span data-t="d2t">Fill the form</span></h3><p data-th="d2d">One fake person fills the whole form: name, email, phone, address, valid national ID, tax number and IBAN. What you typed stays. <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></p></div></div>
+      <div class="chips">
+        <span><i data-i="key"></i> UUID v4</span><span><i data-i="text"></i> Lorem ipsum</span><span><i data-i="binary"></i> Base64</span><span><i data-i="id"></i> JWT</span><span><i data-i="camera"></i> <span data-t="chipShot">Screenshot</span></span><span><i data-i="user"></i> <span data-t="chipTd">Test data</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Themes -->
+  <section class="sec wrap split rev" id="themes">
+    <div class="tprev" aria-live="polite"><img id="tpimg" src="img/themes/pastel.webp" alt="" width="340" height="560"></div>
+    <div>
+      <h2 data-t="thTitle">Make it yours</h2>
+      <p class="sub left" data-t="thSub">Ten themes, each with its own shapes and type: frosted glass, pencil on grid paper, an 80s sunset… Pick one in Settings.</p>
+      <div class="tgrid" id="tgrid"></div>
+      <p class="small" id="tdesc"></p>
+    </div>
+  </section>
+
+  <!-- Two ways -->
+  <section class="sec wrap" id="ways">
+    <h2 data-t="twTitle">Two ways to use Raf</h2>
+    <div class="two">
+      <div class="way c-mint">
+        <h3><i data-i="puzzle"></i> <span data-t="tw1">Just the extension</span></h3>
+        <ul>
+          <li data-t="tw1a">Install and go, nothing to set up</li>
+          <li data-t="tw1b">Your shelf lives in your browser (export / import anytime)</li>
+          <li data-t="tw1c">Telegram, bookmarks, QR and email to reach your phone</li>
+          <li data-t="tw1d">Video from Instagram, TikTok and plain video files</li>
+        </ul>
+      </div>
+      <div class="way c-lav">
+        <h3><i data-i="server"></i> <span data-t="tw2">With your own Raf server</span></h3>
+        <ul>
+          <li data-t="tw2a">The same shelf on every device, plus a web app for the phone</li>
+          <li data-t="tw2b">YouTube, X, Reddit and 1000+ sites, quality choice, audio only</li>
+          <li data-t="tw2c">Always-on Telegram bot with a daily digest</li>
+          <li data-th="tw2d">One <code>docker compose up</code>, your data stays on your machine</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section class="sec wrap" id="install">
+    <h2 data-t="inTitle">Install in a minute</h2>
+    <ol class="steps">
+      <li><span class="n">1</span><div><b data-t="in1t">Download &amp; unzip</b><p data-t="in1d">Get raf-extension.zip from the latest release and unzip it somewhere you'll keep it.</p></div></li>
+      <li><span class="n">2</span><div><b data-t="in2t">Developer mode</b><p data-th="in2d">Open <code>chrome://extensions</code> and turn on <b>Developer mode</b> (top right).</p></div></li>
+      <li><span class="n">3</span><div><b data-t="in3t">Load unpacked</b><p data-t="in3d">Click Load unpacked, pick the folder, then pin Raf from the puzzle icon.</p></div></li>
+    </ol>
+    <div class="ctas center">
+      <a class="btn main big" href="https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip"><i data-i="download"></i> <span data-t="ctaDownload2">Download raf-extension.zip</span></a>
+      <a class="btn ghost big" href="https://github.com/selimyalinkilic/raf#run-it" target="_blank" rel="noopener"><i data-i="server"></i> <span data-t="ctaServer">Run your own server</span></a>
+    </div>
+    <p class="small center" data-t="inNote">To update: unzip the new release over the same folder and press ↻ on the Raf card. Chrome Web Store version coming soon.</p>
+  </section>
+
+  <!-- Privacy -->
+  <section class="sec wrap">
+    <div class="privacy">
+      <span class="ic c-mint big"><i data-i="shield"></i></span>
+      <div>
+        <h2 data-t="prTitle">Your shelf is yours</h2>
+        <p data-t="prText">No account, no analytics, no ads. Without a server everything stays in your browser. With a server, it stays on your server. The optional Telegram bot only passes messages along and deletes them as soon as your browser picks them up.</p>
+        <a href="https://github.com/selimyalinkilic/raf/blob/main/docs/PRIVACY.md" target="_blank" rel="noopener" data-t="prLink">Read the privacy policy →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap footin">
+    <div class="brand"><img src="img/icon.svg" alt="" width="28" height="28"><span>Raf</span></div>
+    <p><span data-t="ftMade">Made by</span> <a href="https://selimyalinkilic.me" target="_blank" rel="noopener">Selim Yalınkılıç</a> · <a href="https://github.com/selimyalinkilic/raf" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/selimyalinkilic/raf/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> · <a href="https://t.me/rafshelf_bot" target="_blank" rel="noopener">@rafshelf_bot</a></p>
+  </div>
+</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
