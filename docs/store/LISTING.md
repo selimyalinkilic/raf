@@ -124,7 +124,7 @@ Kaynak kod: https://github.com/selimyalinkilic/raf
 | clipboardWrite | Copy buttons for UUIDs, test data, locators and screenshots. |
 | alarms | Check the status of a video download running on the user's own server. |
 | notifications | Tell the user that a save or download finished or failed. |
-| Host permissions (video sites) | Show a small download button on videos on these sites. Downloads only run on the user's own self-hosted server. |
+| Host permissions (video sites) | Show a small download button on videos on these sites. It saves the video file the page already plays straight to the user's Downloads folder, or hands the link to the user's own self-hosted server. |
 | cookies (optional) | Requested only when the user connects their own server. Lets downloads work on sites that need a login: that site's cookies are sent to the user's own server for that one download and are not stored. |
 | Optional host permissions (any https) | Requested for the one server address the user enters in Settings, so the extension can reach the user's own self-hosted Raf server. |
 

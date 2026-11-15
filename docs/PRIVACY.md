@@ -27,13 +27,13 @@ Raf is a browser extension for saving web pages and a set of developer / testing
 | `downloads` | Save a screenshot as a PNG, and, with a server, save finished video downloads to your Downloads folder. |
 | `clipboardWrite` | The Copy buttons (UUID, test data, locators, screenshot). |
 | `alarms`, `notifications` | Check on a running video download (server only) and tell you when a save or download finished. |
-| Video sites (Instagram, X, TikTok, Vimeo, Reddit…) | Show the small download button on videos. It only works when you connected your own server. |
+| Video sites (Instagram, X, TikTok, Vimeo, Reddit…) | Show the small download button on videos. Without a server, Raf saves the video file the page is already playing straight to your Downloads folder. With your own server, the server downloads it. |
 | `cookies` (optional, asked when you connect a server) | Some sites only serve a video to logged-in users. When **you** start a download from such a site, Raf sends that site's cookies to **your own server** for that one download. They're held in memory and deleted when the job ends. |
 | Your server's address (optional) | Talk to the Raf server you entered. |
 
 ## Video downloads
 
-Raf only downloads through a server you run yourself. It refuses paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify and similar) and live streams. The Chrome Web Store version does not download from YouTube. You are responsible for respecting copyright and each site's terms.
+Without a server, Raf saves the video file the page is already playing, straight from the site to your computer. Nothing goes through anyone else. With your own Raf server, the server downloads it. Raf refuses paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify and similar) and live streams. The Chrome Web Store version does not download from YouTube. You are responsible for respecting copyright and each site's terms.
 
 ## Contact
 
@@ -50,4 +50,4 @@ Raf, web sayfalarını kaydetmek için bir tarayıcı eklentisi ve geliştirici/
 - **Ayarlar** (dil, tema, açık özellikler, varsa sunucu adresi/anahtarı) Chrome'un eklenti deposunda tutulur. Chrome Sync açıksa kendi cihazların arasında eşitlenebilir.
 - **Yok:** analitik, izleme, reklam, hesap, veri satışı ya da paylaşımı, uzaktan kod. Raf'ın kendine ait sunucusu yoktur, hiçbir veri toplamaz.
 - **Çerezler (isteğe bağlı):** Yalnızca sunucu bağlıyken ve girişli bir siteden video indirmeyi **sen** başlattığında, o sitenin çerezleri o tek indirme için **kendi sunucuna** gönderilir. Bellekte tutulur, iş bitince silinir.
-- **Video indirme:** Yalnızca kendi sunucun üzerinden çalışır. Ücretli/DRM'li servisler (Netflix, Disney+, Prime Video, Spotify vb.) ve canlı yayınlar reddedilir. Mağaza sürümü YouTube'dan indirmez. Telif haklarına ve sitelerin kurallarına uymak kullanıcının sorumluluğundadır.
+- **Video indirme:** Sunucu olmadan Raf, sayfanın zaten oynattığı video dosyasını doğrudan siteden bilgisayarına kaydeder, araya kimse girmez. Kendi Raf sunucun varsa indirmeyi sunucu yapar. Ücretli/DRM'li servisler (Netflix, Disney+, Prime Video, Spotify vb.) ve canlı yayınlar reddedilir. Mağaza sürümü YouTube'dan indirmez. Telif haklarına ve sitelerin kurallarına uymak kullanıcının sorumluluğundadır.

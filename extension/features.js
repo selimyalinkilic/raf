@@ -4,9 +4,9 @@ const RAF_FEATURES = [
   { id: "withShot",   group: "gSave",  icon: "camera",   def: true },  // "Include a screenshot" option
   { id: "menuSave",   group: "gSave",  icon: "plus",     def: true },  // right-click: save page / link / selection
   { id: "sessions",   group: "gSave",  icon: "layers",   def: true },  // save all tabs as a session, reopen later
-  { id: "video",      group: "gVideo", icon: "video",    def: true, server: true },  // popup download box
-  { id: "videoOverlay", group: "gVideo", icon: "download", def: true, server: true },  // "Raf" button on top of videos (video sites)
-  { id: "menuVideo",  group: "gVideo", icon: "download", def: true, server: true },  // right-click: download video / audio
+  { id: "video",      group: "gVideo", icon: "video",    def: true },  // popup download box
+  { id: "videoOverlay", group: "gVideo", icon: "download", def: true },  // "Raf" button on top of videos (video sites)
+  { id: "menuVideo",  group: "gVideo", icon: "download", def: true },  // right-click: download video / audio
   { id: "uuid",       group: "gTools", icon: "key",      def: true },
   { id: "menuUuid",   group: "gTools", icon: "plus",     def: true },  // right-click "Insert UUID" + Alt+Shift+U
   { id: "lorem",      group: "gTools", icon: "text",     def: true },

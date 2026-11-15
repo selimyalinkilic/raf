@@ -27,7 +27,7 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title,
 | Where your shelf lives | In your browser (export / import as JSON) | On your server, the same on every device |
 | Save, tags, notes, search, sessions | ✅ | ✅ |
 | Dev & test tools, dark mode | ✅ | ✅ |
-| Video & audio downloads | — | ✅ |
+| Video downloads | Instagram, TikTok and sites that play a plain video file | 1000+ sites incl. YouTube, X, Reddit, with quality choice and audio-only |
 | Telegram bot, web app / PWA for the phone | — | ✅ |
 | Account or sign-up | none | none, it's your server |
 
@@ -59,7 +59,8 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 ### Chrome extension
 - **Save** the current page, a link or a text selection (popup, right-click menu or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>). Includes tag suggestions, a note and an optional screenshot of the visible area.
 - **Sessions:** save all open tabs at once and reopen them later in a new window.
-- **Video & audio download** from YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo and [1000+ sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md):
+- **Video download without a server:** a Raf button on Instagram videos (posts, reels, feed), TikTok and any site that plays a plain video file. Saved straight to *Downloads/Raf*.
+- **Video & audio download with your Raf server** from YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo and [1000+ sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md):
   - a **Raf button on top of videos** with quality selection (up to 4K)
   - files land in *Downloads/Raf* automatically
   - sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored
@@ -80,7 +81,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 
 ### YouTube downloads
 
-Video downloads run on your own Raf server (yt-dlp). The version from [GitHub Releases](#install-the-extension), from this repository, or from your server's `/extension.zip` downloads from YouTube too, once it's connected to your server.
+Without a server Raf only saves videos the page already plays as one complete file (Instagram, TikTok, plain MP4). YouTube streams video and audio in pieces, so YouTube downloads run on your own Raf server (yt-dlp). The version from [GitHub Releases](#install-the-extension), from this repository, or from your server's `/extension.zip` downloads from YouTube too, once it's connected to your server.
 
 The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow extensions that download from YouTube. To get YouTube downloads, [run your own Raf server](#run-it) and install the extension from it. It replaces the store version.
 

@@ -661,5 +661,26 @@
  },
  "srvGuide": {
   "message": "Raf sunucusu nasıl kurulur?"
+ },
+ "blockedService": {
+  "message": "Raf, $1 içeriğini indirmez: ücretli / DRM korumalı içerik."
+ },
+ "localStreamed": {
+  "message": "Bu site videoyu parça parça (görüntü ve ses ayrı) gönderiyor, indirmek için Raf sunucusu gerekir. Sunucusuz çalışanlar: Instagram, TikTok ve düz video dosyası oynatan siteler."
+ },
+ "localIgNoPost": {
+  "message": "Gönderiyi ya da reel'i aç (tarihine ya da videoya tıkla) ve Raf'a tekrar bas."
+ },
+ "localIgNoVideo": {
+  "message": "Bu Instagram gönderisinde video bulunamadı."
+ },
+ "localSaved": {
+  "message": "İndirilenler'e kaydedildi: $1"
+ },
+ "localHint": {
+  "message": "Sunucu olmadan Raf; Instagram, TikTok ve düz video dosyası oynatan sitelerden video kaydeder. YouTube, X, Reddit ve kalite/ses seçenekleri için bir Raf sunucusu bağla."
+ },
+ "ovSaving": {
+  "message": "Kaydediliyor…"
  }
 }

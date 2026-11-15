@@ -19,7 +19,8 @@ async function buildMenus() {
   }
   if (f.menuVideo) {
     chrome.contextMenus.create({ id: "dl-video", title: t("ctxDlVideo"), contexts: ["page", "link", "video"] });
-    chrome.contextMenus.create({ id: "dl-audio", title: t("ctxDlAudio"), contexts: ["page", "link", "video"] });
+    // audio-only needs ffmpeg on a Raf server
+    if (!(await rafIsLocal())) chrome.contextMenus.create({ id: "dl-audio", title: t("ctxDlAudio"), contexts: ["page", "link", "video"] });
   }
 }
 chrome.runtime.onInstalled.addListener(buildMenus);
@@ -65,6 +66,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId.startsWith("td:")) return putText(tab, info.frameId, RAF_TESTDATA.GEN[info.menuItemId.slice(3)]());
   if (info.menuItemId.startsWith("dl-")) {
     const target = info.linkUrl || (info.srcUrl && info.srcUrl.startsWith("http") && !info.srcUrl.startsWith("blob:") ? info.srcUrl : null) || tab.url;
+    if (await rafIsLocal()) {  // no server: save the video straight from the page
+      try { const r = await rafLocalVideo(tab.id, info.linkUrl || tab.url, info.srcUrl || ""); flash(tab.id, true, t("localSaved", r.filename)); }
+      catch (e) { flash(tab.id, false, String(e.message || e)); }
+      return;
+    }
     try {
       await rafStartDownload(target, info.menuItemId === "dl-audio" ? "audio" : "video");
       flash(tab.id, true, t("dlQueuedNotif"));
@@ -170,7 +176,8 @@ chrome.runtime.onMessage.addListener((m, sender, reply) => {
     status: () => rafApi("/api/downloads/" + m.id),
     deliver: () => checkDownloads(),
     dict: async () => { await rafI18nReady; return { dict: RAF_DICT }; },
-    features: () => rafFeatures(),
+    features: async () => ({ ...(await rafFeatures()), local: await rafIsLocal() }),
+    local: () => rafLocalVideo(sender.tab.id, m.url, m.src || ""),
   }[m.raf];
   if (!run) return;
   run().then((r) => reply(r ?? {})).catch((e) => reply({ error: String(e.message || e) }));

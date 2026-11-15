@@ -57,13 +57,16 @@ async function init() {
   const [tab] = forced ? [await chrome.tabs.get(forced)] : await chrome.tabs.query({ active: true, currentWindow: true });
   page = (await rafExtract(tab.id)) || { url: tab.url, title: tab.title, favicon: tab.favIconUrl };
   if (!page.favicon && tab.favIconUrl) page.favicon = tab.favIconUrl;
-  page.windowId = tab.windowId;
+  page.windowId = tab.windowId; page.tabId = tab.id;
   const { withShot } = await chrome.storage.sync.get("withShot");
   $("withShot").checked = FEAT.withShot && withShot !== false;
   $("title").value = page.title || "";
   $("url").textContent = page.url;
   if (page.selection) $("note").value = page.selection;
-  if (rafStoreBlocked(page.url)) {  // Chrome Web Store build: YouTube downloads are off — explain how to get them
+  if (local && FEAT.video) {  // no server: one button that saves the video straight from the page
+    $("dl-quality").hidden = true; $("dl-audio").hidden = true;
+    $("dl-store").innerHTML = escHtml(t("localHint")); $("dl-store").hidden = false;
+  } else if (rafStoreBlocked(page.url)) {  // Chrome Web Store build: YouTube downloads are off — explain how to get them
     $("dl-quality").hidden = true; $("dl-video").parentElement.hidden = true;
     $("dl-store").innerHTML = `${ic("alert")} ${escHtml(t("ytStoreBlocked"))} <a href="${RAF_YT_INFO}" target="_blank">${escHtml(t("ytStoreHow"))}</a>`;
     $("dl-store").hidden = false;
@@ -122,6 +125,13 @@ $("save").onclick = save;
 let dlTimer = null;
 async function startDl(kind) {
   ["dl-video", "dl-audio"].forEach((id) => $(id).disabled = true);
+  if (await rafIsLocal()) {
+    $("dl-status").innerHTML = `${ic("spinner", "spin")} ` + escHtml(t("ovSaving"));
+    try { const r = await rafLocalVideo(page.tabId, page.url); $("dl-status").innerHTML = `${ic("check", "ok")} ` + escHtml(t("localSaved", r.filename)); }
+    catch (e) { $("dl-status").innerHTML = ic("alert", "err") + " " + escHtml(String(e.message || e)); }
+    $("dl-video").disabled = false;
+    return;
+  }
   try {
     const d = await rafStartDownload(page.url, kind, kind === "video" ? +$("dl-quality").value : 0);
     $("dl-status").innerHTML = ic("clock") + " " + t("queued");

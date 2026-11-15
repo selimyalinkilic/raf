@@ -90,7 +90,7 @@
     .msg.err{color:#c0392b}
   </style><div class="pill"></div><div class="menu"></div>`;
   const pill = root.querySelector(".pill"), menu = root.querySelector(".menu");
-  let current = null, hideTimer = null, menuOpen = false, enabled = false, job = null;
+  let current = null, hideTimer = null, menuOpen = false, enabled = false, job = null, local = false;
 
   function mount() { const parent = document.fullscreenElement || document.documentElement; if (hostEl.parentNode !== parent) parent.appendChild(hostEl); }
   function idle() { pill.className = "pill show"; pill.innerHTML = `${I.dl}<span>Raf</span>`; pill.title = M("ovTitle"); }
@@ -166,6 +166,17 @@
   on(document, "keydown", (e) => { if (e.key === "Escape" && menuOpen) closeMenu(); }, true);
   on(document, "click", (e) => { if (menuOpen && !e.composedPath().includes(hostEl)) closeMenu(); }, true);
 
+  // No server: one click saves the video straight from the page (Instagram, plain MP4 sites)
+  async function localDownload() {
+    if (job) return;
+    job = "local"; pill.className = "pill show busy spin"; pill.innerHTML = `${I.spin}<span>${esc(M("ovSaving"))}</span>`;
+    const r = await send({ raf: "local", url: targetUrl(current), src: current?.currentSrc || "" });
+    job = null;
+    if (r.error) return fail(r.error);
+    pill.className = "pill show ok"; pill.innerHTML = `${I.check}<span>${esc(M("ovDone"))}</span>`; pill.title = r.filename || "";
+    setTimeout(() => { idle(); hideSoon(); }, 3500);
+  }
+
   async function openMenu() {
     if (job) return;
     const url = targetUrl(current);
@@ -199,9 +210,14 @@
   }
   function fail(msg) {
     pill.className = "pill show err"; pill.innerHTML = `${I.alert}<span>${esc(M("ovFailed"))}</span>`; pill.title = msg;
+    if (local) {  // say why right under the pill (e.g. "this site streams video — needs a Raf server")
+      const r = pill.getBoundingClientRect();
+      menu.style.left = Math.min(innerWidth - 262, r.left) + "px"; menu.style.top = Math.min(innerHeight - 60, r.bottom + 8) + "px";
+      menu.innerHTML = `<div class="msg err">${I.alert} ${esc(msg.slice(0, 200))}</div>`; menu.classList.add("show"); menuOpen = true;
+    }
     setTimeout(() => { idle(); hideSoon(); }, 5000);
   }
-  pill.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); menuOpen ? closeMenu() : openMenu(); });
+  pill.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); menuOpen ? closeMenu() : local ? localDownload() : openMenu(); });
   pill.addEventListener("mousedown", (e) => e.stopPropagation());
 
   // ---------- follow the Settings toggle ----------
@@ -209,7 +225,7 @@
     if (!alive()) return teardown();
     const d = await send({ raf: "dict" }); DICT = d && !d.error ? d.dict : null;
     const f = await send({ raf: "features" });  // background knows about local mode / store build
-    enabled = !!(f && !f.error && f.videoOverlay);
+    enabled = !!(f && !f.error && f.videoOverlay); local = !!f?.local;
     if (!enabled) { pill.classList.remove("show"); closeMenu(); }
   }
   try { chrome.storage.onChanged.addListener((ch, area) => { if (area === "sync" && (ch.features || ch.lang || ch.server || ch.token)) sync(); }); } catch (e) {}

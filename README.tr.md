@@ -27,7 +27,7 @@ Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfan�
 | Rafın nerede | Tarayıcında (JSON olarak dışa/içe aktarılır) | Sunucunda, her cihazda aynı |
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
 | Geliştirici/test araçları, koyu tema | ✅ | ✅ |
-| Video ve ses indirme | — | ✅ |
+| Video indirme | Instagram, TikTok ve düz video dosyası oynatan siteler | YouTube, X, Reddit dahil 1000'den fazla site; kalite seçimi ve sadece ses |
 | Telegram botu, telefon için web uygulaması | — | ✅ |
 | Hesap / üyelik | yok | yok, sunucu senin |
 
@@ -59,7 +59,8 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 ### Chrome eklentisi
 - **Kaydet:** sayfayı, bir linki ya da seçili metni kaydet (popup, sağ tık menüsü veya <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>). Etiket önerileri, not ve isteğe bağlı ekran görüntüsü.
 - **Oturumlar:** açık sekmelerin hepsini tek seferde kaydet, sonra yeni bir pencerede geri aç.
-- **Video ve ses indirme:** YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo ve [1000'den fazla site](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
+- **Sunucusuz video indirme:** Instagram videolarında (gönderi, reel, akış), TikTok'ta ve düz video dosyası oynatan her sitede Raf düğmesi. Doğrudan *İndirilenler/Raf*'a kaydeder.
+- **Raf sunucunla video ve ses indirme:** YouTube, X/Twitter, Instagram, TikTok, Reddit, Vimeo ve [1000'den fazla site](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
   - videoların üstünde **Raf butonu** ve kalite seçimi (4K'ya kadar)
   - dosyalar otomatik olarak *İndirilenler/Raf* klasörüne iner
   - giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz
@@ -80,7 +81,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 
 ### YouTube'dan indirme
 
-Video indirme kendi Raf sunucunda (yt-dlp) çalışır. [GitHub Releases](#eklentiyi-kurma)'tan, bu repodan ya da sunucundaki `/extension.zip`'ten kurduğun sürüm, sunucuna bağlıyken YouTube'dan da indirir.
+Sunucu olmadan Raf yalnızca sayfanın zaten tek parça dosya olarak oynattığı videoları kaydeder (Instagram, TikTok, düz MP4). YouTube görüntüyü ve sesi parça parça gönderdiği için YouTube indirme kendi Raf sunucunda (yt-dlp) çalışır. [GitHub Releases](#eklentiyi-kurma)'tan, bu repodan ya da sunucundaki `/extension.zip`'ten kurduğun sürüm, sunucuna bağlıyken YouTube'dan da indirir.
 
 **Chrome Web Mağazası sürümü indirmez**, çünkü mağaza kuralları YouTube'dan indiren eklentilere izin vermiyor. YouTube indirmeyi istiyorsan [kendi Raf sunucunu kur](#kurulum) ve eklentiyi oradan yükle. Mağaza sürümünün yerine geçer.
 

@@ -661,5 +661,26 @@
  },
  "srvGuide": {
   "message": "How to set up a Raf server"
+ },
+ "blockedService": {
+  "message": "Raf doesn't download from $1: paid / DRM-protected content."
+ },
+ "localStreamed": {
+  "message": "This site streams its video in pieces (video and audio separately), so it needs a Raf server to download. Works without a server: Instagram, TikTok and sites that play a plain video file."
+ },
+ "localIgNoPost": {
+  "message": "Open the post or reel (click its date or the video) and press Raf again."
+ },
+ "localIgNoVideo": {
+  "message": "No video found in this Instagram post."
+ },
+ "localSaved": {
+  "message": "Saved to Downloads: $1"
+ },
+ "localHint": {
+  "message": "Without a server Raf saves videos from Instagram, TikTok and sites that play a plain video file. Connect a Raf server for YouTube, X, Reddit and quality / audio options."
+ },
+ "ovSaving": {
+  "message": "Saving…"
  }
 }
