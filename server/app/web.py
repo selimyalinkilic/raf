@@ -115,12 +115,27 @@ def platform_of(url):
 THEME_JS = """<script>(function(){var d=document.documentElement,m=document.querySelector('meta[name=theme-color]');
 function a(t){if(t==="light"||t==="dark")d.dataset.theme=t;else delete d.dataset.theme}
 try{a(localStorage.getItem("rafTheme"))}catch(e){}
-window.rafTheme=function(){var o=["auto","light","dark"],c=d.dataset.theme||"auto",n=o[(o.indexOf(c)+1)%3];a(n);try{localStorage.setItem("rafTheme",n)}catch(e){}}})()</script>"""
+window.rafTheme=function(){var sys=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light",flip=sys==="dark"?"light":"dark",
+o=["auto",flip,sys],c=d.dataset.theme||"auto",n=o[(o.indexOf(c)+1)%3];a(n);try{localStorage.setItem("rafTheme",n)}catch(e){}}})()</script>"""
+# The first click always flips what you see (auto → opposite of the system), then → same as system, then back to auto.
 
 
 def theme_btn(lang):
-    title = "Theme: auto / light / dark" if lang == "en" else "Tema: otomatik / açık / koyu"
+    title = "Switch light / dark (third click: follow the system)" if lang == "en" else "Açık / koyu değiştir (üçüncü tıklama: sisteme uy)"
     return f'<button type="button" class="langbtn themebtn" onclick="rafTheme()" title="{title}" aria-label="{title}">{ic("monitor", "t-auto")}{ic("sun", "t-light")}{ic("moon", "t-dark")}</button>'
+
+
+_STATIC = os.path.join(os.path.dirname(__file__), "static")
+
+
+def _ver(name):
+    """Short content hash for cache-busting a static file (?v=…)."""
+    import hashlib
+    with open(os.path.join(_STATIC, name), "rb") as f:
+        return hashlib.sha1(f.read()).hexdigest()[:10]
+
+
+CSS_V = _ver("style.css")
 
 
 def head(title, lang):
@@ -129,7 +144,7 @@ def head(title, lang):
 <link rel="icon" href="/static/icon.svg"><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
 <meta name="theme-color" content="#d9ccff" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1b1929" media="(prefers-color-scheme: dark)"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Raf"><meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js")</script>{THEME_JS}<link rel="stylesheet" href="/static/style.css"></head><body>'''
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js")</script>{THEME_JS}<link rel="stylesheet" href="/static/style.css?v={CSS_V}"></head><body>'''
 
 
 def lang_btn(request, lang):

@@ -1,5 +1,5 @@
 // Raf service worker: statik dosyaları önbellekle, sayfalar her zaman ağdan (çevrimdışıysa uyarı)
-const CACHE = "raf-v2";
+const CACHE = "raf-v3";
 const TR = (self.navigator.language || "").toLowerCase().startsWith("tr");
 const offlinePage = () => `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <body style="font-family:system-ui;padding:40px;text-align:center;background:#fffaf4;color:#3d3a5c">
@@ -12,7 +12,16 @@ self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) =
 self.addEventListener("fetch", (e) => {
   const u = new URL(e.request.url);
   if (e.request.method !== "GET" || u.origin !== location.origin) return;
-  if (u.pathname.startsWith("/static/")) { e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request))); return; }
+  if (u.pathname.startsWith("/static/")) {
+    // stale-while-revalidate: answer from the cache, refresh it in the background.
+    // style.css is also linked as style.css?v=<hash>, so a changed file is a new URL (never served stale).
+    e.respondWith(caches.open(CACHE).then(async (c) => {
+      const hit = await c.match(e.request);
+      const net = fetch(e.request).then((r) => { if (r.ok) c.put(e.request, r.clone()); return r; }).catch(() => hit);
+      return hit || net;
+    }));
+    return;
+  }
   if (e.request.mode === "navigate") {
     e.respondWith(fetch(e.request).catch(() => new Response(
       offlinePage(),
