@@ -13,6 +13,11 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip"><img src="docs/download.svg" width="340" alt="Download Raf (raf-extension.zip)"></a><br>
+  <sub><a href="#install-the-extension">How to install</a> · <a href="https://github.com/selimyalinkilic/raf/releases">All releases</a></sub>
+</p>
+
+<p align="center">
   <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, pick a Playwright locator, dark mode"><br>
   <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Watch the demo video on YouTube</a></sub>
 </p>

@@ -13,6 +13,11 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip"><img src="docs/download-tr.svg" width="340" alt="Raf'ı indir (raf-extension.zip)"></a><br>
+  <sub><a href="#eklentiyi-kurma">Nasıl kurulur?</a> · <a href="https://github.com/selimyalinkilic/raf/releases">Tüm sürümler</a></sub>
+</p>
+
+<p align="center">
   <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, Playwright locator seç, koyu tema"><br>
   <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Demo videosunu YouTube'da izle</a></sub>
 </p>
