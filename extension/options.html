@@ -24,12 +24,19 @@
     <section class="card">
       <h2><i data-i="link"></i> <span data-t="optConnection"></span></h2>
       <p class="mode" id="mode"></p>
-      <p class="hint"><span data-t="optIntro"></span></p>
-      <label><span data-t="lblServer"></span><input id="server" placeholder="https://raf.example.com"></label>
-      <label><span data-t="lblToken"></span><input id="token" type="password"></label>
-      <button id="save" class="btn"><i data-i="check"></i> <span data-t="saveTest"></span></button>
-      <p id="msg"></p>
+      <p class="hint"><span data-t="connLocalIntro"></span></p>
       <button id="open-shelf" class="mini"><i data-i="library"></i> <span data-t="openShelf"></span></button>
+      <details id="srv" class="srv">
+        <summary><i data-i="settings"></i> <span data-t="srvSummary"></span></summary>
+        <p class="hint" data-t-html="srvWhat"></p>
+        <label><span data-t="lblServer"></span><input id="server" placeholder="https://raf.example.com"></label>
+        <p class="hint sub" data-t-html="srvUrlHelp"></p>
+        <label><span data-t="lblToken"></span><input id="token" type="password" autocomplete="off"></label>
+        <p class="hint sub" data-t-html="srvTokenHelp"></p>
+        <button id="save" class="btn"><i data-i="check"></i> <span data-t="saveTest"></span></button>
+        <p id="msg"></p>
+        <p class="hint"><a href="https://github.com/selimyalinkilic/raf#run-it" target="_blank"><i data-i="external"></i> <span data-t="srvGuide"></span></a></p>
+      </details>
     </section>
     <section class="card">
       <div class="h2row"><h2><i data-i="settings"></i> <span data-t="optFeatures"></span></h2>

@@ -5,7 +5,7 @@
 <h1 align="center">Raf</h1>
 
 <p align="center">
-  <b>Kendi sunucunda çalışan "sonra oku" rafın: Chrome eklentisi, video indirme ve Telegram botuyla.</b>
+  <b>Tarayıcında özel bir "sonra oku" rafı ve geliştiriciler için test araçları. Kendi sunucunu eklersen video indirme ve Telegram botu da gelir.</b>
 </p>
 
 <p align="center">
@@ -13,20 +13,34 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta bul, formu test verisiyle doldur">
+  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, Playwright locator seç, koyu tema">
 </p>
 
-Raf, baktığın sayfayı tek tıkla **kendi sunucuna** kaydeder: başlık, etiketler, not, sayfanın okunabilir metni ve ekran görüntüsü. Böylece site kapansa bile içeriği bulursun. Ayrıca neredeyse her yerden video indirir; geliştiricilerin ve test uzmanlarının her gün kullandığı küçük araçları da bir arada sunar.
+Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfanın okunabilir metni ve ekran görüntüsü. Böylece site kapansa bile içeriği bulursun. Geliştiricilerin ve test uzmanlarının her gün kullandığı küçük araçları da bir arada sunar.
+
+## Raf'ı kullanmanın iki yolu
+
+| | **Sadece eklenti** | **Kendi Raf sunucunla** |
+|---|---|---|
+| Kurulum | Chrome Web Mağazası *(yakında)* ya da *Paketlenmemiş öğe yükle* | Docker, bkz. [Kurulum](#kurulum) |
+| Rafın nerede | Tarayıcında (JSON olarak dışa/içe aktarılır) | Sunucunda, her cihazda aynı |
+| Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
+| Geliştirici/test araçları, koyu tema | ✅ | ✅ |
+| Video ve ses indirme | — | ✅ |
+| Telegram botu, telefon için web uygulaması | — | ✅ |
+| Hesap / üyelik | yok | yok, sunucu senin |
+
+**Ayarlar'daki "Sunucu adresi" ve "API anahtarı" ne?** Sadece kendi Raf sunucunu çalıştırıyorsan gerekir. Adres, sunucuna ulaşılan yerdir (ör. `https://raf.example.com`). Anahtar, sunucuyu kurarken belirlediğin `RAF_API_TOKEN` değeridir. Şifre gibidir ve yalnızca senin sunucuna gönderilir. İkisini de boş bırakırsan Raf her şeyi tarayıcında tutar. Eklentiyi sunucundaki `/extension.zip` adresinden kurarsan ikisi de dolu gelir.
 
 ## Ekran görüntüleri
 
 <table>
   <tr>
-    <td align="center" width="50%"><img src="docs/screenshots/extension-tr.png" alt="Chrome eklentisi"><br><sub>Chrome eklentisi: kaydet ve araçlar</sub></td>
-    <td align="center" width="50%"><img src="docs/screenshots/web-shelf.png" alt="Web uygulaması"><br><sub>Web uygulaması: tam metin aramalı rafın</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-1-save.png" alt="Sayfa kaydetme"><br><sub>Her sayfayı tek tıkla kaydet</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-4-picker.png" alt="Locator seçici"><br><sub>Playwright locator seçici</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/screenshots/web-downloads.png" alt="İndirilenler"><br><sub>İndirilenler: arama, filtreler, tarayıcıda izleme</sub></td>
+    <td align="center"><img src="docs/screenshots/web-shelf.png" alt="Web uygulaması"><br><sub>Sunucuyla: tam metin aramalı web uygulaması</sub></td>
     <td align="center"><img src="docs/screenshots/mobile.png" alt="Mobil PWA"><br><sub>Telefona kurulabilen PWA</sub></td>
   </tr>
 </table>
@@ -54,6 +68,14 @@ Raf, baktığın sayfayı tek tıkla **kendi sunucuna** kaydeder: başlık, etik
 - Web arayüzü ve telefona kurulabilen **PWA** (iPhone ana ekranına eklenebilir), Türkçe ve İngilizce
 - yt-dlp + ffmpeg ile indirme kuyruğu; videolar gerekirse H.264'e çevrilir, iPhone'da oynar ve Fotoğraflar'a kaydedilir
 - İndirilenler sayfasında arama, filtreler (durum, tür, platform, kaynak, tarih) ve sıralama
+
+### YouTube'dan indirme
+
+Video indirme kendi Raf sunucunda (yt-dlp) çalışır. Bu repodan kurduğun ya da sunucundaki `/extension.zip`'ten indirdiğin sürüm YouTube'dan da indirir.
+
+**Chrome Web Mağazası sürümü indirmez**, çünkü mağaza kuralları YouTube'dan indiren eklentilere izin vermiyor. YouTube indirmeyi istiyorsan [kendi Raf sunucunu kur](#kurulum) ve eklentiyi oradan yükle. Mağaza sürümünün yerine geçer.
+
+Hangi sürüm olursa olsun Raf ücretli/DRM'li servislerden (Netflix, Disney+, Prime Video, Spotify…) ve canlı yayınlardan asla indirmez. Yalnızca indirmene izin verilen içerikleri, kişisel kullanım için indir.
 
 ### Telegram botu
 - Link gönder, kaydedilsin. Aynı mesaja `#etiket` ve not ekleyebilirsin.
@@ -94,11 +116,12 @@ Sunucu adresi ve anahtar hazır gelir.
 ```
 server/      FastAPI uygulaması (app/main.py, db.py, downloads.py, telegram.py, web.py) + Dockerfile
 extension/   Chrome MV3 eklentisi (_locales/en, _locales/tr)
-docs/        ekran görüntüleri ve demo
+docs/        ekran görüntüleri, demo, gizlilik politikası, Chrome Web Mağazası metinleri (docs/store)
+scripts/     build-store.sh: Chrome Web Mağazası paketini dist/ altına üretir
 ```
 
 ## Lisans
 
-[MIT](LICENSE) © Selim Yalınkılıç
+[MIT](LICENSE) © Selim Yalınkılıç · [Gizlilik politikası](docs/PRIVACY.md)
 
 <p align="center"><sub>İkonlar: <a href="https://lucide.dev">Lucide</a> (ISC) · QR kod: <a href="https://github.com/kazuhikoarase/qrcode-generator">qrcode-generator</a> (MIT) · Video motoru: <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a></sub></p>

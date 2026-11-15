@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id);
 
 // ---------- Connection ----------
-(async () => { const s = await rafSettings(); $("server").value = s.server; $("token").value = s.token; })();
+(async () => { const s = await rafSettings(); $("server").value = s.server; $("token").value = s.token; $("srv").open = !!(s.server || s.token); })();
 $("save").onclick = async () => {
   const server = $("server").value.trim().replace(/\/$/, ""), token = $("token").value.trim();
   if (server) {

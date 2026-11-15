@@ -40,3 +40,12 @@ body.options{width:auto;max-width:620px;margin:0 auto;padding:0 16px 40px;min-he
 .mode .i{color:var(--lav-d)}
 .frow.locked{cursor:not-allowed}.frow.locked .sw{opacity:.45}
 #open-shelf{display:inline-flex;align-items:center;gap:5px;margin-top:4px}
+.srv{margin-top:14px;border-top:2px dashed var(--lav);padding-top:10px}
+.srv summary{cursor:pointer;display:flex;align-items:center;gap:6px;font:700 14px Fredoka,"Segoe UI",sans-serif;list-style:none}
+.srv summary::-webkit-details-marker{display:none}
+.srv summary::after{content:"▸";margin-left:auto;color:var(--muted)}.srv[open] summary::after{content:"▾"}
+.srv summary .i{color:var(--lav-d)}
+.srv .hint.sub{margin:3px 0 0;font-size:11px}
+.srv code{font:700 11px ui-monospace,Consolas,monospace;background:var(--hover);border-radius:5px;padding:0 4px}
+.srv a{color:var(--ink);display:inline-flex;align-items:center;gap:4px}
+.srv ul{margin:4px 0 0;padding-left:18px}

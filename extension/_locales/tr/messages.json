@@ -206,9 +206,6 @@
  "optTitle": {
   "message": "Raf · Ayarlar"
  },
- "optIntro": {
-  "message": "Boş bırakırsan rafın bu tarayıcıda tutulur (yerel mod). Video indirme, Telegram ve web uygulaması için kendi Raf sunucunu bağla. Eklentiyi sunucundan indirdiysen bu alanlar zaten dolu gelir."
- },
  "lblServer": {
   "message": "Sunucu adresi"
  },
@@ -646,5 +643,23 @@
  },
  "shelfServerNote": {
   "message": "Bir Raf sunucusuna bağlısın — burada yerel modda bu tarayıcıda tutulan kayıtlar var. Sunucundaki raf, web uygulamasında."
+ },
+ "connLocalIntro": {
+  "message": "Raf sunucusuz da çalışır: kaydettiğin her şey bu tarayıcıda kalır, istediğin zaman dışa aktarabilirsin."
+ },
+ "srvSummary": {
+  "message": "Kendi Raf sunucum var (isteğe bağlı)"
+ },
+ "srvWhat": {
+  "message": "Raf sunucusu, kendin Docker ile çalıştırdığın küçük bir uygulama — evdeki bir sunucuda, NAS'ta ya da ucuz bir VPS'te. Bağlarsan şunlar açılır:<ul><li><b>video ve ses indirme</b></li><li><b>Telegram botu</b> (link kaydetme, günlük özet)</li><li>telefon için <b>web uygulaması</b></li><li>her cihazda aynı raf</li></ul>Sunucun yoksa burayı geç — başka hiçbir şey buna ihtiyaç duymaz."
+ },
+ "srvUrlHelp": {
+  "message": "Sunucunun adresi, ör. <code>https://raf.example.com</code>."
+ },
+ "srvTokenHelp": {
+  "message": "Sunucuyu kurarken belirlediğin <code>RAF_API_TOKEN</code>. Şifre gibidir ve yalnızca senin sunucuna gönderilir. İpucu: eklentiyi sunucundaki <code>/extension.zip</code> adresinden kurarsan iki alan da dolu gelir."
+ },
+ "srvGuide": {
+  "message": "Raf sunucusu nasıl kurulur?"
  }
 }

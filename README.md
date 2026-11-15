@@ -5,7 +5,7 @@
 <h1 align="center">Raf</h1>
 
 <p align="center">
-  <b>Your own self-hosted "read later" shelf — with a Chrome extension, video downloads and a Telegram bot.</b>
+  <b>A private "read later" shelf in your browser, plus test tools for developers. Add your own server for video downloads and a Telegram bot.</b>
 </p>
 
 <p align="center">
@@ -13,20 +13,34 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, find it on the shelf, fill a form with test data">
+  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, pick a Playwright locator, dark mode">
 </p>
 
-Raf (*"shelf"* in Turkish) saves the page you're looking at to **your own server** in one click: title, tags, a note, the page's readable text and a screenshot. You can find it again later, even if the original site goes away. It also downloads videos from almost anywhere and bundles the small tools developers and testers reach for every day.
+Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title, tags, a note, the page's readable text and a screenshot. You can find it again later, even if the original site goes away. It also bundles the small tools developers and testers reach for every day.
+
+## Two ways to use Raf
+
+| | **Just the extension** | **With your own Raf server** |
+|---|---|---|
+| Install | Chrome Web Store *(coming soon)* or *Load unpacked* | Docker, see [Run it](#run-it) |
+| Where your shelf lives | In your browser (export / import as JSON) | On your server, the same on every device |
+| Save, tags, notes, search, sessions | ✅ | ✅ |
+| Dev & test tools, dark mode | ✅ | ✅ |
+| Video & audio downloads | — | ✅ |
+| Telegram bot, web app / PWA for the phone | — | ✅ |
+| Account or sign-up | none | none, it's your server |
+
+**What are "Server URL" and "API token" in Settings?** You only need them if you run your own Raf server. The URL is where your server is reachable (e.g. `https://raf.example.com`). The token is the `RAF_API_TOKEN` you chose when setting up the server. It works like a password and is only ever sent to your server. Leave both empty and Raf keeps everything in your browser. If you install the extension from your server's `/extension.zip`, both are filled in for you.
 
 ## Screenshots
 
 <table>
   <tr>
-    <td align="center" width="50%"><img src="docs/screenshots/extension-en.png" alt="Chrome extension"><br><sub>Chrome extension: save and tools</sub></td>
-    <td align="center" width="50%"><img src="docs/screenshots/web-shelf.png" alt="Web app"><br><sub>Web app: your shelf with full-text search</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-1-save.png" alt="Save a page"><br><sub>Save any page in one click</sub></td>
+    <td align="center" width="50%"><img src="docs/store/screenshot-4-picker.png" alt="Locator picker"><br><sub>Playwright locator picker</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/screenshots/web-downloads.png" alt="Downloads page"><br><sub>Downloads: search, filters, play in the browser</sub></td>
+    <td align="center"><img src="docs/screenshots/web-shelf.png" alt="Web app"><br><sub>With a server: web app with full-text search</sub></td>
     <td align="center"><img src="docs/screenshots/mobile.png" alt="Mobile PWA"><br><sub>Installable PWA on the phone</sub></td>
   </tr>
 </table>
@@ -54,6 +68,14 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at to **your own server
 - Web UI and installable **PWA** (add to the iPhone home screen), in English and Turkish
 - Download queue powered by yt-dlp + ffmpeg; videos are converted to H.264 when needed so they play and save on iPhone
 - Downloads page with search, filters (status, type, platform, source, date) and sorting
+
+### YouTube downloads
+
+Video downloads run on your own Raf server (yt-dlp). The version you build from this repository, or download from your server's `/extension.zip`, downloads from YouTube too.
+
+The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow extensions that download from YouTube. To get YouTube downloads, [run your own Raf server](#run-it) and install the extension from it. It replaces the store version.
+
+Whatever the version, Raf never downloads from paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify…) or live streams. Download only what you're allowed to, for personal use.
 
 ### Telegram bot
 - Send a link and it's saved. Add `#tags` and a note in the same message.
@@ -94,11 +116,12 @@ The server URL and token are already filled in.
 ```
 server/      FastAPI app (app/main.py, db.py, downloads.py, telegram.py, web.py) + Dockerfile
 extension/   Chrome MV3 extension (_locales/en, _locales/tr)
-docs/        screenshots and demo
+docs/        screenshots, demo, privacy policy, Chrome Web Store listing (docs/store)
+scripts/     build-store.sh: builds the Chrome Web Store package into dist/
 ```
 
 ## License
 
-[MIT](LICENSE) © Selim Yalınkılıç
+[MIT](LICENSE) © Selim Yalınkılıç · [Privacy policy](docs/PRIVACY.md)
 
 <p align="center"><sub>Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · QR codes: <a href="https://github.com/kazuhikoarase/qrcode-generator">qrcode-generator</a> (MIT) · Video engine: <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a></sub></p>

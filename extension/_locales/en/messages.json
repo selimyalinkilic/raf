@@ -206,9 +206,6 @@
  "optTitle": {
   "message": "Raf · Settings"
  },
- "optIntro": {
-  "message": "Leave these empty to keep your shelf in this browser (local mode). Connect your own Raf server for video downloads, Telegram and the web app. Downloaded the extension from your server? Then they're already filled in."
- },
  "lblServer": {
   "message": "Server URL"
  },
@@ -646,5 +643,23 @@
  },
  "shelfServerNote": {
   "message": "You're connected to a Raf server — this is the copy kept in this browser from local mode. Your server's shelf is in its web app."
+ },
+ "connLocalIntro": {
+  "message": "Raf works without any server: everything you save stays in this browser, and you can export it any time."
+ },
+ "srvSummary": {
+  "message": "I have my own Raf server (optional)"
+ },
+ "srvWhat": {
+  "message": "A Raf server is a small app you run yourself with Docker — on a home server, a NAS or a cheap VPS. Connecting one adds:<ul><li><b>video &amp; audio downloads</b></li><li>a <b>Telegram bot</b> (save links, daily digest)</li><li>a <b>web app</b> for your phone</li><li>the same shelf on every device</li></ul>No server? Skip this — nothing else needs it."
+ },
+ "srvUrlHelp": {
+  "message": "Where your server is reachable, e.g. <code>https://raf.example.com</code>."
+ },
+ "srvTokenHelp": {
+  "message": "The <code>RAF_API_TOKEN</code> you chose when you set up the server. It works like a password and is only ever sent to your own server. Tip: install the extension from your server's <code>/extension.zip</code> and both fields come pre-filled."
+ },
+ "srvGuide": {
+  "message": "How to set up a Raf server"
  }
 }
