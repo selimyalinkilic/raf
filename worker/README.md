@@ -26,6 +26,9 @@ curl "https://<your-worker-url>/setup?key=<WEBHOOK_SECRET>"   # points the bot's
 
 Then set `RAF_HUB` in `extension/tg.js` to the worker URL.
 
+Bot profile photo (`docs/store/telegram-bot-photo.png`, 640×640, logo centred for the circle crop):
+`curl -F 'photo={"type":"static","photo":"attach://p"}' -F p=@docs/store/telegram-bot-photo.png https://api.telegram.org/bot<TOKEN>/setMyProfilePhoto`
+
 ## Local test
 
 `npx wrangler dev --var TG_API:http://127.0.0.1:8195 --var BOT_TOKEN:… --var WEBHOOK_SECRET:… --var BOT_USERNAME:…`
