@@ -80,7 +80,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 
 ### YouTube'dan indirme
 
-Video indirme kendi Raf sunucunda (yt-dlp) çalışır. Bu repodan kurduğun ya da sunucundaki `/extension.zip`'ten indirdiğin sürüm YouTube'dan da indirir.
+Video indirme kendi Raf sunucunda (yt-dlp) çalışır. [GitHub Releases](#eklentiyi-kurma)'tan, bu repodan ya da sunucundaki `/extension.zip`'ten kurduğun sürüm, sunucuna bağlıyken YouTube'dan da indirir.
 
 **Chrome Web Mağazası sürümü indirmez**, çünkü mağaza kuralları YouTube'dan indiren eklentilere izin vermiyor. YouTube indirmeyi istiyorsan [kendi Raf sunucunu kur](#kurulum) ve eklentiyi oradan yükle. Mağaza sürümünün yerine geçer.
 

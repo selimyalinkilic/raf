@@ -80,7 +80,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 
 ### YouTube downloads
 
-Video downloads run on your own Raf server (yt-dlp). The version you build from this repository, or download from your server's `/extension.zip`, downloads from YouTube too.
+Video downloads run on your own Raf server (yt-dlp). The version from [GitHub Releases](#install-the-extension), from this repository, or from your server's `/extension.zip` downloads from YouTube too, once it's connected to your server.
 
 The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow extensions that download from YouTube. To get YouTube downloads, [run your own Raf server](#run-it) and install the extension from it. It replaces the store version.
 
