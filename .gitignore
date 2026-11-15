@@ -9,3 +9,4 @@ cookies.txt
 node_modules/
 .DS_Store
 dist/
+scripts/.private-patterns

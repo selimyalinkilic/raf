@@ -26,9 +26,18 @@ for cs in m.get("content_scripts", []):
     cs["matches"] = [x for x in cs["matches"] if not yt(x)]
 json.dump(m, open(p, "w"), indent=2, ensure_ascii=False)
 PY
-# nothing personal / server-specific may ship
-if grep -rniE "tailnet|ts\.net|gmail\.com" "$OUT" --include=*.js --include=*.json --include=*.html --include=*.css; then
-  echo "✗ personal or server-specific data found above — not packaging" >&2; exit 1
+# Nothing personal may ship:
+# 1) the server URL / token must be empty (the Raf server injects them only into its own /extension.zip)
+python3 - "$OUT/config.js" <<'PY'
+import re, sys
+s = open(sys.argv[1]).read()
+m = re.search(r"RAF_DEFAULTS\s*=\s*\{([^}]*)\}", s)
+if not m or re.search(r"""(server|token)["']?\s*:\s*["'][^"']+["']""", m.group(1)):
+    sys.exit("✗ config.js has a server URL or token — not packaging")
+PY
+# 2) optional extra patterns kept outside git (scripts/.private-patterns, one regex per line)
+if [ -f scripts/.private-patterns ] && grep -rniE -f scripts/.private-patterns "$OUT" --include=*.js --include=*.json --include=*.html --include=*.css; then
+  echo "✗ personal data found above — not packaging" >&2; exit 1
 fi
 VER=$(python3 -c "import json;print(json.load(open('$OUT/manifest.json'))['version'])")
 rm -f "dist/raf-store-$VER.zip"
