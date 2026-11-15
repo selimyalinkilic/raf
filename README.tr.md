@@ -13,7 +13,8 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, Playwright locator seç, koyu tema">
+  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, Playwright locator seç, koyu tema"><br>
+  <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Demo videosunu YouTube'da izle</a></sub>
 </p>
 
 Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfanın okunabilir metni ve ekran görüntüsü. Böylece site kapansa bile içeriği bulursun. Geliştiricilerin ve test uzmanlarının her gün kullandığı küçük araçları da bir arada sunar.

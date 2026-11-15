@@ -13,7 +13,8 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, pick a Playwright locator, dark mode">
+  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, pick a Playwright locator, dark mode"><br>
+  <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Watch the demo video on YouTube</a></sub>
 </p>
 
 Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title, tags, a note, the page's readable text and a screenshot. You can find it again later, even if the original site goes away. It also bundles the small tools developers and testers reach for every day.

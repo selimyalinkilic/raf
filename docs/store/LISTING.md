@@ -11,7 +11,7 @@ Package: `./scripts/build-store.sh` → `dist/raf-store-<version>.zip`.
 | Screenshots 1280×800 (in this order) | `screenshot-1-save.png`, `screenshot-2-search.png`, `screenshot-3-fill.png`, `screenshot-4-picker.png`, `screenshot-5-dark.png` |
 | Small promo tile 440×280 | `promo-small-440x280.png` |
 | Marquee promo tile 1400×560 | `promo-marquee-1400x560.png` |
-| Promo video | Upload `raf-demo.mp4` to YouTube (unlisted is fine), paste the link |
+| Promo video (YouTube) | https://youtu.be/_U53kZwrMeg (source: `raf-demo.mp4`) |
 
 - **Category:** Productivity. Developer Tools also fits, but Productivity is the main use.
 - **Language:** English (default) + Turkish. The extension already ships `_locales/en` and `_locales/tr`, so the store shows the right name and summary.
@@ -140,5 +140,5 @@ Tick all three certifications (no selling, no unrelated use, no creditworthiness
 - [ ] One-time $5 developer registration in your Google account
 - [ ] `./scripts/build-store.sh` and upload `dist/raf-store-<version>.zip`
 - [ ] Upload the assets listed above, paste the texts
-- [ ] Upload `raf-demo.mp4` to YouTube and paste the link
+- [x] Promo video on YouTube: https://youtu.be/_U53kZwrMeg
 - [ ] Privacy policy URL works (the repo must be public)
