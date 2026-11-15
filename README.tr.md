@@ -5,7 +5,7 @@
 <h1 align="center">Raf</h1>
 
 <p align="center">
-  <b>Tarayıcında özel bir "sonra oku" rafı ve geliştiriciler için test araçları. Kendi sunucunu eklersen video indirme ve Telegram botu da gelir.</b>
+  <b>Tarayıcında özel bir "sonra oku" rafı: sayfaları kaydet, video ve görsel indir, Telegram'a gönder. Kendi sunucunu eklersen YouTube indirme ve web uygulaması da gelir.</b>
 </p>
 
 <p align="center">
@@ -18,20 +18,21 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, Playwright locator seç, koyu tema"><br>
+  <img src="docs/demo.gif" width="760" alt="Raf demo: sayfayı kaydet, rafta ara, formu test verisiyle doldur, koyu tema"><br>
   <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Demo videosunu YouTube'da izle</a></sub>
 </p>
 
-Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfanın okunabilir metni ve ekran görüntüsü. Böylece site kapansa bile içeriği bulursun. Geliştiricilerin ve test uzmanlarının her gün kullandığı küçük araçları da bir arada sunar.
+Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfanın okunabilir metni ve ekran görüntüsü. Böylece site kapansa bile içeriği bulursun. Instagram, X, TikTok ve diğer sitelerden video ve fotoğraf da kaydeder, formları gerçekçi test verisiyle doldurur.
 
 ## Raf'ı kullanmanın iki yolu
 
 | | **Sadece eklenti** | **Kendi Raf sunucunla** |
 |---|---|---|
-| Kurulum | [Zip'i indir](#eklentiyi-kurma) *(Chrome Web Mağazası yakında)* | Docker, bkz. [Kurulum](#kurulum) |
+| Kurulum | [Zip'i indir](#eklentiyi-kurma) | Docker, bkz. [Kurulum](#kurulum) |
 | Rafın nerede | Tarayıcında (JSON olarak dışa/içe aktarılır) | Sunucunda, her cihazda aynı |
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
-| Geliştirici/test araçları, temalar ve koyu mod | ✅ | ✅ |
+| Görsel indirme, kısa link, form doldurma | ✅ | ✅ |
+| 10 tema ve koyu mod | ✅ | ✅ |
 | Video indirme | Instagram, TikTok ve düz video dosyası oynatan siteler | YouTube, X, Reddit dahil 1000'den fazla site; kalite seçimi ve sadece ses |
 | Telegram: sayfa gönder, telefondan link kaydet | ✅ tek dokunuşla (ya da kendi botunla), Chrome açıkken | ✅ her zaman açık, ayrıca video indirme ve günlük özet |
 | Telefon için web uygulaması | — | ✅ |
@@ -75,7 +76,7 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 - **Kısa link:** açık sayfayı (ya da herhangi bir linki) kısa bir is.gd linkine çevirir, panoya kopyalar. Link sadece düğmeye bastığında gönderilir.
 - **Telegram ve telefon:** sayfayı telefonda açmak için QR kod ya da not ve etiketle kendi Telegram botuna gönderme. Kayıtlı sayfaları raftan da gönderebilirsin.
 - **E-posta:** başlık, link, etiket ve notla hazır bir taslağı posta uygulamanda, Gmail'de ya da Outlook'ta aç, sadece Gönder'e bas. Varsayılan alıcıyı Ayarlar'dan seçebilirsin.
-- **9 tema**, her biri sadece renkte değil görünümde de farklı: Pastel (varsayılan) ve Minimal açık & koyu, Grafit (kareli kâğıtta kurşun kalem), Cyberpunk, Okyanus (buzlu cam), Orman, Gün batımı, Kâğıt ve Pop. Araç çubuğundaki ikon da temanın renklerini alır.
+- **10 tema**, her biri sadece renkte değil görünümde de farklı: Pastel (varsayılan) ve Minimal açık & koyu, Grafit (kareli kâğıtta kurşun kalem), Cyberpunk, Neon Beach (80'ler gün batımı), Okyanus (buzlu cam), Orman, Gün batımı, Kâğıt ve Pop. Araç çubuğundaki ikon ve video/fotoğrafların üstündeki Raf düğmesi de temanın renklerini alır.
 - **Kurulumsuz telefona:** *Chrome yer imlerine de ekle*'yi aç, kaydettiklerin Yer imleri › Raf klasörüne düşer; Chrome senkronu telefonuna getirir.
 - **Geliştiriciler ve test uzmanları için:**
   - **Test verisi (TR):** ad, e-posta, telefon, adres; doğrulamadan geçen TCKN / VKN / IBAN
@@ -93,8 +94,6 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
 ### YouTube'dan indirme
 
 Sunucu olmadan Raf yalnızca sayfanın zaten tek parça dosya olarak oynattığı videoları kaydeder (Instagram, TikTok, düz MP4). YouTube görüntüyü ve sesi parça parça gönderdiği için YouTube indirme kendi Raf sunucunda (yt-dlp) çalışır. [GitHub Releases](#eklentiyi-kurma)'tan, bu repodan ya da sunucundaki `/extension.zip`'ten kurduğun sürüm, sunucuna bağlıyken YouTube'dan da indirir.
-
-**Chrome Web Mağazası sürümü indirmez**, çünkü mağaza kuralları YouTube'dan indiren eklentilere izin vermiyor. YouTube indirmeyi istiyorsan [kendi Raf sunucunu kur](#kurulum) ve eklentiyi oradan yükle. Mağaza sürümünün yerine geçer.
 
 Hangi sürüm olursa olsun Raf ücretli/DRM'li servislerden (Netflix, Disney+, Prime Video, Spotify…) ve canlı yayınlardan asla indirmez. Yalnızca indirmene izin verilen içerikleri, kişisel kullanım için indir.
 
@@ -150,8 +149,10 @@ Sunucu adresi ve anahtar hazır gelir.
 ```
 server/      FastAPI uygulaması (app/main.py, db.py, downloads.py, telegram.py, web.py) + Dockerfile
 extension/   Chrome MV3 eklentisi (_locales/en, _locales/tr)
-docs/        ekran görüntüleri, demo, gizlilik politikası, Chrome Web Mağazası metinleri (docs/store)
-scripts/     build-store.sh: Chrome Web Mağazası paketini dist/ altına üretir
+docs/        ekran görüntüleri, demo, gizlilik politikası
+scripts/     build-release.sh: GitHub release zip'ini dist/ altına üretir (etiket push'unda Actions çalıştırır)
+site/        tanıtım sitesi (GitHub Pages)
+worker/      paylaşılan Telegram botu (Cloudflare Worker + D1)
 ```
 
 ## Lisans

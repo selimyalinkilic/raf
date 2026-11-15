@@ -5,7 +5,7 @@
 <h1 align="center">Raf</h1>
 
 <p align="center">
-  <b>A private "read later" shelf in your browser, plus test tools for developers. Add your own server for video downloads and a Telegram bot.</b>
+  <b>A private "read later" shelf in your browser: save pages, download videos and images, send them to Telegram. Add your own server for YouTube downloads and a web app.</b>
 </p>
 
 <p align="center">
@@ -18,20 +18,21 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, pick a Playwright locator, dark mode"><br>
+  <img src="docs/demo.gif" width="760" alt="Raf demo: save a page, search the shelf, fill a form with test data, dark mode"><br>
   <sub>▶️ <a href="https://youtu.be/_U53kZwrMeg">Watch the demo video on YouTube</a></sub>
 </p>
 
-Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title, tags, a note, the page's readable text and a screenshot. You can find it again later, even if the original site goes away. It also bundles the small tools developers and testers reach for every day.
+Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title, tags, a note, the page's readable text and a screenshot. You can find it again later, even if the original site goes away. It also saves videos and photos from Instagram, X, TikTok and more, and fills forms with realistic test data.
 
 ## Two ways to use Raf
 
 | | **Just the extension** | **With your own Raf server** |
 |---|---|---|
-| Install | [Download the zip](#install-the-extension) *(Chrome Web Store coming soon)* | Docker, see [Run it](#run-it) |
+| Install | [Download the zip](#install-the-extension) | Docker, see [Run it](#run-it) |
 | Where your shelf lives | In your browser (export / import as JSON) | On your server, the same on every device |
 | Save, tags, notes, search, sessions | ✅ | ✅ |
-| Dev & test tools, themes & dark mode | ✅ | ✅ |
+| Image downloads, short links, form filler | ✅ | ✅ |
+| 10 themes & dark mode | ✅ | ✅ |
 | Video downloads | Instagram, TikTok and sites that play a plain video file | 1000+ sites incl. YouTube, X, Reddit, with quality choice and audio-only |
 | Telegram: send pages, save links from your phone | ✅ one tap (or your own bot), while Chrome is open | ✅ always on, plus video downloads and a daily digest |
 | Web app / PWA for the phone | — | ✅ |
@@ -75,7 +76,7 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 - **Short link:** turn the current page (or any link) into a short is.gd link, copied to the clipboard. The link is only sent when you press the button.
 - **Telegram & phone:** a QR code to open the page on your phone, or send it to your own Telegram bot with a note and tags. Saved pages can be sent from your shelf too.
 - **Email:** open a ready draft (title, link, tags, note) in your mail app, Gmail or Outlook, then just press Send. Set a default recipient in Settings.
-- **9 themes**, each with its own look, not just colours: Pastel (default) and Minimal in light & dark, Graphite (pencil sketch on grid paper), Cyberpunk, Ocean (frosted glass), Forest, Sunset, Paper and Pop. The toolbar icon takes on the theme’s colours too.
+- **10 themes**, each with its own look, not just colours: Pastel (default) and Minimal in light & dark, Graphite (pencil sketch on grid paper), Cyberpunk, Neon Beach (80s sunset), Ocean (frosted glass), Forest, Sunset, Paper and Pop. The toolbar icon and the Raf button on videos and photos take on the theme’s colours too.
 - **To your phone with zero setup:** turn on *Also add to Chrome bookmarks* and saved pages land in Bookmarks › Raf, which Chrome sync brings to your phone.
 - **For developers & testers:**
   - **Test data (TR):** names, emails, phone numbers, addresses, valid national ID / tax numbers / IBANs
@@ -93,8 +94,6 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
 ### YouTube downloads
 
 Without a server Raf only saves videos the page already plays as one complete file (Instagram, TikTok, plain MP4). YouTube streams video and audio in pieces, so YouTube downloads run on your own Raf server (yt-dlp). The version from [GitHub Releases](#install-the-extension), from this repository, or from your server's `/extension.zip` downloads from YouTube too, once it's connected to your server.
-
-The **Chrome Web Store version doesn't**, because Web Store policy doesn't allow extensions that download from YouTube. To get YouTube downloads, [run your own Raf server](#run-it) and install the extension from it. It replaces the store version.
 
 Whatever the version, Raf never downloads from paid / DRM-protected services (Netflix, Disney+, Prime Video, Spotify…) or live streams. Download only what you're allowed to, for personal use.
 
@@ -150,8 +149,10 @@ The server URL and token are already filled in.
 ```
 server/      FastAPI app (app/main.py, db.py, downloads.py, telegram.py, web.py) + Dockerfile
 extension/   Chrome MV3 extension (_locales/en, _locales/tr)
-docs/        screenshots, demo, privacy policy, Chrome Web Store listing (docs/store)
-scripts/     build-store.sh: builds the Chrome Web Store package into dist/
+docs/        screenshots, demo, privacy policy
+scripts/     build-release.sh: builds the GitHub release zip into dist/ (Actions runs it on every tag push)
+site/        landing page (GitHub Pages)
+worker/      shared Telegram bot (Cloudflare Worker + D1)
 ```
 
 ## License
