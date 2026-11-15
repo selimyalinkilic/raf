@@ -23,13 +23,21 @@ Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfan�
 
 | | **Sadece eklenti** | **Kendi Raf sunucunla** |
 |---|---|---|
-| Kurulum | Chrome Web Mağazası *(yakında)* ya da *Paketlenmemiş öğe yükle* | Docker, bkz. [Kurulum](#kurulum) |
+| Kurulum | [Zip'i indir](#eklentiyi-kurma) *(Chrome Web Mağazası yakında)* | Docker, bkz. [Kurulum](#kurulum) |
 | Rafın nerede | Tarayıcında (JSON olarak dışa/içe aktarılır) | Sunucunda, her cihazda aynı |
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
 | Geliştirici/test araçları, koyu tema | ✅ | ✅ |
 | Video ve ses indirme | — | ✅ |
 | Telegram botu, telefon için web uygulaması | — | ✅ |
 | Hesap / üyelik | yok | yok, sunucu senin |
+
+### Eklentiyi kurma
+
+1. Son sürümden **[raf-extension.zip](https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip)** dosyasını indir ve bir klasöre çıkar.
+2. `chrome://extensions` sayfasını aç, sağ üstten **Geliştirici modu**'nu aç.
+3. **Paketlenmemiş öğe yükle**'ye tıkla ve çıkardığın klasörü seç. Raf'ı yapboz simgesinden sabitlersen hep bir tık uzağında olur.
+
+Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü aynı klasörün üzerine çıkar ve `chrome://extensions`'taki Raf kartında ↻'ye bas. Chrome, Edge, Brave ve diğer Chromium tarayıcılarda çalışır.
 
 **Ayarlar'daki "Sunucu adresi" ve "API anahtarı" ne?** Sadece kendi Raf sunucunu çalıştırıyorsan gerekir. Adres, sunucuna ulaşılan yerdir (ör. `https://raf.example.com`). Anahtar, sunucuyu kurarken belirlediğin `RAF_API_TOKEN` değeridir. Şifre gibidir ve yalnızca senin sunucuna gönderilir. İkisini de boş bırakırsan Raf her şeyi tarayıcında tutar. Eklentiyi sunucundaki `/extension.zip` adresinden kurarsan ikisi de dolu gelir.
 

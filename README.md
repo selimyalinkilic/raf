@@ -23,13 +23,21 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title,
 
 | | **Just the extension** | **With your own Raf server** |
 |---|---|---|
-| Install | Chrome Web Store *(coming soon)* or *Load unpacked* | Docker, see [Run it](#run-it) |
+| Install | [Download the zip](#install-the-extension) *(Chrome Web Store coming soon)* | Docker, see [Run it](#run-it) |
 | Where your shelf lives | In your browser (export / import as JSON) | On your server, the same on every device |
 | Save, tags, notes, search, sessions | ✅ | ✅ |
 | Dev & test tools, dark mode | ✅ | ✅ |
 | Video & audio downloads | — | ✅ |
 | Telegram bot, web app / PWA for the phone | — | ✅ |
 | Account or sign-up | none | none, it's your server |
+
+### Install the extension
+
+1. Download **[raf-extension.zip](https://github.com/selimyalinkilic/raf/releases/latest/download/raf-extension.zip)** from the latest release and unzip it.
+2. Open `chrome://extensions` and turn on **Developer mode** (top right).
+3. Click **Load unpacked** and pick the unzipped folder. Pin Raf from the puzzle icon so it's always one click away.
+
+It starts in local mode, so there's nothing to set up. To update, unzip the new release over the same folder and press ↻ on the Raf card in `chrome://extensions`. Works in Chrome, Edge, Brave and other Chromium browsers.
 
 **What are "Server URL" and "API token" in Settings?** You only need them if you run your own Raf server. The URL is where your server is reachable (e.g. `https://raf.example.com`). The token is the `RAF_API_TOKEN` you chose when setting up the server. It works like a password and is only ever sent to your server. Leave both empty and Raf keeps everything in your browser. If you install the extension from your server's `/extension.zip`, both are filled in for you.
 
