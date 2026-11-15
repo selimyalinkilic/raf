@@ -31,7 +31,7 @@ Raf, baktığın sayfayı tek tıkla kaydeder: başlık, etiketler, not, sayfan�
 | Kurulum | [Zip'i indir](#eklentiyi-kurma) *(Chrome Web Mağazası yakında)* | Docker, bkz. [Kurulum](#kurulum) |
 | Rafın nerede | Tarayıcında (JSON olarak dışa/içe aktarılır) | Sunucunda, her cihazda aynı |
 | Kaydet, etiket, not, arama, oturumlar | ✅ | ✅ |
-| Geliştirici/test araçları, koyu tema | ✅ | ✅ |
+| Geliştirici/test araçları, temalar ve koyu mod | ✅ | ✅ |
 | Video indirme | Instagram, TikTok ve düz video dosyası oynatan siteler | YouTube, X, Reddit dahil 1000'den fazla site; kalite seçimi ve sadece ses |
 | Telegram: sayfa gönder, telefondan link kaydet | ✅ kendi botunla, Chrome açıkken | ✅ her zaman açık, ayrıca video indirme ve günlük özet |
 | Telefon için web uygulaması | — | ✅ |
@@ -71,6 +71,8 @@ Yerel modda başlar, kurulacak bir şey yok. Güncellemek için yeni sürümü a
   - dosyalar otomatik olarak *İndirilenler/Raf* klasörüne iner
   - giriş isteyen siteler (Instagram…) tarayıcı oturumunla çalışır; çerezler sadece o indirme için gönderilir, saklanmaz
 - **Telegram ve telefon:** sayfayı telefonda açmak için QR kod ya da not ve etiketle kendi Telegram botuna gönderme. Kayıtlı sayfaları raftan da gönderebilirsin.
+- **E-posta:** başlık, link, etiket ve notla hazır bir taslağı posta uygulamanda, Gmail'de ya da Outlook'ta aç, sadece Gönder'e bas. Varsayılan alıcıyı Ayarlar'dan seçebilirsin.
+- **Temalar:** Pastel (varsayılan), Minimal açık/koyu, Cyberpunk ve Terminal; ayrıca otomatik koyu mod.
 - **Geliştiriciler ve test uzmanları için:**
   - **Locator seçici:** bir öğeye tıkla, Playwright locator'ını al (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test verisi (TR):** ad, e-posta, telefon, adres; doğrulamadan geçen TCKN / VKN / IBAN

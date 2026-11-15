@@ -31,7 +31,7 @@ Raf (*"shelf"* in Turkish) saves the page you're looking at in one click: title,
 | Install | [Download the zip](#install-the-extension) *(Chrome Web Store coming soon)* | Docker, see [Run it](#run-it) |
 | Where your shelf lives | In your browser (export / import as JSON) | On your server, the same on every device |
 | Save, tags, notes, search, sessions | ✅ | ✅ |
-| Dev & test tools, dark mode | ✅ | ✅ |
+| Dev & test tools, themes & dark mode | ✅ | ✅ |
 | Video downloads | Instagram, TikTok and sites that play a plain video file | 1000+ sites incl. YouTube, X, Reddit, with quality choice and audio-only |
 | Telegram: send pages, save links from your phone | ✅ with your own bot, while Chrome is open | ✅ always on, plus video downloads and a daily digest |
 | Web app / PWA for the phone | — | ✅ |
@@ -71,6 +71,8 @@ It starts in local mode, so there's nothing to set up. To update, unzip the new 
   - files land in *Downloads/Raf* automatically
   - sites that need a login (Instagram…) work with your browser session; cookies are sent for that one job only and never stored
 - **Telegram & phone:** a QR code to open the page on your phone, or send it to your own Telegram bot with a note and tags. Saved pages can be sent from your shelf too.
+- **Email:** open a ready draft (title, link, tags, note) in your mail app, Gmail or Outlook, then just press Send. Set a default recipient in Settings.
+- **Themes:** Pastel (default), Minimal light/dark, Cyberpunk and Terminal, plus automatic dark mode.
 - **For developers & testers:**
   - **Locator picker:** click an element and get a Playwright locator (`getByRole`, `getByTestId`…), <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>
   - **Test data (TR):** names, emails, phone numbers, addresses, valid national ID / tax numbers / IBANs
