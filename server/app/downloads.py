@@ -1,5 +1,5 @@
 """Video/ses indirme kuyruğu (yt-dlp). Tek işçi: sırayla indirir, ilerlemeyi veritabanına yazar.
-Dosyalar VIDEO_DIR'e (/videos → sunucuda /srv/media/Videos) kaydedilir.
+Dosyalar VIDEO_DIR'e (varsayılan /videos) kaydedilir.
 Instagram / X gibi giriş isteyen siteler için /data/cookies.txt (Netscape biçimi) varsa kullanılır."""
 import os
 import threading
