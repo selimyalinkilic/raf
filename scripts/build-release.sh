@@ -11,6 +11,14 @@ cat > "$OUT/config.js" <<'JS'
 // GitHub release — no server configured: Raf starts in local mode. Add your server under Settings → Connection.
 self.RAF_DEFAULTS = { server: "", token: "" };
 JS
+# *.ts.net is only for servers served by Tailscale; others get asked for their server's address in Settings
+python3 - "$OUT/manifest.json" <<'PY'
+import json, sys, collections
+p = sys.argv[1]
+m = json.load(open(p), object_pairs_hook=collections.OrderedDict)
+m["host_permissions"] = [x for x in m["host_permissions"] if "ts.net" not in x]
+json.dump(m, open(p, "w"), indent=2, ensure_ascii=False)
+PY
 if grep -rniE "tailnet|gmail\.com" "$OUT" --include=*.js --include=*.json --include=*.html --include=*.css; then
   echo "✗ personal or server-specific data found above — not packaging" >&2; exit 1
 fi
