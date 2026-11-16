@@ -37,6 +37,8 @@ async function reinjectOverlays() {
   return tabs.length;
 }
 chrome.runtime.onInstalled.addListener(() => { reinjectOverlays(); });
+// Refresh the own bot's command menu after an update (older versions never set it)
+chrome.runtime.onInstalled.addListener(async () => { const tg = await rafTgGet(); if (tg.token) rafTgSetCommands(tg.token).catch(() => {}); });
 chrome.runtime.onStartup.addListener(buildMenus);
 chrome.storage.onChanged.addListener(async (ch, area) => {
   if (area !== "sync") return;

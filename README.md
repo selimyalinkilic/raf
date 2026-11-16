@@ -122,7 +122,7 @@ Raf talks to Telegram directly from your browser. The token stays on that comput
 services:
   raf:
     build: ./server
-    env_file: [raf.env]            # RAF_API_TOKEN=…, optional RAF_TELEGRAM_TOKEN / RAF_TELEGRAM_CHAT_ID
+    env_file: [raf.env]            # RAF_API_TOKEN=…, optional RAF_TELEGRAM_TOKEN / RAF_TELEGRAM_CHAT_ID / RAF_BOT_LANG (en|tr|auto)
     environment:
       RAF_PUBLIC_URL: https://your-server:8454
       RAF_DIGEST_HOUR: "21"

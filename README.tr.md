@@ -122,7 +122,7 @@ Raf, Telegram'la doğrudan tarayıcından konuşur. Token yalnızca o bilgisayar
 services:
   raf:
     build: ./server
-    env_file: [raf.env]            # RAF_API_TOKEN=…, isteğe bağlı RAF_TELEGRAM_TOKEN / RAF_TELEGRAM_CHAT_ID
+    env_file: [raf.env]            # RAF_API_TOKEN=…, isteğe bağlı RAF_TELEGRAM_TOKEN / RAF_TELEGRAM_CHAT_ID / RAF_BOT_LANG (en|tr|auto)
     environment:
       RAF_PUBLIC_URL: https://sunucun:8454
       RAF_DIGEST_HOUR: "21"

@@ -21,6 +21,58 @@ DIGEST_HOUR = int(os.environ.get("RAF_DIGEST_HOUR", "21"))
 WEB_URL = os.environ.get("RAF_PUBLIC_URL", "")
 TZ = dt.timezone(dt.timedelta(hours=3))
 URL_RE = re.compile(r"https?://[^\s<>\"]+")
+# Bot language: "tr", "en", or "auto" (follow the Telegram app language of the last message; default English).
+# Commands work in both languages whatever this is set to.
+BOT_LANG = os.environ.get("RAF_BOT_LANG", "auto").lower()
+_last_lang = "en"
+
+S = {
+    "en": {
+        "dl_failed": "⚠️ Couldn't download: {url}\n<code>{err}</code>",
+        "dl_link": "✅ <b>{cap}</b>\n{mb} MB — too big for Telegram, here's a link:\n{link}",
+        "queued": "⏳ Queued ({kind}). I'll send it when it's ready.", "audio": "🎵 audio", "video": "🎬 video",
+        "more": "… and {n} more", "today": "📚 <b>{n} pages today</b>\n", "none": "Nothing yet.",
+        "search_how": "Usage: <code>/search word</code>",
+        "found": "🔎 <b>{q}</b> — {n} results\n", "not_found": "Nothing found.",
+        "dl_how": "Usage: <code>/download link</code> or <code>/audio link</code>",
+        "last": "🕘 <b>Latest saves</b>\n",
+        "help": "📚 <b>Raf</b>\nSend me a link and I'll put it on your shelf.\n"
+                "Add #tags and a note next to the link.\n\n"
+                "/today — saved today\n/last — latest 10\n/search word — search\n"
+                "/download link — download the video · /audio link — audio only (mp3)\n"
+                "Add #download next to a link to save and download it.",
+        "send_link": "Send me a link to save 🙂", "total_today": "Today in total: {n}",
+        "digest": "🌙 <b>Daily digest</b> — you saved <b>{n}</b> pages today", "error": "⚠️ Error: <code>{e}</code>",
+    },
+    "tr": {
+        "dl_failed": "⚠️ İndirilemedi: {url}\n<code>{err}</code>",
+        "dl_link": "✅ <b>{cap}</b>\n{mb} MB — Telegram sınırını aştığı için link:\n{link}",
+        "queued": "⏳ Sıraya alındı ({kind}). Hazır olunca gönderirim.", "audio": "🎵 ses", "video": "🎬 video",
+        "more": "… ve {n} tane daha", "today": "📚 <b>Bugün {n} sayfa</b>\n", "none": "Henüz yok.",
+        "search_how": "Kullanım: <code>/ara kelime</code>",
+        "found": "🔎 <b>{q}</b> — {n} sonuç\n", "not_found": "Bulunamadı.",
+        "dl_how": "Kullanım: <code>/indir link</code> veya <code>/ses link</code>",
+        "last": "🕘 <b>Son kaydedilenler</b>\n",
+        "help": "📚 <b>Raf</b>\nBana bir link gönder, rafa kaldırayım.\n"
+                "Linkin yanına #etiket ve not yazabilirsin.\n\n"
+                "/bugun — bugün kaydettiklerin\n/son — son 10 kayıt\n/ara kelime — ara\n"
+                "/indir link — videoyu indir · /ses link — sadece ses (mp3)\n"
+                "Linkin yanına #indir yazarsan hem kaydeder hem indiririm.",
+        "send_link": "Kaydetmem için bir link gönder 🙂", "total_today": "Bugün toplam: {n}",
+        "digest": "🌙 <b>Günün özeti</b> — bugün <b>{n}</b> sayfa kaydettin", "error": "⚠️ Hata: <code>{e}</code>",
+    },
+}
+CMD_TODAY, CMD_LAST, CMD_SEARCH = {"today", "bugun", "bugün"}, {"last", "son"}, {"search", "ara"}
+CMD_VIDEO, CMD_AUDIO = {"download", "video", "indir"}, {"audio", "mp3", "ses"}
+CMD_HELP = {"help", "start", "yardim", "yardım"}
+
+
+def lang():
+    return BOT_LANG if BOT_LANG in S else _last_lang
+
+
+def _(key, **kw):
+    return S[lang()][key].format(**kw)
 
 
 def api(method, **params):
@@ -51,7 +103,7 @@ def on_download_finished(d):
     if d["source"] != "telegram" or not TOKEN:
         return
     if d["status"] == "error":
-        send(OWNER, f"⚠️ İndirilemedi: {html.escape(d['url'])}\n<code>{html.escape(d['error'][:300])}</code>"); return
+        send(OWNER, _("dl_failed", url=html.escape(d['url']), err=html.escape(d['error'][:300]))); return
     path = downloads.path_of(d)
     cap = html.escape(d["title"][:200])
     link = f"{WEB_URL}/files/{d['id']}"
@@ -62,14 +114,14 @@ def on_download_finished(d):
             return
         except Exception:
             traceback.print_exc()
-    send(OWNER, f"✅ <b>{cap}</b>\n{d['size'] / 1048576:.0f} MB — Telegram sınırını aştığı için link:\n{link}")
+    send(OWNER, _("dl_link", cap=cap, mb=f"{d['size'] / 1048576:.0f}", link=link))
 
 
 def queue_download(chat, url, kind):
     d = downloads.enqueue(url, kind, "telegram")
     if d["status"] == "error":  # refused up front (e.g. Netflix) — on_download_finished already explained why
         return d
-    send(chat, f"⏳ Sıraya alındı ({'🎵 ses' if kind == 'audio' else '🎬 video'}). Hazır olunca gönderirim.")
+    send(chat, _("queued", kind=_("audio" if kind == "audio" else "video")))
     return d
 
 
@@ -89,7 +141,7 @@ def fmt_items(items, limit=15):
         tags = " ".join("#" + html.escape(t) for t in it["tags"][:4])
         lines.append(f"• <a href=\"{html.escape(it['url'], quote=True)}\">{title}</a> {tags}".rstrip())
     if len(items) > limit:
-        lines.append(f"… ve {len(items) - limit} tane daha")
+        lines.append(_("more", n=len(items) - limit))
     return "\n".join(lines)
 
 
@@ -107,51 +159,49 @@ def fetch_title(url):
 
 
 def handle(msg):
+    global _last_lang
+    _last_lang = "tr" if (msg.get("from", {}).get("language_code") or "").lower().startswith("tr") else "en"
     text = (msg.get("text") or msg.get("caption") or "").strip()
     chat = msg["chat"]["id"]
     if text.startswith("/"):
-        cmd, _, arg = text[1:].partition(" ")
+        cmd, _sep, arg = text[1:].partition(" ")
         cmd = cmd.split("@")[0].lower()
-        if cmd in ("bugun", "bugün"):
+        if cmd in CMD_TODAY:
             items = db.search(since=day_start(), limit=100)
-            send(chat, f"📚 <b>Bugün {len(items)} sayfa</b>\n" + (fmt_items(items) or "Henüz yok."))
-        elif cmd == "ara":
+            send(chat, _("today", n=len(items)) + (fmt_items(items) or _("none")))
+        elif cmd in CMD_SEARCH:
             if not arg.strip():
-                send(chat, "Kullanım: <code>/ara kelime</code>"); return
+                send(chat, _("search_how")); return
             items = db.search(q=arg, limit=15)
-            send(chat, f"🔎 <b>{html.escape(arg)}</b> — {len(items)} sonuç\n" + (fmt_items(items) or "Bulunamadı."))
-        elif cmd in ("indir", "video", "ses", "mp3"):
+            send(chat, _("found", q=html.escape(arg), n=len(items)) + (fmt_items(items) or _("not_found")))
+        elif cmd in CMD_VIDEO | CMD_AUDIO:
             urls = URL_RE.findall(arg)
             if not urls:
-                send(chat, "Kullanım: <code>/indir link</code> veya <code>/ses link</code>"); return
+                send(chat, _("dl_how")); return
             for u in urls[:5]:
-                queue_download(chat, u, "audio" if cmd in ("ses", "mp3") else "video")
-        elif cmd == "son":
-            send(chat, "🕘 <b>Son kaydedilenler</b>\n" + (fmt_items(db.search(limit=10)) or "Henüz yok."))
+                queue_download(chat, u, "audio" if cmd in CMD_AUDIO else "video")
+        elif cmd in CMD_LAST:
+            send(chat, _("last") + (fmt_items(db.search(limit=10)) or _("none")))
         else:
-            send(chat, "📚 <b>Raf</b>\nBana bir link gönder, rafa kaldırayım.\n"
-                       "Linkin yanına #etiket ve not yazabilirsin.\n\n"
-                       "/bugun — bugün kaydettiklerin\n/son — son 10 kayıt\n/ara kelime — ara\n"
-                       "/indir link — videoyu indir · /ses link — sadece ses (mp3)\n"
-                       "Linkin yanına #indir yazarsan hem kaydeder hem indiririm."
-                       + (f"\n\n🌐 {WEB_URL}" if WEB_URL else ""))
+            send(chat, _("help") + (f"\n\n🌐 {WEB_URL}" if WEB_URL else ""))
         return
     urls = URL_RE.findall(text)
     if not urls:
-        send(chat, "Kaydetmem için bir link gönder 🙂"); return
+        send(chat, _("send_link")); return
     tags = re.findall(r"#([\wçğıöşüÇĞİÖŞÜ-]+)", text)
-    want_dl = {t.lower() for t in tags} & {"indir", "video", "ses", "mp3"}
-    tags = [t for t in tags if t.lower() not in ("indir", "video", "ses", "mp3")]
+    dl_tags = CMD_VIDEO | CMD_AUDIO
+    want_dl = {t.lower() for t in tags} & dl_tags
+    tags = [t for t in tags if t.lower() not in dl_tags]
     note = URL_RE.sub("", re.sub(r"#[\wçğıöşüÇĞİÖŞÜ-]+", "", text)).strip()
     saved = []
     for u in urls[:10]:
         title, desc = fetch_title(u)
         item, new = db.save(u, title=title, description=desc, note=note, tags=tags, source="telegram")
         saved.append(("✅" if new else "♻️") + " " + html.escape(item["title"] or u)[:80])
-    send(chat, "\n".join(saved) + f"\n\nBugün toplam: {db.count(since=day_start())}")
+    send(chat, "\n".join(saved) + "\n\n" + _("total_today", n=db.count(since=day_start())))
     if want_dl:
         for u in urls[:5]:
-            queue_download(chat, u, "audio" if want_dl & {"ses", "mp3"} else "video")
+            queue_download(chat, u, "audio" if want_dl & CMD_AUDIO else "video")
 
 
 def digest():
@@ -162,8 +212,8 @@ def digest():
     for it in items:
         for t in it["tags"]:
             tags[t] = tags.get(t, 0) + 1
-    top = " ".join(f"#{html.escape(t)}" for t, _ in sorted(tags.items(), key=lambda x: -x[1])[:5])
-    send(OWNER, f"🌙 <b>Günün özeti</b> — bugün <b>{len(items)}</b> sayfa kaydettin"
+    top = " ".join(f"#{html.escape(t)}" for t, _n in sorted(tags.items(), key=lambda x: -x[1])[:5])
+    send(OWNER, _("digest", n=len(items))
                 + (f"\n{top}" if top else "") + "\n\n" + fmt_items(items, 20)
                 + (f"\n\n🌐 {WEB_URL}" if WEB_URL else ""))
 
@@ -184,12 +234,19 @@ def digest_loop():
 def poll_loop():
     offset = None
     try:
-        api("setMyCommands", commands=[
-            {"command": "bugun", "description": "Bugün kaydettiklerin"},
-            {"command": "son", "description": "Son 10 kayıt"},
-            {"command": "ara", "description": "Kayıtlarda ara"},
-            {"command": "indir", "description": "Video indir: /indir link"},
-            {"command": "ses", "description": "Sadece ses (mp3): /ses link"}])
+        en = [{"command": "today", "description": "Saved today"},
+              {"command": "last", "description": "Latest 10"},
+              {"command": "search", "description": "Search your shelf"},
+              {"command": "download", "description": "Download a video: /download link"},
+              {"command": "audio", "description": "Audio only (mp3): /audio link"}]
+        tr = [{"command": "bugun", "description": "Bugün kaydettiklerin"},
+              {"command": "son", "description": "Son 10 kayıt"},
+              {"command": "ara", "description": "Kayıtlarda ara"},
+              {"command": "indir", "description": "Video indir: /indir link"},
+              {"command": "ses", "description": "Sadece ses (mp3): /ses link"}]
+        # Menu: forced language for everyone, or English by default + Turkish for Turkish Telegram apps
+        api("setMyCommands", commands=tr if BOT_LANG == "tr" else en)
+        api("setMyCommands", commands=en if BOT_LANG == "en" else tr, language_code="tr")
     except Exception:
         traceback.print_exc()
     while True:
@@ -204,7 +261,7 @@ def poll_loop():
                     handle(m)
                 except Exception as e:
                     traceback.print_exc()
-                    send(OWNER, f"⚠️ Hata: <code>{html.escape(str(e))}</code>")
+                    send(OWNER, _("error", e=html.escape(str(e))))
         except Exception:
             traceback.print_exc()
             time.sleep(10)

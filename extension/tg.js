@@ -1,7 +1,7 @@
 // Telegram without a server: the user's own bot (token from @BotFather) talks to api.telegram.org directly.
 // Settings → Telegram sets it up; the token stays on this computer (chrome.storage.local, not synced).
 // - send: popup "Send to Telegram", right-click, shelf items, optionally every save
-// - listen (while Chrome is open): links sent to the bot are saved to the shelf; /son /bugun /ara answer from it
+// - listen (while Chrome is open): links sent to the bot are saved to the shelf; /last /today /search (TR: /son /bugun /ara) answer from it
 const RAF_TG_API = "https://api.telegram.org";
 // Shared Raf bot (worker/ in this repo): one tap to connect, no @BotFather. Empty = only "your own bot" is offered.
 const RAF_HUB = "https://raf-hub.selimyalinkilic.me";
@@ -86,11 +86,22 @@ async function rafTgConnect(token) {
   if (!/^\d+:[\w-]{30,}$/.test(token)) throw new Error(t("tgBadToken"));
   const me = await rafTgCall("getMe", {}, token);
   await rafTgCall("deleteWebhook", {}, token).catch(() => {});  // getUpdates doesn't work while a webhook is set
+  await rafTgSetCommands(token).catch(() => {});
   // skip anything sent before this moment
   const old = await rafTgCall("getUpdates", { offset: -1, timeout: 0 }, token).catch(() => []);
   const offset = old.length ? old[old.length - 1].update_id + 1 : 0;
   await chrome.storage.local.set({ tg: { token, bot: me.username, botName: me.first_name, offset, listen: true, autoSend: false } });
   return me;
+}
+// Command menu in the bot: English by default, Turkish for Telegram users whose app language is Turkish.
+// Both sets of commands always work (see rafTgHandle).
+async function rafTgSetCommands(token) {
+  await rafTgCall("setMyCommands", { commands: [
+    { command: "last", description: "Latest saves" }, { command: "today", description: "Saved today" },
+    { command: "search", description: "Search your shelf" }, { command: "help", description: "How it works" }] }, token);
+  await rafTgCall("setMyCommands", { language_code: "tr", commands: [
+    { command: "son", description: "Son kayıtlar" }, { command: "bugun", description: "Bugün kaydettiklerin" },
+    { command: "ara", description: "Rafta ara" }, { command: "yardim", description: "Nasıl çalışır" }] }, token);
 }
 // Poll for the /start message (up to ~2 minutes). Returns the chat or null.
 async function rafTgWaitForStart(onTick) {

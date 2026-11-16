@@ -654,16 +654,16 @@
   "message": "That doesn't look like a valid bot token. Copy the whole token from @BotFather."
  },
  "tgWelcome": {
-  "message": "✅ <b>Raf is connected.</b>\nPages you send from Raf arrive here.\n\nSend me a link (add #tags and a note if you like) and Raf saves it to your shelf while Chrome is open on your computer.\n/son: last 5 · /bugun: today · /ara word: search"
+  "message": "✅ <b>Raf is connected.</b>\nPages you send from Raf arrive here.\n\nSend me a link (add #tags and a note if you like) and Raf saves it to your shelf while Chrome is open on your computer.\n/last: latest 5 · /today: today · /search word: search"
  },
  "tgHelp": {
-  "message": "<b>Raf</b>\n• Send a link: it's saved to your shelf (add #tags and a note in the same message)\n• /son: last 5 saved\n• /bugun: saved today\n• /ara word: search your shelf\n\nRaf answers while Chrome is open on your computer."
+  "message": "<b>Raf</b>\n• Send a link: it's saved to your shelf (add #tags and a note in the same message)\n• /last: latest 5 saved\n• /today: saved today\n• /search word: search your shelf\n\nRaf answers while Chrome is open on your computer."
  },
  "tgNothing": {
   "message": "Nothing here yet."
  },
  "tgSearchHow": {
-  "message": "Write a word after /ara, e.g. <code>/ara recipe</code>"
+  "message": "Write a word after /search, e.g. <code>/search recipe</code>"
  },
  "tgSendALink": {
   "message": "Send me a link to save it, or /help."
@@ -714,7 +714,7 @@
   "message": "Save links I send to the bot (checked every minute while Chrome is open)"
  },
  "tgCommands": {
-  "message": "In the bot: send a link to save it · <code>/son</code> last 5 · <code>/bugun</code> today · <code>/ara word</code> search"
+  "message": "In the bot: send a link to save it · <code>/last</code> latest 5 · <code>/today</code> today · <code>/search word</code> search"
  },
  "tgTest": {
   "message": "Send a test message"
